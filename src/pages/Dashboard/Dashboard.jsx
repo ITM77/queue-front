@@ -4,12 +4,14 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UserOutlined,
+  FileProtectOutlined
 } from '@ant-design/icons';
 import { Layout, Dropdown, Menu, Avatar } from 'antd';
 import styled from 'styled-components';
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { isAuthAC } from '../../store/reducers/appReducer';
+import Lisense from './Lisense'
 
 const { Header, Sider, Content, Footer } = Layout;
 const DashboardStyled = styled.div`
@@ -81,6 +83,18 @@ function Dashboard() {
       label: 'Главная',
       component: <p>Main</p>,
     },
+    {
+      key: '/licence',
+      icon:  <FileProtectOutlined />,
+      label: 'Лицензии',
+      children: [
+        {
+          key: '/all',
+          label: 'Все',
+          component: <Lisense/>
+        }
+      ]
+    },
   ]);
 
   const menu = (
@@ -107,8 +121,7 @@ function Dashboard() {
       <Layout>
         <Sider width={250} trigger={null} collapsible collapsed={collapsed}>
           <div className='logo'>
-            {/* <img src={collapsed ? logoSmall : logoLarge} alt='' /> */}
-            <h1>CRM</h1>
+            <h1 style={{color: '#49bff4'}} className={collapsed ? 'text-xl font-bold' : 'text-3xl font-bold'}>CRM</h1>
           </div>
           <Menu mode='inline' defaultSelectedKeys={['/main']} selectedKeys={[location.pathname]}>
             {nav.map(el => {

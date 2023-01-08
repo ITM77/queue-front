@@ -15,7 +15,7 @@ root.render(
   <ConfigProvider
     theme={{
       token: {
-        colorPrimary: '#e53540',
+        colorPrimary: '#41bef6',
       },
     }}
   >

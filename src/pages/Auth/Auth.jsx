@@ -56,7 +56,7 @@ function Auth() {
   return (
     <AuthStyled>
       <header>
-        <h1>CRM</h1>
+        <h1 style={{color: '#49bff4'}} className='text-3xl font-bold'>CRM</h1>
       </header>
       <main>
         <div>

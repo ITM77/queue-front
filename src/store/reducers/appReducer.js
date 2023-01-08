@@ -5,7 +5,7 @@ const appReducer = createSlice({
   initialState: {
     user: {},
     isSpin: false,
-    isAuth: false,
+    isAuth: true,
   },
   reducers: {
     isAuthAC(state, action) {

@@ -10,13 +10,13 @@
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
   }
-  
+
   h1, h2, h3, h4, h5, h6, p, i, b, strong, a, li, div {
     color: #222;
   }
   .ant-btn-primary {
-    background-color: #e53540 !important;
+    background-color: #2eb8f7 !important;
   }
   .ant-btn-primary:hover {
-    background-color: #ef626b !important;
+    background-color: #5bc8fa !important;
   }
