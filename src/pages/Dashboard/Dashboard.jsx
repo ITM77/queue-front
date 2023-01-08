@@ -3,14 +3,12 @@ import {
   HomeOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  SmileOutlined,
   UserOutlined,
-  MenuOutlined
 } from '@ant-design/icons';
 import { Layout, Dropdown, Menu, Avatar } from 'antd';
 import styled from 'styled-components';
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { isAuthAC } from '../../store/reducers/appReducer';
 
 const { Header, Sider, Content, Footer } = Layout;
@@ -74,7 +72,6 @@ const DashboardStyled = styled.div`
 
 function Dashboard() {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.appReducer.user);
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   const [nav] = useState([
@@ -84,23 +81,6 @@ function Dashboard() {
       label: 'Главная',
       component: <p>Main</p>,
     },
-    {
-      key: '/menu',
-      icon: <MenuOutlined />,
-      label: 'Menu',
-      children: [
-        {
-        key: '/first',
-        label: 'First',
-        component: <p>First</p>,
-        },
-        {
-          key: '/second',
-          label: 'second',
-          component: <p>Second</p>,
-        },
-      ]
-    },
   ]);
 
   const menu = (
@@ -108,23 +88,13 @@ function Dashboard() {
       items={[
         {
           key: '1',
-          label: user.username,
-        },
-        {
-          key: '2',
-          label: (
-            <p>asffasfasfsf</p>
-          ),
-          icon: <SmileOutlined />,
-          disabled: false,
+          label: 'Olim',
         },
         {
           key: '4',
           danger: true,
           label: 'Выйти',
           onClick: () => {
-            localStorage.removeItem('at');
-            localStorage.removeItem('rt');
             dispatch(isAuthAC(false));
           },
         },
@@ -138,7 +108,7 @@ function Dashboard() {
         <Sider width={250} trigger={null} collapsible collapsed={collapsed}>
           <div className='logo'>
             {/* <img src={collapsed ? logoSmall : logoLarge} alt='' /> */}
-            <h1 className='font-bold text-center text-xl'>Название проекта</h1>
+            <h1>CRM</h1>
           </div>
           <Menu mode='inline' defaultSelectedKeys={['/main']} selectedKeys={[location.pathname]}>
             {nav.map(el => {

@@ -4,7 +4,6 @@ const appReducer = createSlice({
   name: 'appReducer',
   initialState: {
     user: {},
-    isOtp: false,
     isSpin: false,
     isAuth: false,
   },
@@ -15,14 +14,11 @@ const appReducer = createSlice({
     isSpinAC(state, action) {
       state.isSpin = action.payload;
     },
-    isOtpAC(state, action) {
-      state.isOtp = action.payload;
-    },
     userAC(state, action) {
       state.user = action.payload;
     },
   },
 });
 
-export const { isAuthAC, isSpinAC, isOtpAC, userAC } = appReducer.actions;
+export const { isAuthAC, isSpinAC, userAC } = appReducer.actions;
 export default appReducer.reducer;
