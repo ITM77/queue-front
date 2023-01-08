@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { isAuthAC } from '../../store/reducers/appReducer';
-import Lisense from './Lisense'
+import License from './License'
 
 const { Header, Sider, Content, Footer } = Layout;
 const DashboardStyled = styled.div`
@@ -91,7 +91,7 @@ function Dashboard() {
         {
           key: '/all',
           label: 'Все',
-          component: <Lisense/>
+          component: <License/>
         }
       ]
     },
@@ -102,7 +102,7 @@ function Dashboard() {
       items={[
         {
           key: '1',
-          label: 'Olim',
+          label: 'Olim Haydarov',
         },
         {
           key: '4',

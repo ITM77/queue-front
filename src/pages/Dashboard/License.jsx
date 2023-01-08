@@ -1,11 +1,11 @@
 import React from 'react';
 
-function Lisense() {
+function License() {
   return (
     <div>
-      <h1>Lisense</h1>
+      <h1>License</h1>
     </div>
   );
 }
 
-export default Lisense;
+export default License;
