@@ -73,7 +73,7 @@ function License() {
   return (
     <div>
       <div className='flex justify-between'>
-        <h1 className='text-lg'>Лицензии</h1>
+        <h1 className='text-lg'>Действующие</h1>
         <Button onClick={newApplicationModalOpen}>Новая заявка</Button>
       </div>
       <Divider/>

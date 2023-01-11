@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import {
-  HomeOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
   UserOutlined,
   FileProtectOutlined
 } from '@ant-design/icons';
@@ -13,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { isAuthAC } from '../../store/reducers/appReducer';
 import License from './License'
 
-const { Header, Sider, Content, Footer } = Layout;
+const { Header, Sider, Content } = Layout;
 const DashboardStyled = styled.div`
   .trigger {
     font-size: 18px;
@@ -25,37 +22,38 @@ const DashboardStyled = styled.div`
   .trigger:hover {
     color: #e53540 !important;
   }
+  .ant-menu-item, .ant-menu-submenu span, i {
+    color: #fff !important;
+  }
+  .ant-menu-item, .ant-menu-submenu {
+    border-radius: 0;
+  }
 
   > section {
     min-height: 100vh;
 
     > section {
       > header {
-        margin: 0 16px;
         padding: 0 24px !important;
-        border-bottom-right-radius: 20px;
-        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
         background: #fff !important;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: end;
       }
 
       > main {
-        margin: 24px 16px 0;
-        border-radius: 20px;
+        margin: 16px;
+        border-radius: 4px;
         padding: 24px;
         min-height: 280px;
         background: #fff !important;
       }
-
-      > footer {
-        text-align: center;
-      }
     }
 
     > aside {
-      background: #fff !important;
+      background: #001529 !important;
       width: 300px;
 
       > div {
@@ -74,24 +72,27 @@ const DashboardStyled = styled.div`
 
 function Dashboard() {
   const dispatch = useDispatch();
-  const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   const [nav] = useState([
     {
-      key: '/main',
-      icon: <HomeOutlined />,
-      label: 'Главная',
-      component: <p>Main</p>,
-    },
-    {
-      key: '/licence',
+      key: '/claims',
       icon:  <FileProtectOutlined />,
-      label: 'Лицензии',
+      label: 'Заявки',
       children: [
         {
-          key: '/all',
-          label: 'Все',
+          key: '/current',
+          label: 'Действующие',
           component: <License/>
+        },
+        {
+          key: '/rejected',
+          label: 'Отклоненные',
+          component: <p>Rejected</p>
+        },
+        {
+          key: '/approved',
+          label: 'Одобреные',
+          component: <p>Approved</p>
         }
       ]
     },
@@ -119,11 +120,11 @@ function Dashboard() {
   return (
     <DashboardStyled>
       <Layout>
-        <Sider width={250} trigger={null} collapsible collapsed={collapsed}>
+        <Sider width={250} trigger={null} collapsible>
           <div className='logo'>
-            <h1 style={{color: '#49bff4'}} className={collapsed ? 'text-xl font-bold' : 'text-3xl font-bold'}>CRM</h1>
+            <h1 style={{color: '#49bff4'}} className='text-3xl font-bold'>CRM</h1>
           </div>
-          <Menu mode='inline' defaultSelectedKeys={['/main']} selectedKeys={[location.pathname]}>
+          <Menu theme='dark' mode='inline' defaultSelectedKeys={['/main']} selectedKeys={[location.pathname]}>
             {nav.map(el => {
               if (!el?.component) {
                 return (
@@ -151,14 +152,12 @@ function Dashboard() {
         </Sider>
         <Layout>
           <Header>
-            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-              className: 'trigger',
-              onClick: () => setCollapsed(!collapsed),
-            })}
-
-            <Dropdown overlay={menu} trigger={['click']}>
-              <Avatar icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
-            </Dropdown>
+            <div className='flex items-center'>
+              <p className='mr-4'>Olim Haydarov</p>
+              <Dropdown overlay={menu} trigger={['click']}>
+                <Avatar icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
+              </Dropdown>
+            </div>
           </Header>
           <Content>
             <Routes>
@@ -174,7 +173,6 @@ function Dashboard() {
               <Route path='*' element={<Navigate to='/main' replace />} />
             </Routes>
           </Content>
-          <Footer>Created on 2023</Footer>
         </Layout>
       </Layout>
     </DashboardStyled>
