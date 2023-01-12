@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import {
   UserOutlined,
-  FileProtectOutlined
+  FileProtectOutlined,
 } from '@ant-design/icons';
+
 import { Layout, Dropdown, Menu, Avatar } from 'antd';
 import styled from 'styled-components';
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { isAuthAC } from '../../store/reducers/appReducer';
-import License from './License'
+
+import Claims from './Claims/Claims'
+import Rejected from './Claims/Rejected'
+import Approved from  './Claims/Approved'
 
 const { Header, Sider, Content } = Layout;
 const DashboardStyled = styled.div`
@@ -74,6 +78,12 @@ function Dashboard() {
   const dispatch = useDispatch();
   const location = useLocation();
   const [nav] = useState([
+    // {
+    //   key: '/main',
+    //   icon: <FileProtectOutlined />,
+    //   label: 'Главная',
+    //   component: <p>Main</p>,
+    // },
     {
       key: '/claims',
       icon:  <FileProtectOutlined />,
@@ -82,17 +92,17 @@ function Dashboard() {
         {
           key: '/current',
           label: 'Действующие',
-          component: <License/>
+          component: <Claims/>
         },
         {
           key: '/rejected',
           label: 'Отклоненные',
-          component: <p>Rejected</p>
+          component: <Rejected/>
         },
         {
           key: '/approved',
           label: 'Одобреные',
-          component: <p>Approved</p>
+          component: <Approved/>
         }
       ]
     },
@@ -129,7 +139,7 @@ function Dashboard() {
               if (!el?.component) {
                 return (
                   <Menu.SubMenu key={el.key} title={el.label} icon={el.icon}>
-                    {el.children.map(elCh => (
+                    {el?.children.map(elCh => (
                       <Menu.Item key={`${el.key}${elCh.key}`}>
                         <NavLink to={`${el.key}${elCh.key}`}>
                           <span>{elCh.label}</span>
@@ -170,7 +180,7 @@ function Dashboard() {
                   ))
                 )
               )}
-              <Route path='*' element={<Navigate to='/main' replace />} />
+              <Route path='*' element={<Navigate to='/claims/current' replace />} />
             </Routes>
           </Content>
         </Layout>
