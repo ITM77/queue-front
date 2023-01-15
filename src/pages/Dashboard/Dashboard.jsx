@@ -77,13 +77,8 @@ const DashboardStyled = styled.div`
 function Dashboard() {
   const dispatch = useDispatch();
   const location = useLocation();
+
   const [nav] = useState([
-    // {
-    //   key: '/main',
-    //   icon: <FileProtectOutlined />,
-    //   label: 'Главная',
-    //   component: <p>Main</p>,
-    // },
     {
       key: '/claims',
       icon:  <FileProtectOutlined />,

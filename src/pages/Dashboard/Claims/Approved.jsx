@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
-import { Divider, Table, Modal, Input, Select } from 'antd'
+import { Divider, Table, Modal, Input, Select, Tag } from 'antd'
 
 const data = [
   {
     id: '1',
     name: 'Microsoft',
     extiration_date: '07-01-2023',
-    key: 1,
+    status: 'Approved'
   },
   {
     id: '2',
     name: 'Apple',
     extiration_date: '08-02-2023',
-    key: 2
+    status: 'Approved'
   },
   {
     id: '3',
     name: 'Google',
     extiration_date: '01-04-2023',
-    key: 3
+    status: 'Approved'
   },
 ];
 
@@ -57,6 +57,16 @@ function Claims() {
       title: 'Срок истечения',
       dataIndex: 'extiration_date',
     },
+    {
+      title: 'Статус',
+      key: 'status',
+      dataIndex: 'status',
+      render: (tag) => (
+        <Tag color='green' key={tag}>
+          {tag.toUpperCase()}
+        </Tag>
+      ),
+    },
   ];
 
   return (
@@ -65,7 +75,7 @@ function Claims() {
         <h1 className='text-lg'>Одобренные</h1>
       </div>
       <Divider/>
-      <Table columns={columns} dataSource={data} />
+      <Table rowKey='id' columns={columns} dataSource={data} />
 
       <Modal title="Информация о заявке" width={550} open={isApplicationModalOpen} onOk={applicationModalOk} onCancel={applicationModalCancel}>
         <div className='mt-2'>

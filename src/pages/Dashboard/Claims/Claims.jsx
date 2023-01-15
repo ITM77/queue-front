@@ -1,27 +1,6 @@
 import React, { useState } from 'react';
-import { Divider, Button, Table, Modal, Input, Select, Upload } from 'antd'
+import { Divider, Button, Table, Modal, Input, Select, Upload, Form } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-
-const data = [
-  {
-    id: '1',
-    name: 'Microsoft',
-    extiration_date: '07-01-2023',
-    key: 1,
-  },
-  {
-    id: '2',
-    name: 'Apple',
-    extiration_date: '08-02-2023',
-    key: 2
-  },
-  {
-    id: '3',
-    name: 'Google',
-    extiration_date: '01-04-2023',
-    key: 3
-  },
-];
 
 function Claims() {
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -30,12 +9,40 @@ function Claims() {
   const [fileList, setFileList] = useState([])
   const [isNewApplicationModalOpen, setIsNewApplicationModalOpen] = useState(false);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
+  const [form] = Form.useForm();
+
+  const [data, setData] = useState([
+    {
+      id: '1',
+      name: 'Microsoft',
+      extiration_date: '07-01-2023',
+    },
+    {
+      id: '2',
+      name: 'Apple',
+      extiration_date: '08-02-2023',
+    },
+    {
+      id: '3',
+      name: 'Google',
+      extiration_date: '01-04-2023',
+    },
+  ]);
+
+  const claim = {
+    id: '',
+    name: '',
+    type: '',
+    extiration_date: '01-04-2023',
+  }
 
   const newApplicationModalOpen = () => {
     setIsNewApplicationModalOpen(true);
   };
   const newApplicationModalOk = () => {
+    setData(arr => [...arr, claim]);
     setIsNewApplicationModalOpen(false)
+    form.resetFields();
   }
   const newApplicationModalCancel = () => {
     setIsNewApplicationModalOpen(false)
@@ -84,6 +91,7 @@ function Claims() {
       });
 
   const handleCancel = () => setPreviewOpen(false);
+
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -92,6 +100,7 @@ function Claims() {
     setPreviewOpen(true);
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
   };
+
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
 
   const uploadButton = (
@@ -114,33 +123,66 @@ function Claims() {
         <Button onClick={newApplicationModalOpen}>Новая заявка</Button>
       </div>
       <Divider/>
-      <Table columns={columns} dataSource={data} />
+      <Table rowKey="id" columns={columns} dataSource={data} />
 
-      <Modal width={550} title="Новая заявка" okText='Создать' cancelText='Отмена' open={isNewApplicationModalOpen} onOk={newApplicationModalOk} onCancel={newApplicationModalCancel}>
-        <div className='mt-2'>
-          <p>ID:</p>
-          <Input placeholder='ID'/>
-        </div>
-        <div className='mt-2'>
-          <p>Наименование компании:</p>
-          <Input placeholder='Наименование компании'/>
-        </div>
-        <div className='mt-2'>
-          <p>Тип заявки:</p>
-          <Select className='w-full'
-            defaultValue="lucy"
-            options={[
-              {
-                value: 'lucy',
-                label: 'Lucy',
-              },
-              {
-                value: 'bem',
-                label: 'Bem',
-              },
-            ]}
-          />
-        </div>
+      <Modal footer={null} width={550} title="Новая заявка" okText='Создать' cancelText='Отмена' open={isNewApplicationModalOpen} onOk={newApplicationModalOk} onCancel={newApplicationModalCancel}>
+        <Form
+          form={form}
+          onFinish={newApplicationModalOk}
+          autoComplete="off"
+        >
+          <div>
+            <p>ID:</p>
+            <Form.Item
+              name="id"
+              rules={[{ required: true, message: 'Обязательное поле!' }]}
+              className="mb-2"
+            >
+              <Input type="number" onChange={(e) => {
+                claim.id = e.target.value
+              }} placeholder='ID'/>
+            </Form.Item>
+          </div>
+          <div>
+            <p>Наименование компании:</p>
+            <Form.Item
+              name="name"
+              rules={[{ required: true, message: 'Обязательное поле!' }]}
+              className="mb-2"
+            >
+              <Input onChange={(e) => {
+                claim.name = e.target.value
+              }} placeholder='Наименование компании'/>
+            </Form.Item>
+          </div>
+          <div>
+            <p>Тип заявки:</p>
+            <Select className='w-full'
+              defaultValue="lucy"
+              options={[
+                {
+                  value: 'lucy',
+                  label: 'Lucy',
+                },
+                {
+                  value: 'bem',
+                  label: 'Bem',
+                },
+              ]}
+              onChange={(value) => {
+                claim.type = value
+              }}
+            />
+          </div>
+
+          <Form.Item className="mt-5">
+            <div className="flex justify-end">
+              <Button type="primary" htmlType="submit">
+                Создать
+              </Button>
+            </div>
+          </Form.Item>
+        </Form>
       </Modal>
 
       <Modal
@@ -185,7 +227,8 @@ function Claims() {
           <p className='mb-3 font-bold'>Загрузить паспорт: (До 8 файлов)</p>
           <div className='flex justify-end'>
             <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              accept=".png,.jpeg,.pdf"
+                action="http://localhost:3000/"
                 listType="picture-card"
                 fileList={fileList}
                 onPreview={handlePreview}
@@ -203,27 +246,6 @@ function Claims() {
               />
             </Modal>
           </div>
-        </div>
-        <div className='mt-5 border p-3'>
-          <p className='mb-3 font-bold'>Загрузить документ: (До 8 файлов)</p>
-          <Upload
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              listType="picture-card"
-              fileList={fileList}
-              onPreview={handlePreview}
-              onChange={handleChange}
-          >
-            {fileList.length >= 8 ? null : uploadButton}
-          </Upload>
-          <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-            <img
-                alt="example"
-                style={{
-                  width: '100%',
-                }}
-                src={previewImage}
-            />
-          </Modal>
         </div>
       </Modal>
 
