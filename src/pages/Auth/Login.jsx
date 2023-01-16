@@ -3,20 +3,34 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { isSpinAC, isAuthAC } from '../../store/reducers/appReducer'
 import openNotification from '../../utils/openNotification'
+import { loginApi } from '../../http/auth'
 
 const { Title } = Typography
 function Login() {
   const dispatch = useDispatch()
 
-  const onFinish = async () => {
+  const onFinish = async (value) => {
     try {
       dispatch(isSpinAC(true))
-      setTimeout(() => {
+      const query = {
+        username: value.username,
+        password: value.password
+      }
+
+      const { data } = await loginApi(query)
+
+      if (data.data) {
+        localStorage.setItem('at', data.data.accessToken);
+        localStorage.setItem('rt', data.data.refreshToken);
         dispatch(isAuthAC(true))
-        dispatch(isSpinAC(false))
-      }, 1000)
+      } else {
+        openNotification('error', data.message)
+      }
     } catch (e) {
       openNotification('error', `Неправильный логин или пароль`)
+    }
+     finally {
+      dispatch(isSpinAC(false))
     }
   }
 
@@ -45,7 +59,7 @@ function Login() {
         name="password"
         rules={[
           { required: true, message: 'Обязательное поле!' },
-          { min: 8, message: 'Поле должно быть не менее 8 символов!' },
+          { min: 4, message: 'Поле должно быть не менее 8 символов!' },
         ]}
       >
         <Input.Password placeholder="Пароль" />

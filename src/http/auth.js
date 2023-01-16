@@ -1,7 +1,7 @@
 import $host from './index'
 
-const END_POINT = '/auth'
+const checkApi = () => $host.get('/')
 
-const loginApi = (params) => $host.post(`${END_POINT}/login`, params)
+const loginApi = (params) => $host.post('auth/login', params)
 
-export { loginApi }
+export { checkApi, loginApi }

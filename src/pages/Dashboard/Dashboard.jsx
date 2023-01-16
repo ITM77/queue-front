@@ -10,9 +10,11 @@ import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { isAuthAC } from '../../store/reducers/appReducer';
 
+import Registration from './Registration/Registration'
 import Claims from './Claims/Claims'
 import Rejected from './Claims/Rejected'
 import Approved from  './Claims/Approved'
+import Test from './Claims/test'
 
 const { Header, Sider, Content } = Layout;
 const DashboardStyled = styled.div`
@@ -80,6 +82,12 @@ function Dashboard() {
 
   const [nav] = useState([
     {
+      key: '/registration',
+      label: 'Создать пользователя',
+      component: <Registration/>,
+      icon:  <FileProtectOutlined />,
+    },
+    {
       key: '/claims',
       icon:  <FileProtectOutlined />,
       label: 'Заявки',
@@ -98,6 +106,11 @@ function Dashboard() {
           key: '/approved',
           label: 'Одобреные',
           component: <Approved/>
+        },
+        {
+          key: '/test',
+          label: 'test',
+          component: <Test/>
         }
       ]
     },
@@ -115,6 +128,8 @@ function Dashboard() {
           danger: true,
           label: 'Выйти',
           onClick: () => {
+            localStorage.removeItem('at');
+            localStorage.removeItem('rt');
             dispatch(isAuthAC(false));
           },
         },

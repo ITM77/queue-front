@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const $host = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: 'http://31.184.253.218:8082',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -19,7 +19,7 @@ $host.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response?.status === 401 && error.config) {
       try {
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/refresh-token`, {
+        const response = await axios.post(`http://31.184.253.218:8082/auth/accessToken`, {
           refresh: localStorage.getItem('rt'),
         });
         localStorage.setItem('at', response.data.access);

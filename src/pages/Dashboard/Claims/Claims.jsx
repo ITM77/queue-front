@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { Divider, Button, Table, Modal, Input, Select, Upload, Form } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { claimsApi } from '../../../http/claims'
+import openNotification from '../../../utils/openNotification';
+import { isSpinAC } from '../../../store/reducers/appReducer';
 
 function Claims() {
+  const dispatch = useDispatch();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
@@ -11,7 +16,7 @@ function Claims() {
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const [form] = Form.useForm();
 
-  const [data, setData] = useState([
+  const [tableData, setTableData] = useState([
     {
       id: '1',
       name: 'Microsoft',
@@ -30,19 +35,29 @@ function Claims() {
   ]);
 
   const claim = {
-    id: '',
+    number: '',
     name: '',
     type: '',
-    extiration_date: '01-04-2023',
   }
 
   const newApplicationModalOpen = () => {
     setIsNewApplicationModalOpen(true);
   };
-  const newApplicationModalOk = () => {
-    setData(arr => [...arr, claim]);
-    setIsNewApplicationModalOpen(false)
-    form.resetFields();
+  const newApplicationModalOk = async () => {
+    try {
+      dispatch(isSpinAC(true))
+      const response = await claimsApi(claim)
+      console.log(response);
+      setTableData(arr => [...arr, claim]);
+      setIsNewApplicationModalOpen(false)
+      form.resetFields();
+    } catch (e) {
+      openNotification('error', 'Ошибка')
+    }
+    finally {
+      dispatch(isSpinAC(false))
+    }
+
   }
   const newApplicationModalCancel = () => {
     setIsNewApplicationModalOpen(false)
@@ -58,7 +73,7 @@ function Claims() {
     setIsApplicationModalOpen(true)
   }
 
-  const columns = [
+  const tableColumns = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -123,7 +138,7 @@ function Claims() {
         <Button onClick={newApplicationModalOpen}>Новая заявка</Button>
       </div>
       <Divider/>
-      <Table rowKey="id" columns={columns} dataSource={data} />
+      <Table rowKey="id" columns={tableColumns} dataSource={tableData} />
 
       <Modal footer={null} width={550} title="Новая заявка" okText='Создать' cancelText='Отмена' open={isNewApplicationModalOpen} onOk={newApplicationModalOk} onCancel={newApplicationModalCancel}>
         <Form
@@ -139,7 +154,7 @@ function Claims() {
               className="mb-2"
             >
               <Input type="number" onChange={(e) => {
-                claim.id = e.target.value
+                claim.number = e.target.value
               }} placeholder='ID'/>
             </Form.Item>
           </div>
@@ -161,11 +176,11 @@ function Claims() {
               defaultValue="lucy"
               options={[
                 {
-                  value: 'lucy',
+                  value: '1',
                   label: 'Lucy',
                 },
                 {
-                  value: 'bem',
+                  value: '2',
                   label: 'Bem',
                 },
               ]}
