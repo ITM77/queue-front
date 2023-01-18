@@ -10,7 +10,7 @@
 
     - name: Replace Image tag
       replace:
-        path: /var/www/crm-api/docker-compose.prod.yml
+        path: /var/www/crm-web/docker-compose.prod.yml
         regexp: 'ghcr.io/paytjs/crm-web:.*'
         replace: "ghcr.io/paytjs/crm-web:{{ image_tag }}"
 
