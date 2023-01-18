@@ -22,7 +22,7 @@
 
     - name: Restart docker compose
       shell:
-        cmd: docker-compose -f docker-compose.prod.yml --env-file .env-db up -d
+        cmd: docker-compose -f docker-compose.prod.yml up -d
       args:
         chdir: /var/www/crm-web/
 
