@@ -1,8 +1,6 @@
 import { Button, Checkbox, Form, Input, Typography } from 'antd'
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { isSpinAC, isAuthAC } from '../../store/reducers/appReducer'
-import openNotification from '../../utils/openNotification'
+import {useDispatch} from 'react-redux'
 import { loginApi } from '../../http/auth'
 
 const { Title } = Typography
@@ -10,28 +8,13 @@ function Login() {
   const dispatch = useDispatch()
 
   const onFinish = async (value) => {
-    try {
-      dispatch(isSpinAC(true))
-      const query = {
-        username: value.username,
-        password: value.password
-      }
 
-      const { data } = await loginApi(query)
+    const query = {
+      username: value.username,
+      password: value.password
+    }
 
-      if (data.data) {
-        localStorage.setItem('at', data.data.accessToken);
-        localStorage.setItem('rt', data.data.refreshToken);
-        dispatch(isAuthAC(true))
-      } else {
-        openNotification('error', data.message)
-      }
-    } catch (e) {
-      openNotification('error', `Неправильный логин или пароль`)
-    }
-     finally {
-      dispatch(isSpinAC(false))
-    }
+    dispatch(loginApi(query))
   }
 
   return (

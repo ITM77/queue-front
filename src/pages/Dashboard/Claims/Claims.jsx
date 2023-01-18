@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Divider, Button, Table, Modal, Input, Select, Upload, Form } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
-import { claimsApi } from '../../../http/claims'
-import openNotification from '../../../utils/openNotification';
+import { useDispatch, useSelector } from 'react-redux';
+import { newClaimApi, getClaimsApi, getClaimByIdApi } from '../../../http/claims'
 import { isSpinAC } from '../../../store/reducers/appReducer';
 
 function Claims() {
@@ -15,61 +14,39 @@ function Claims() {
   const [isNewApplicationModalOpen, setIsNewApplicationModalOpen] = useState(false);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const [form] = Form.useForm();
-
-  const [tableData, setTableData] = useState([
-    {
-      id: '1',
-      name: 'Microsoft',
-      extiration_date: '07-01-2023',
-    },
-    {
-      id: '2',
-      name: 'Apple',
-      extiration_date: '08-02-2023',
-    },
-    {
-      id: '3',
-      name: 'Google',
-      extiration_date: '01-04-2023',
-    },
-  ]);
+  const claims = useSelector(state => state.appReducer.claims);
+  const claimInfo = useSelector(state => state.appReducer.claimInfo);
 
   const claim = {
     number: '',
     name: '',
-    type: '',
+    type: '1',
+  }
+  const editedClaim = {
+    name: claimInfo.name,
+    id: claimInfo.id,
+    type: claimInfo.type
   }
 
   const newApplicationModalOpen = () => {
     setIsNewApplicationModalOpen(true);
   };
   const newApplicationModalOk = async () => {
-    try {
-      dispatch(isSpinAC(true))
-      const response = await claimsApi(claim)
-      console.log(response);
-      setTableData(arr => [...arr, claim]);
-      setIsNewApplicationModalOpen(false)
-      form.resetFields();
-    } catch (e) {
-      openNotification('error', 'Ошибка')
-    }
-    finally {
-      dispatch(isSpinAC(false))
-    }
+    dispatch(isSpinAC(true))
+    dispatch(newClaimApi(claim))
+    setIsNewApplicationModalOpen(false)
+    form.resetFields();
+  }
 
+  const applicationModalCancel = () => {
+    setIsApplicationModalOpen(false)
   }
   const newApplicationModalCancel = () => {
     setIsNewApplicationModalOpen(false)
   }
 
-  const applicationModalOk = () => {
-    setIsApplicationModalOpen(false)
-  }
-  const applicationModalCancel = () => {
-    setIsApplicationModalOpen(false)
-  }
-  const getApplication = () => {
+  const getApplication = (item) => {
+    dispatch(getClaimByIdApi(item.id))
     setIsApplicationModalOpen(true)
   }
 
@@ -80,20 +57,11 @@ function Claims() {
     },
     {
       title: 'Наименование компании',
-      dataIndex: 'name',
-      render: (item) => (
-        <button
-          type="button"
-          tabIndex={-42}
-          onClick={getApplication}
-        >
-          {item}
-        </button>
-      ),
+      dataIndex: 'name'
     },
     {
-      title: 'Срок истечения',
-      dataIndex: 'extiration_date',
+      title: 'Дата создания',
+      dataIndex: 'createdAt',
     },
   ];
 
@@ -131,6 +99,10 @@ function Claims() {
     </div>
   );
 
+  useEffect(() => {
+    dispatch(getClaimsApi())
+  }, [])
+
   return (
     <div>
       <div className='flex justify-between'>
@@ -138,9 +110,16 @@ function Claims() {
         <Button onClick={newApplicationModalOpen}>Новая заявка</Button>
       </div>
       <Divider/>
-      <Table rowKey="id" columns={tableColumns} dataSource={tableData} />
+      <Table
+        onRow={(record) => ({
+          onClick: () => {getApplication(record)}
+        })}
+        rowKey="id"
+        columns={tableColumns}
+        dataSource={claims.data}
+      />
 
-      <Modal footer={null} width={550} title="Новая заявка" okText='Создать' cancelText='Отмена' open={isNewApplicationModalOpen} onOk={newApplicationModalOk} onCancel={newApplicationModalCancel}>
+      <Modal footer={null} width={550} title="Новая заявка" okText='Создать' cancelText='Отмена' open={isNewApplicationModalOpen} onCancel={newApplicationModalCancel}>
         <Form
           form={form}
           onFinish={newApplicationModalOk}
@@ -201,6 +180,7 @@ function Claims() {
       </Modal>
 
       <Modal
+        footer={null}
         style={{
           top: 20,
         }}
@@ -208,23 +188,30 @@ function Claims() {
        cancelText='Отмена'
         width={550}
        open={isApplicationModalOpen}
-       onOk={applicationModalOk}
        onCancel={applicationModalCancel}
         okText='Сохранить'
       >
         <div>
           <div className='mt-4'>
             <p>ID:</p>
-            <Input placeholder='ID'/>
+            <Input
+              value={editedClaim.id}
+              placeholder='ID'
+            />
           </div>
           <div className='mt-2'>
             <p>Наименование компании:</p>
-            <Input placeholder='Наименование компании'/>
+            <Input
+              value={editedClaim.name}
+              onChange={(e) => {
+                editedClaim.name = e.target.value;
+              }}
+              placeholder='Наименование компании'/>
           </div>
           <div className='mt-2'>
             <p>Тип заявки:</p>
             <Select className='w-full'
-              defaultValue="lucy"
+              defaultValue="lucy" value={editedClaim.type}
               options={[
                 {
                   value: 'lucy',

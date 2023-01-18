@@ -14,8 +14,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('at');
     if (token) {
-      const data = getUserApi();
-      console.log(data);
+      dispatch(getUserApi())
       dispatch(isAuthAC(true));
     }
   }, []);

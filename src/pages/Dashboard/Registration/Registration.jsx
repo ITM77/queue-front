@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button, Divider, Form, Input } from 'antd';
+import { useDispatch } from 'react-redux';
 import { createUserApi } from '../../../http/user'
 
 function Registration() {
+  const dispatch = useDispatch()
   const [form] = Form.useForm();
   const user = {
     firstname: '',
@@ -12,8 +14,7 @@ function Registration() {
   }
 
   const createUser = (value) => {
-    const response = createUserApi(value)
-    console.log(response);
+    dispatch(createUserApi(value))
   }
   return (
     <div>
