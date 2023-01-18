@@ -1,11 +1,14 @@
 # ==== CONFIGURE =====
 FROM node:18-alpine as builder
 
+RUN apk add --no-cache --virtual .gyp python3 make g++
+
 # Set the working directory to /app inside the container
 WORKDIR /var/www/crm-web
 
 # Copy package.json to install deps
 COPY package.json ./
+COPY package-lock.json ./
 
 # Rebuild node-sass
 RUN npm rebuild node-sass
