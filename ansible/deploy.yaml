@@ -14,12 +14,6 @@
         regexp: 'ghcr.io/paytjs/crm-web:.*'
         replace: "ghcr.io/paytjs/crm-web:{{ image_tag }}"
 
-    - name: Restart docker compose
-        shell:
-          cmd: ls -lah
-        args:
-          chdir: /var/www/crm-web/
-
     - name: Pull Image
       shell:
         cmd: docker-compose pull
