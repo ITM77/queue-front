@@ -12,6 +12,8 @@ function Claims() {
   const [form] = Form.useForm();
   const claims = useSelector(state => state.appReducer.claims);
   const claimInfo = useSelector(state => state.appReducer.claimInfo);
+  const uploadedFile = useSelector(state => state.appReducer.uploadedFile);
+  console.log(uploadedFile);
 
   const claim = {
     number: '',
@@ -69,7 +71,6 @@ function Claims() {
   }
 
   const handleChange = (file) => {
-    console.log(file);
     uploadFile(file)
   };
 
@@ -213,7 +214,7 @@ function Claims() {
               action={handleChange}
               listType="picture"
               maxCount={1}
-              openFileDialogOnClick
+              fileList={uploadedFile}
             >
               <Button icon={<UploadOutlined />}>Загрузить</Button>
             </Upload>
