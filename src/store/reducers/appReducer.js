@@ -7,7 +7,8 @@ const appReducer = createSlice({
     isAuth: false,
     claims: [],
     user: {},
-    claimInfo: {}
+    claimInfo: {},
+    uploadedFile: []
   },
   reducers: {
     isAuthAC(state, action) {
@@ -24,9 +25,19 @@ const appReducer = createSlice({
     },
     claimInfoAC(state, action) {
       state.claimInfo = action.payload
+    },
+    uploadedFileAC(state, action) {
+      const obj = {
+        uid: '-1',
+        name: 'image1.png',
+        status: 'done',
+        url: action.payload.path,
+      }
+      state.uploadedFile = []
+      state.uploadedFile.push(obj)
     }
   },
 });
 
-export const { isAuthAC, isSpinAC, claimsAC, userAC, claimInfoAC } = appReducer.actions;
+export const { isAuthAC, isSpinAC, claimsAC, userAC, claimInfoAC, uploadedFileAC } = appReducer.actions;
 export default appReducer.reducer;

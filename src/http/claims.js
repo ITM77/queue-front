@@ -1,5 +1,5 @@
 import $host from './index'
-import { isSpinAC, claimsAC, claimInfoAC } from '../store/reducers/appReducer';
+import { isSpinAC, claimsAC, claimInfoAC, uploadedFileAC } from '../store/reducers/appReducer';
 import notification  from '../utils/openNotification';
 
 const getClaimsApi = () => async (dispatch) => {
@@ -49,7 +49,7 @@ const uploadFileApi = (params) => async (dispatch) => {
         'Content-Type': 'multipart/form-data'
       }
     })
-    console.log(data);
+    dispatch(uploadedFileAC(data.data))
   } catch (e) {
     notification('error')
   }
