@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Divider, Button, Table, Modal, Input, Select, Upload, Form } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { UploadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { newClaimApi, getClaimsApi, getClaimByIdApi } from '../../../http/claims'
+import { newClaimApi, getClaimsApi, getClaimByIdApi, uploadFileApi } from '../../../http/claims'
 import { isSpinAC } from '../../../store/reducers/appReducer';
 
 function Claims() {
   const dispatch = useDispatch();
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
-  const [fileList, setFileList] = useState([])
   const [isNewApplicationModalOpen, setIsNewApplicationModalOpen] = useState(false);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const [form] = Form.useForm();
@@ -65,39 +61,23 @@ function Claims() {
     },
   ];
 
-  const getBase64 = (file) =>
-      new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-      });
+  const uploadFile = (file) => {
+    const formData = new FormData();
+    formData.append("type", '1');
+    formData.append("document", file);
+    dispatch(uploadFileApi(formData))
+  }
 
-  const handleCancel = () => setPreviewOpen(false);
-
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+  const handleChange = (file) => {
+    console.log(file);
+    uploadFile(file)
   };
 
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Загрузить
-      </div>
-    </div>
-  );
+  const dummyRequest = ({ onSuccess }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+    }, 0);
+  };
 
   useEffect(() => {
     dispatch(getClaimsApi())
@@ -226,27 +206,17 @@ function Claims() {
           </div>
         </div>
         <div className='mt-5 border p-3'>
-          <p className='mb-3 font-bold'>Загрузить паспорт: (До 8 файлов)</p>
-          <div className='flex justify-end'>
+          <p className='mb-3 font-bold'>Загрузить файл</p>
+          <div>
             <Upload
-              accept=".png,.jpeg,.pdf"
-                action="http://localhost:3000/"
-                listType="picture-card"
-                fileList={fileList}
-                onPreview={handlePreview}
-                onChange={handleChange}
+              customRequest={dummyRequest}
+              action={handleChange}
+              listType="picture"
+              maxCount={1}
+              openFileDialogOnClick
             >
-              {fileList.length >= 8 ? null : uploadButton}
+              <Button icon={<UploadOutlined />}>Загрузить</Button>
             </Upload>
-            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-              <img
-                  alt="example"
-                  style={{
-                    width: '100%',
-                  }}
-                  src={previewImage}
-              />
-            </Modal>
           </div>
         </div>
       </Modal>

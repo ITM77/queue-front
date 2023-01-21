@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+  <title>Document</title>
+</head>
+<body>
+<input type="file" id="fileInput" class='input' />
+<button class='button'>click</button>
+</body>
+<script>
+  const input = document.querySelector('.input')
+  const button = document.querySelector('.button')
+  button.addEventListener("click", () => {
+    console.log(input);
+  });
+
+  input.addEventListener("change", event => {
+    const files = event.target.files;
+    test(files[0]);
+  });
+
+  async function test(file) {
+    console.log(file);
+    const formData = new FormData();
+    formData.append("type", '1');
+    formData.append("document", file);
+    console.log(formData);
+    const response = await fetch('http://31.184.253.218:8082/documents', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NzQyNDY5MjUsImV4cCI6MTY3NDI1MDUyNSwicm9sZXMiOlsiUk9MRV9BVVRIRU5USUNBVEVEIl0sInVzZXJuYW1lIjoiYWRtaW4ifQ.v3dZbRwlqzvMSr8HGDWuQ-i2I8z6s1XlCf__PctERsZHbp24sZ1QWrRfn18dYDfxXoFIv9hWj0qni9jcxu5HZP5CzPSORbPQ2KnG3Z4pu2pAGmY7TYnOSnhadAeSpdvDxZ8kCoXDnvwpqMbHsRxFf9YSjPRbykoHMsKGkzm0CzWWP4olnv36SdX-fLw52kkEPEr3cOsy9MUx3ZFjHaULxi43NDuYcyBIy_9eVXDiUL6waNCWlqlgDM-1itmsYcVrnYJnWaG77RNCAg3e7o9o5Y2VL_MQVu_fAA-gkLH3zwkpyNuIpJcXMy255fIcKGVceNut--YtMCbLGC-Wjy1SGQ'
+      },
+      body: formData
+    })
+    console.log(response);
+    }
+
+  test()
+  console.log('kuu');
+</script>
+</html>

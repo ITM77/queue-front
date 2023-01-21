@@ -5,6 +5,7 @@ const $host = axios.create({
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
+    // 'content-type': 'multipart/form-data'
   },
 });
 

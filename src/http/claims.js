@@ -41,4 +41,21 @@ const getClaimByIdApi = (params) => async (dispatch) => {
   }
 }
 
-export { newClaimApi, getClaimsApi, getClaimByIdApi }
+const uploadFileApi = (params) => async (dispatch) => {
+  try {
+    dispatch(isSpinAC(true))
+    const { data } = await $host.post('documents', params, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    console.log(data);
+  } catch (e) {
+    notification('error')
+  }
+  finally {
+    dispatch(isSpinAC(false))
+  }
+}
+
+export { newClaimApi, getClaimsApi, getClaimByIdApi, uploadFileApi }
