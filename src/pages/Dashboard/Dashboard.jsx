@@ -7,9 +7,10 @@ import {
 import { Layout, Dropdown, Menu, Avatar } from 'antd';
 import styled from 'styled-components';
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isAuthAC } from '../../store/reducers/appReducer';
 
+import Registration from './Registration/Registration'
 import Claims from './Claims/Claims'
 import Rejected from './Claims/Rejected'
 import Approved from  './Claims/Approved'
@@ -77,13 +78,15 @@ const DashboardStyled = styled.div`
 function Dashboard() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const user = useSelector(state => state.appReducer.user);
+
   const [nav] = useState([
-    // {
-    //   key: '/main',
-    //   icon: <FileProtectOutlined />,
-    //   label: 'Главная',
-    //   component: <p>Main</p>,
-    // },
+    {
+      key: '/registration',
+      label: 'Создать пользователя',
+      component: <Registration/>,
+      icon:  <FileProtectOutlined />,
+    },
     {
       key: '/claims',
       icon:  <FileProtectOutlined />,
@@ -103,7 +106,7 @@ function Dashboard() {
           key: '/approved',
           label: 'Одобреные',
           component: <Approved/>
-        }
+        },
       ]
     },
   ]);
@@ -112,14 +115,12 @@ function Dashboard() {
     <Menu
       items={[
         {
-          key: '1',
-          label: 'Olim Haydarov',
-        },
-        {
           key: '4',
           danger: true,
           label: 'Выйти',
           onClick: () => {
+            localStorage.removeItem('at');
+            localStorage.removeItem('rt');
             dispatch(isAuthAC(false));
           },
         },
@@ -163,7 +164,7 @@ function Dashboard() {
         <Layout>
           <Header>
             <div className='flex items-center'>
-              <p className='mr-4'>Olim Haydarov</p>
+              <p className='mr-4'>{user.message}</p>
               <Dropdown overlay={menu} trigger={['click']}>
                 <Avatar icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
               </Dropdown>

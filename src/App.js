@@ -1,10 +1,10 @@
 import { Spin } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import jwtDecode from 'jwt-decode';
 import Auth from './pages/Auth/Auth';
 import Dashboard from './pages/Dashboard/Dashboard';
-import { isAuthAC, userAC } from './store/reducers/appReducer';
+import { isAuthAC } from './store/reducers/appReducer';
+import { getUserApi } from './http/user'
 
 function App() {
   const dispatch = useDispatch();
@@ -14,8 +14,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('at');
     if (token) {
-      const tokenData = jwtDecode(token);
-      dispatch(userAC(tokenData));
+      dispatch(getUserApi())
       dispatch(isAuthAC(true));
     }
   }, []);

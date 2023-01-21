@@ -3,9 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 const appReducer = createSlice({
   name: 'appReducer',
   initialState: {
-    user: {},
     isSpin: false,
-    isAuth: true,
+    isAuth: false,
+    claims: [],
+    user: {},
+    claimInfo: {}
   },
   reducers: {
     isAuthAC(state, action) {
@@ -14,11 +16,17 @@ const appReducer = createSlice({
     isSpinAC(state, action) {
       state.isSpin = action.payload;
     },
-    userAC(state, action) {
-      state.user = action.payload;
+    claimsAC(state, action) {
+      state.claims = action.payload
     },
+    userAC(state, action) {
+      state.user = action.payload
+    },
+    claimInfoAC(state, action) {
+      state.claimInfo = action.payload
+    }
   },
 });
 
-export const { isAuthAC, isSpinAC, userAC } = appReducer.actions;
+export const { isAuthAC, isSpinAC, claimsAC, userAC, claimInfoAC } = appReducer.actions;
 export default appReducer.reducer;

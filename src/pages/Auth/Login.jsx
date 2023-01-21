@@ -1,23 +1,20 @@
 import { Button, Checkbox, Form, Input, Typography } from 'antd'
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { isSpinAC, isAuthAC } from '../../store/reducers/appReducer'
-import openNotification from '../../utils/openNotification'
+import {useDispatch} from 'react-redux'
+import { loginApi } from '../../http/auth'
 
 const { Title } = Typography
 function Login() {
   const dispatch = useDispatch()
 
-  const onFinish = async () => {
-    try {
-      dispatch(isSpinAC(true))
-      setTimeout(() => {
-        dispatch(isAuthAC(true))
-        dispatch(isSpinAC(false))
-      }, 1000)
-    } catch (e) {
-      openNotification('error', `Неправильный логин или пароль`)
+  const onFinish = async (value) => {
+
+    const query = {
+      username: value.username,
+      password: value.password
     }
+
+    dispatch(loginApi(query))
   }
 
   return (
@@ -45,7 +42,7 @@ function Login() {
         name="password"
         rules={[
           { required: true, message: 'Обязательное поле!' },
-          { min: 8, message: 'Поле должно быть не менее 8 символов!' },
+          { min: 4, message: 'Поле должно быть не менее 8 символов!' },
         ]}
       >
         <Input.Password placeholder="Пароль" />
