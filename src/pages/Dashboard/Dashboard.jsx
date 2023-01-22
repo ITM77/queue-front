@@ -14,6 +14,8 @@ import Registration from './Registration/Registration'
 import Claims from './Claims/Claims'
 import Rejected from './Claims/Rejected'
 import Approved from  './Claims/Approved'
+import ClaimTypes from './ClaimTypes/ClaimTypes';
+import DocumentTypes from './DocumentTypes/DocumentTypes';
 
 const { Header, Sider, Content } = Layout;
 const DashboardStyled = styled.div`
@@ -81,6 +83,18 @@ function Dashboard() {
   const user = useSelector(state => state.appReducer.user);
 
   const [nav] = useState([
+    {
+      key: '/documentTypes',
+      label: 'Тип документов',
+      component: <DocumentTypes/>,
+      icon:  <FileProtectOutlined />,
+    },
+    {
+      key: '/claimTypes',
+      label: 'Тип Заявки',
+      component: <ClaimTypes/>,
+      icon:  <FileProtectOutlined />,
+    },
     {
       key: '/registration',
       label: 'Создать пользователя',
@@ -164,7 +178,7 @@ function Dashboard() {
         <Layout>
           <Header>
             <div className='flex items-center'>
-              <p className='mr-4'>{user.message}</p>
+              <p className='mr-4'>{user.firstName} {user.lastName}</p>
               <Dropdown overlay={menu} trigger={['click']}>
                 <Avatar icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
               </Dropdown>

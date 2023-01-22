@@ -20,6 +20,19 @@ const newClaimApi = (params) => async (dispatch) => {
     dispatch(isSpinAC(true))
     await $host.post('claims', params)
     dispatch(getClaimsApi())
+  } catch (error) {
+    notification('error', error.response.data.message)
+  }
+  finally {
+    dispatch(isSpinAC(false))
+  }
+}
+
+const getClaimDocumentsApi = (params) => async (dispatch) => {
+  try {
+    dispatch(isSpinAC(true))
+    const { data } = await $host.get(`documents?claimId=${params}`)
+    dispatch(uploadedFileAC(data.data))
   } catch (e) {
     notification('error')
   }
@@ -33,6 +46,7 @@ const getClaimByIdApi = (params) => async (dispatch) => {
     dispatch(isSpinAC(true))
     const { data } = await $host.get(`/claims/${params}`)
     dispatch(claimInfoAC(data.data))
+    dispatch(getClaimDocumentsApi(data.data.id))
   } catch (e) {
     notification('error')
   }
@@ -58,4 +72,4 @@ const uploadFileApi = (params) => async (dispatch) => {
   }
 }
 
-export { newClaimApi, getClaimsApi, getClaimByIdApi, uploadFileApi }
+export { newClaimApi, getClaimsApi, getClaimByIdApi, uploadFileApi, getClaimDocumentsApi }
