@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  nginx:
+  web:
     image: ghcr.io/paytjs/crm-web:123321-123321
     restart: unless-stopped
     volumes:
