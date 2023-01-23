@@ -14,11 +14,12 @@ function Registration() {
   }
 
   const createUser = (value) => {
+    form.resetFields();
     dispatch(createUserApi(value))
   }
   return (
     <div>
-      <h1 className='text-lg'>Регистрация</h1>
+      <h1 className='text-lg'>Создание пользователя</h1>
       <Divider />
       <Form
         form={form}

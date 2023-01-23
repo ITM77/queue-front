@@ -8,9 +8,20 @@ const appReducer = createSlice({
     claims: [],
     user: {},
     claimInfo: {},
-    uploadedFile: []
+    uploadedFile: [],
+    claimTypes: [],
   },
   reducers: {
+    claimTypesAC(state, action) {
+      state.claimTypes = []
+      action.payload.forEach((item) => {
+        state.claimTypes.push({
+          value: item.id,
+          label: item.label,
+          name: item.name,
+        })
+      })
+    },
     isAuthAC(state, action) {
       state.isAuth = action.payload;
     },
@@ -27,17 +38,29 @@ const appReducer = createSlice({
       state.claimInfo = action.payload
     },
     uploadedFileAC(state, action) {
-      const obj = {
-        uid: '-1',
-        name: 'image1.png',
-        status: 'done',
-        url: action.payload.path,
-      }
       state.uploadedFile = []
-      state.uploadedFile.push(obj)
+      action.payload.uploads.forEach((item) => {
+        const obj = [{
+          uid: item.id,
+          name: item.name,
+          label: item.label,
+          status: 'done',
+          url: item.path,
+        }]
+        state.uploadedFile.push(obj)
+      })
+      action.payload.documentTypes.forEach((item) => {
+        const obj = [{
+          uid: item.id,
+          label: item.label,
+          name: item.name,
+        }]
+        state.uploadedFile.push(obj)
+      })
+      console.log(state.uploadedFile);
     }
   },
 });
 
-export const { isAuthAC, isSpinAC, claimsAC, userAC, claimInfoAC, uploadedFileAC } = appReducer.actions;
+export const { isAuthAC, isSpinAC, claimsAC, userAC, claimInfoAC, uploadedFileAC, claimTypesAC } = appReducer.actions;
 export default appReducer.reducer;
