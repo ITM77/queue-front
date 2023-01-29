@@ -9,7 +9,6 @@ const EditClaim = forwardRef((props, ref) => {
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const uploadedFile = useSelector(state => state.appReducer.uploadedFile);
   const claimInfo = useSelector(state => state.appReducer.claimInfo);
-  console.log(uploadedFile);
 
   const editedClaim = {
     name: claimInfo.name,
@@ -34,7 +33,6 @@ const EditClaim = forwardRef((props, ref) => {
   };
 
   const uploadFile = (file, item) => {
-    console.log(item);
     const formData = new FormData();
     formData.append(item[0].name, file);
     formData.append('claimId', claimInfo.id);
@@ -94,8 +92,8 @@ const EditClaim = forwardRef((props, ref) => {
         </div>
       </div>
       { uploadedFile.map((item) => (
-        <div className='mt-5 border p-3' key={item[0].id}>
-          <p className='mb-3 font-bold'>Загрузить файл ({item[0].label})</p>
+        <div className='mt-5 border p-3' key={item[0]?.uid}>
+          <p className='mb-3 font-bold'>Загрузить файл ({item[0]?.label})</p>
           <div>
             <Upload
               customRequest={dummyRequest}

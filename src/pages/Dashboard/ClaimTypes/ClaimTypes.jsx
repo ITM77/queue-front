@@ -1,60 +1,232 @@
-import React from 'react';
-import { Divider, Input, Select, Button } from 'antd';
-import { useDispatch } from 'react-redux';
-import { createClaimTypesApi } from '../../../http/docTypes';
+import React, { useEffect, useState } from 'react';
+import { Divider, Input, Select, Button, Modal, Table } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  createClaimTypesApi,
+  getClaimTypesApi,
+  deleteClaimTypesApi, editClaimTypesApi, getClaimTypeByIdApi,
+} from '../../../http/claimTypes';
+import { getAllDocTypesApi } from '../../../http/docTypes';
+
+const options = [];
+for (let i = 10; i < 36; i++) {
+  options.push({
+    value: i.toString(36) + i,
+    label: i.toString(36) + i,
+  });
+}
 
 function ClaimTypes() {
   const dispatch = useDispatch()
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [deleteClaim, setDeleteClaim] = useState('')
+  const claimTypes = useSelector(state => state.appReducer.claimTypes);
+  const documentTypes = useSelector(state => state.appReducer.documentTypes);
+  const [selectedDocs, setSelectedDocs] = useState([])
+
+  const [edittedClaim, setEdittedClaim] = useState({
+    id: '',
+    label: ''
+  })
+
   const claimType = {
     formType: '',
     label: '',
     name: ''
   }
 
+  const showEditModal = (item) => {
+    setEdittedClaim({ ...edittedClaim, label: item.label, id: item.value } )
+    setIsEditModalOpen(true);
+    dispatch(getClaimTypeByIdApi(item.value))
+  };
+  const editHandleOk = () => {
+    setIsEditModalOpen(false);
+  };
+  const editHandleCancel = () => {
+    setIsEditModalOpen(false);
+  };
+  const editClaimType = () => {
+    dispatch(editClaimTypesApi(edittedClaim.id, { label: edittedClaim.label, documentTypesIds: selectedDocs }))
+    setIsEditModalOpen(false)
+  }
+
+  const showDeleteModal = (item) => {
+    setDeleteClaim(item)
+    setIsDeleteModalOpen(true);
+  };
+  const deleteHandleOk = () => {
+    setIsDeleteModalOpen(false);
+  };
+  const deleteHandleCancel = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const deleteClaimType = () => {
+    dispatch(deleteClaimTypesApi(deleteClaim.value))
+    setIsDeleteModalOpen(false);
+  }
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const createClaimType = () => {
     dispatch(createClaimTypesApi(claimType))
+    setIsModalOpen(false);
   }
+  const getClaimTypes = (type) => {
+    dispatch(getClaimTypesApi(type))
+  }
+
+  const handleChange = (value) => {
+    setSelectedDocs(value)
+  };
+
+  useEffect(() => {
+    dispatch(getClaimTypesApi(1))
+    dispatch(getAllDocTypesApi())
+  }, [])
+
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Label',
+      dataIndex: 'label',
+      key: 'label',
+    },
+    {
+      title: '',
+      dataIndex: '',
+      key: 'x',
+      render: (item) => <Button className='text-red-500' type='ghost' onClick={() => showDeleteModal(item)}>Delete</Button>,
+    },
+  ]
+
   return (
     <div>
-      <h1 className='text-lg'>
-        Тип заявки
-      </h1>
+      <div className='flex justify-between'>
+        <h1 className='text-lg'>
+          Тип заявки
+        </h1>
+        <Button onClick={showModal}>Создать</Button>
+      </div>
       <Divider />
-      <div className='w-96'>
+
+      <div>
+        <Select className='w-full'
+          onChange={(value) => {
+            getClaimTypes(value)
+          }}
+          defaultValue="1"
+          style={{
+            width: '250px',
+          }}
+          options={[
+            {
+              value: '1',
+              label: 'Физическое лицо',
+            },
+            {
+              value: '2',
+              label: 'Юридическое лицо',
+            },
+          ]}
+        />
+      </div>
+
+      <div className='mt-5'>
+        <Table
+          columns={columns}
+          dataSource={claimTypes}
+          onRow={(record) => ({
+            onClick: () => {showEditModal(record)}
+          })}
+        />
+      </div>
+
+      <Modal footer={null} title="Создать тип заявки" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <div>
-          <p>Лицо:</p>
-          <Select className='w-full'
-            options={[
-              {
-                value: '1',
-                label: 'Физическое лицо',
-              },
-              {
-                value: '2',
-                label: 'Юридическое лицо',
-              },
-            ]}
-            onChange={(value) => {
-              claimType.formType = value
+          <div>
+            <p>Лицо:</p>
+            <Select className='w-full'
+              options={[
+                {
+                  value: '1',
+                  label: 'Физическое лицо',
+                },
+                {
+                  value: '2',
+                  label: 'Юридическое лицо',
+                },
+              ]}
+              onChange={(value) => {
+                claimType.formType = value
+              }}
+            />
+          </div>
+          <div className='mt-3'>
+            <p>Название:</p>
+            <Input type="text" onChange={(e) => {
+              claimType.label = e.target.value
+            }} placeholder='Название'/>
+          </div>
+          <div className='mt-3'>
+            <p>Название поля:</p>
+            <Input type="text" onChange={(e) => {
+              claimType.name = e.target.value
+            }} placeholder='Название поля'/>
+          </div>
+          <div className='flex justify-end mt-5'>
+            <Button type="primary" onClick={createClaimType}>Создать</Button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal footer={null} title="Редактирование типа заявки" open={isEditModalOpen} onOk={editHandleOk} onCancel={editHandleCancel}>
+        <div className='mt-5'>
+          <p>Наименование типа заявки:</p>
+          <Input
+            value={edittedClaim.label}
+            onChange={(e) => {
+              setEdittedClaim({ ...edittedClaim, label: e.target.value
+              });
             }}
+            placeholder='Наименование заявки'
           />
         </div>
         <div className='mt-5'>
-          <p>Название:</p>
-          <Input type="text" onChange={(e) => {
-            claimType.label = e.target.value
-          }} placeholder='Название'/>
-        </div>
-        <div className='mt-5'>
-          <p>Название поля:</p>
-          <Input type="text" onChange={(e) => {
-            claimType.name = e.target.value
-          }} placeholder='Название поля'/>
+          <Select
+            mode="tags"
+            style={{
+              width: '100%',
+            }}
+            onChange={handleChange}
+            options={documentTypes}
+          />
         </div>
         <div className='flex justify-end mt-5'>
-          <Button type="primary" onClick={createClaimType}>Создать</Button>
+          <Button type='primary' onClick={editClaimType}>Редактировать</Button>
         </div>
-      </div>
+      </Modal>
+
+      <Modal footer={null} title="Вы Уверены ?" open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
+        <p className='mt-5'>Удалить тип заявки ?</p>
+        <div className='flex justify-end mt-5'>
+          <Button type='dashed' onClick={deleteClaimType}>Удалить</Button>
+        </div>
+      </Modal>
     </div>
   );
 }

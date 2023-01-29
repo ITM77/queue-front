@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Divider, Table } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getClaimByIdApi, getClaimsApi } from '../../../http/claims';
+import { getClaimsByStateApi, getClaimByIdApi } from '../../../http/claims';
 
 import NewClaim from '../../../components/NewClaim'
 import EditClaim from '../../../components/EditClaim'
@@ -34,7 +34,7 @@ function Claims() {
   }
 
   useEffect(() => {
-    dispatch(getClaimsApi())
+    dispatch(getClaimsByStateApi(1))
   }, [])
 
   return (
@@ -50,7 +50,7 @@ function Claims() {
         })}
         rowKey="id"
         columns={tableColumns}
-        dataSource={claims.data}
+        dataSource={claims}
       />
       <EditClaim ref={editRef} name='nameEdit' />
     </div>

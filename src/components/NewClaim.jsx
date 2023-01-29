@@ -3,7 +3,7 @@ import { Modal, Form, Input, Button, Select } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import { newClaimApi } from '../http/claims';
 import { isSpinAC } from '../store/reducers/appReducer';
-import { getClaimTypesApi } from '../http/docTypes';
+import { getClaimTypesApi } from '../http/claimTypes';
 
 function NewClaim() {
   const dispatch = useDispatch();

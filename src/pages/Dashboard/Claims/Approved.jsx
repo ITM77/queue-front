@@ -1,28 +1,26 @@
-import React, { useState } from 'react';
-import { Divider, Table, Modal, Input, Select, Tag } from 'antd'
+import React, { useEffect, useState } from 'react';
+import { Divider, Table, Modal, Input, Select } from 'antd'
+import { useDispatch, useSelector } from 'react-redux';
+import { getClaimsByStateApi } from '../../../http/claims';
 
-const data = [
+const tableColumns = [
   {
-    id: '1',
-    name: 'Microsoft',
-    extiration_date: '07-01-2023',
-    status: 'Approved'
+    title: 'ID',
+    dataIndex: 'id',
   },
   {
-    id: '2',
-    name: 'Apple',
-    extiration_date: '08-02-2023',
-    status: 'Approved'
+    title: 'Наименование компании',
+    dataIndex: 'name'
   },
   {
-    id: '3',
-    name: 'Google',
-    extiration_date: '01-04-2023',
-    status: 'Approved'
+    title: 'Дата создания',
+    dataIndex: 'createdAt',
   },
 ];
 
-function Claims() {
+function Approved() {
+  const dispatch = useDispatch();
+  const claims = useSelector(state => state.appReducer.claims);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
 
   const applicationModalOk = () => {
@@ -31,43 +29,10 @@ function Claims() {
   const applicationModalCancel = () => {
     setIsApplicationModalOpen(false)
   }
-  const getApplication = () => {
-    setIsApplicationModalOpen(true)
-  }
 
-  const columns = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-    },
-    {
-      title: 'Наименование компании',
-      dataIndex: 'name',
-      render: (item) => (
-        <button
-          type="button"
-          tabIndex={-42}
-          onClick={getApplication}
-        >
-          {item}
-        </button>
-      ),
-    },
-    {
-      title: 'Срок истечения',
-      dataIndex: 'extiration_date',
-    },
-    {
-      title: 'Статус',
-      key: 'status',
-      dataIndex: 'status',
-      render: (tag) => (
-        <Tag color='green' key={tag}>
-          {tag.toUpperCase()}
-        </Tag>
-      ),
-    },
-  ];
+  useEffect(() => {
+    dispatch(getClaimsByStateApi(2))
+  }, [])
 
   return (
     <div>
@@ -75,7 +40,7 @@ function Claims() {
         <h1 className='text-lg'>Одобренные</h1>
       </div>
       <Divider/>
-      <Table rowKey='id' columns={columns} dataSource={data} />
+      <Table rowKey='id' columns={tableColumns} dataSource={claims} />
 
       <Modal title="Информация о заявке" width={550} open={isApplicationModalOpen} onOk={applicationModalOk} onCancel={applicationModalCancel}>
         <div className='mt-2'>
@@ -108,4 +73,4 @@ function Claims() {
   );
 }
 
-export default Claims;
+export default Approved;
