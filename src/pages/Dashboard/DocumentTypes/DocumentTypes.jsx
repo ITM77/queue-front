@@ -38,7 +38,8 @@ function DocumentTypes() {
     setIsEditModalOpen(false);
   };
 
-  const showDeleteModal = (item) => {
+  const showDeleteModal = (e, item) => {
+    e.stopPropagation();
     setDeleteDoc(item)
     setIsDeleteModalOpen(true);
   };
@@ -93,7 +94,7 @@ function DocumentTypes() {
       title: '',
       dataIndex: '',
       key: 'x',
-      render: (item) => <Button className='text-red-500' type='ghost' onClick={() => showDeleteModal(item)}>Delete</Button>,
+      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}>Delete</Button>,
     },
   ]
 

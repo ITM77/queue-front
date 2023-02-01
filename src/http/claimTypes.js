@@ -1,4 +1,4 @@
-import { claimTypesAC, isSpinAC } from '../store/reducers/appReducer';
+import { claimTypesAC, isSpinAC, selectedClaimTypesAC } from '../store/reducers/appReducer';
 import $host from './index';
 import notification from '../utils/openNotification';
 
@@ -61,7 +61,7 @@ const getClaimTypeByIdApi = (id) => async (dispatch) => {
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.get(`claimTypes/${id}`)
-    console.log(data);
+    dispatch(selectedClaimTypesAC(data.data.documentTypeIds))
   } catch (e) {
     notification('error')
   }

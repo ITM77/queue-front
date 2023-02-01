@@ -19,15 +19,16 @@ $host.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response?.status === 401 && error.config) {
       try {
+        console.log(localStorage.getItem('rt'))
         const response = await axios.get(`http://31.184.253.218:8082/auth/accessToken`, {
-          refresh: localStorage.getItem('rt'),
+          refreshToken: localStorage.getItem('rt'),
         });
         localStorage.setItem('at', response.data.access);
         localStorage.setItem('rt', response.data.refresh);
         return $host.request(originalRequest);
       } catch (e) {
-        localStorage.removeItem('at');
-        localStorage.removeItem('rt');
+        // localStorage.removeItem('at');
+        // localStorage.removeItem('rt');
         // window.location.reload();
       }
     }

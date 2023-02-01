@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const appReducer = createSlice({
   name: 'appReducer',
   initialState: {
+    lang: 'ru',
     isSpin: false,
     isAuth: false,
     claims: [],
@@ -11,8 +12,12 @@ const appReducer = createSlice({
     uploadedFile: [],
     claimTypes: [],
     documentTypes: [],
+    selectedClaimTypes: []
   },
   reducers: {
+    selectedClaimTypesAC(state, action) {
+      state.selectedClaimTypes = action.payload
+    },
     claimTypesAC(state, action) {
       state.claimTypes = []
       action.payload.forEach((item) => {
@@ -72,5 +77,6 @@ export const {
   claimInfoAC,
   uploadedFileAC,
   claimTypesAC,
-  documentTypesAC } = appReducer.actions;
+  documentTypesAC,
+  selectedClaimTypesAC } = appReducer.actions;
 export default appReducer.reducer;

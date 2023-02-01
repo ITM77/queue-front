@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Divider, Input, Select, Button, Modal, Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectedClaimTypesAC } from '../../../store/reducers/appReducer'
 import {
   createClaimTypesApi,
   getClaimTypesApi,
   deleteClaimTypesApi, editClaimTypesApi, getClaimTypeByIdApi,
 } from '../../../http/claimTypes';
 import { getAllDocTypesApi } from '../../../http/docTypes';
-
-const options = [];
-for (let i = 10; i < 36; i++) {
-  options.push({
-    value: i.toString(36) + i,
-    label: i.toString(36) + i,
-  });
-}
 
 function ClaimTypes() {
   const dispatch = useDispatch()
@@ -24,6 +17,8 @@ function ClaimTypes() {
   const [deleteClaim, setDeleteClaim] = useState('')
   const claimTypes = useSelector(state => state.appReducer.claimTypes);
   const documentTypes = useSelector(state => state.appReducer.documentTypes);
+  const selectedClaimTypes = useSelector(state => state.appReducer.selectedClaimTypes);
+
   const [selectedDocs, setSelectedDocs] = useState([])
 
   const [edittedClaim, setEdittedClaim] = useState({
@@ -53,7 +48,8 @@ function ClaimTypes() {
     setIsEditModalOpen(false)
   }
 
-  const showDeleteModal = (item) => {
+  const showDeleteModal = (e, item) => {
+    e.stopPropagation();
     setDeleteClaim(item)
     setIsDeleteModalOpen(true);
   };
@@ -87,6 +83,7 @@ function ClaimTypes() {
   }
 
   const handleChange = (value) => {
+    dispatch(selectedClaimTypesAC(value))
     setSelectedDocs(value)
   };
 
@@ -110,7 +107,7 @@ function ClaimTypes() {
       title: '',
       dataIndex: '',
       key: 'x',
-      render: (item) => <Button className='text-red-500' type='ghost' onClick={() => showDeleteModal(item)}>Delete</Button>,
+      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}>Delete</Button>,
     },
   ]
 
@@ -208,7 +205,9 @@ function ClaimTypes() {
         </div>
         <div className='mt-5'>
           <Select
-            mode="tags"
+            showArrow
+            value={selectedClaimTypes}
+            mode="multiple"
             style={{
               width: '100%',
             }}

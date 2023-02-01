@@ -61,6 +61,7 @@ const EditClaim = forwardRef((props, ref) => {
         <div className='mt-4'>
           <p>ID:</p>
           <Input
+              disabled
             value={editedClaim.id}
             placeholder='ID'
           />
