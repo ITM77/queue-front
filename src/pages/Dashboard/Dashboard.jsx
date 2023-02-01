@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   UserOutlined,
   FileProtectOutlined,
@@ -78,6 +79,7 @@ const DashboardStyled = styled.div`
 `;
 
 function Dashboard() {
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const location = useLocation();
   const user = useSelector(state => state.appReducer.user);
@@ -138,6 +140,14 @@ function Dashboard() {
             dispatch(isAuthAC(false));
           },
         },
+        {
+          key: '5',
+          danger: false,
+          label: t('language'),
+          onClick: () => {
+            i18n.changeLanguage(i18n.language === 'ru' ? 'tj' : 'ru')
+          },
+        },
       ]}
     />
   );
@@ -178,7 +188,7 @@ function Dashboard() {
         <Layout>
           <Header>
             <div className='flex items-center'>
-              <p className='mr-4'>{user.firstName} {user.lastName}</p>
+              <p className='mr-4'>{t('Welcome')} {user.firstName} {user.lastName} !</p>
               <Dropdown overlay={menu} trigger={['click']}>
                 <Avatar icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
               </Dropdown>

@@ -3,6 +3,7 @@ import { Divider, Table, Modal, Input, Select } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import { getClaimsByStateApi } from '../../../http/claims';
 
+
 const tableColumns = [
   {
     title: 'ID',
