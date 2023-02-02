@@ -1,20 +1,21 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
-import { Button, Input, Modal, Select, Upload } from 'antd';
+import React, { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
+import { Button, Input, Modal, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { uploadFileApi } from '../http/claims';
+import { uploadFileApi, editClaimApi } from '../http/claims';
 
 const EditClaim = forwardRef((props, ref) => {
   const dispatch = useDispatch();
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
-  const uploadedFile = useSelector(state => state.appReducer.uploadedFile);
+  const uploads = useSelector(state => state.appReducer.uploads);
+  const uploadDocumentTypes = useSelector(state => state.appReducer.uploadDocumentTypes);
   const claimInfo = useSelector(state => state.appReducer.claimInfo);
 
-  const editedClaim = {
+  const [editedClaim, setEditedClaim] = useState({
     name: claimInfo.name,
     id: claimInfo.id,
-    type: claimInfo.type
-  }
+    type: claimInfo.claimTypeId
+  })
 
   useImperativeHandle(ref, () => ({
       applicationModalShow() {
@@ -33,16 +34,28 @@ const EditClaim = forwardRef((props, ref) => {
   };
 
   const uploadFile = (file, item) => {
+    console.log(file)
+    console.log(item)
     const formData = new FormData();
     formData.append(item[0].name, file);
     formData.append('claimId', claimInfo.id);
     formData.append('claimTypeId', claimInfo.claimTypeId);
     dispatch(uploadFileApi(formData))
+    console.log(formData)
   }
 
   const handleChange = (file, item) => {
     uploadFile(file, item)
   };
+
+  const editClaim = () => {
+    dispatch(editClaimApi(claimInfo.id, {name: editedClaim.name}))
+    setIsApplicationModalOpen(false)
+  }
+
+  useEffect(() => {
+    setEditedClaim({ ...editedClaim, name: claimInfo.name, id: claimInfo.id, type: claimInfo.claimTypeId} )
+  }, [claimInfo])
 
   return (
     <Modal
@@ -71,28 +84,46 @@ const EditClaim = forwardRef((props, ref) => {
           <Input
             value={editedClaim.name}
             onChange={(e) => {
-              editedClaim.name = e.target.value;
+              setEditedClaim({ ...editedClaim, name: e.target.value })
             }}
             placeholder='Наименование компании'/>
         </div>
         <div className='mt-2'>
           <p>Тип заявки:</p>
-          <Select className='w-full'
-            defaultValue="lucy" value={editedClaim.type}
-            options={[
-              {
-                value: 'lucy',
-                label: 'Lucy',
-              },
-              {
-                value: 'bem',
-                label: 'Bem',
-              },
-            ]}
+          <Input
+            disabled
+            value={editedClaim.type}
+            placeholder='ID'
           />
         </div>
       </div>
-      { uploadedFile.map((item) => (
+      <div className="flex justify-end mt-5">
+        <Button type="primary" onClick={editClaim}>
+          Редактировать
+        </Button>
+      </div>
+      { uploadDocumentTypes.length > 0 ?
+          <h1 className='my-4 font-bold text-lg'>Не загруженные файлы</h1>
+          : null
+      }
+      { uploadDocumentTypes.map((item) => (
+          <div className='mt-5 border p-3' key={item[0]?.uid}>
+            <p className='mb-3 font-bold'>Загрузить файл ({item[0]?.label})</p>
+            <div>
+              <Upload
+                  customRequest={dummyRequest}
+                  action={(file) => handleChange(file, item)}
+                  listType="picture"
+                  maxCount={1}
+                  fileList={item}
+              >
+                <Button icon={<UploadOutlined />}>Загрузить</Button>
+              </Upload>
+            </div>
+          </div>
+      )) }
+      <h1 className='my-4 font-bold text-lg'>Загруженные файлы</h1>
+      { uploads.map((item) => (
         <div className='mt-5 border p-3' key={item[0]?.uid}>
           <p className='mb-3 font-bold'>Загрузить файл ({item[0]?.label})</p>
           <div>

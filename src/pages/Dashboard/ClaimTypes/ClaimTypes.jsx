@@ -21,7 +21,7 @@ function ClaimTypes() {
 
   const [selectedDocs, setSelectedDocs] = useState([])
 
-  const [edittedClaim, setEdittedClaim] = useState({
+  const [editedClaim, setEditedClaim] = useState({
     id: '',
     label: ''
   })
@@ -33,7 +33,7 @@ function ClaimTypes() {
   }
 
   const showEditModal = (item) => {
-    setEdittedClaim({ ...edittedClaim, label: item.label, id: item.value } )
+    setEditedClaim({ ...editedClaim, label: item.label, id: item.value } )
     setIsEditModalOpen(true);
     dispatch(getClaimTypeByIdApi(item.value))
   };
@@ -44,7 +44,7 @@ function ClaimTypes() {
     setIsEditModalOpen(false);
   };
   const editClaimType = () => {
-    dispatch(editClaimTypesApi(edittedClaim.id, { label: edittedClaim.label, documentTypesIds: selectedDocs }))
+    dispatch(editClaimTypesApi(editedClaim.id, { label: editedClaim.label, documentTypesIds: selectedDocs }))
     setIsEditModalOpen(false)
   }
 
@@ -195,10 +195,9 @@ function ClaimTypes() {
         <div className='mt-5'>
           <p>Наименование типа заявки:</p>
           <Input
-            value={edittedClaim.label}
+            value={editedClaim.label}
             onChange={(e) => {
-              setEdittedClaim({ ...edittedClaim, label: e.target.value
-              });
+              setEditedClaim({ ...editedClaim, label: e.target.value});
             }}
             placeholder='Наименование заявки'
           />

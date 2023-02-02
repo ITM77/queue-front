@@ -9,10 +9,11 @@ const appReducer = createSlice({
     claims: [],
     user: {},
     claimInfo: {},
-    uploadedFile: [],
+    uploads: [],
     claimTypes: [],
     documentTypes: [],
-    selectedClaimTypes: []
+    selectedClaimTypes: [],
+    uploadDocumentTypes: []
   },
   reducers: {
     selectedClaimTypesAC(state, action) {
@@ -53,9 +54,9 @@ const appReducer = createSlice({
         })
       })
     },
-    uploadedFileAC(state, action) {
-      state.uploadedFile = []
-      action.payload.uploads.forEach((item) => {
+    uploadDocumentTypesAC(state, action) {
+      state.uploadDocumentTypes = []
+      action.payload.forEach((item) => {
         const obj = [{
           uid: item?.id,
           name: item?.name,
@@ -63,7 +64,20 @@ const appReducer = createSlice({
           status: 'done',
           url: item?.path,
         }]
-        state.uploadedFile.push(obj)
+        state.uploadDocumentTypes.push(obj)
+      })
+    },
+    uploadsAC(state, action) {
+      state.uploads = []
+      action.payload.forEach((item) => {
+        const obj = [{
+          uid: item?.id,
+          name: item?.name,
+          label: item?.label,
+          status: 'done',
+          url: item?.path,
+        }]
+        state.uploads.push(obj)
       })
     }
   },
@@ -75,8 +89,9 @@ export const {
   claimsAC,
   userAC,
   claimInfoAC,
-  uploadedFileAC,
+  uploadsAC,
   claimTypesAC,
   documentTypesAC,
+  uploadDocumentTypesAC,
   selectedClaimTypesAC } = appReducer.actions;
 export default appReducer.reducer;

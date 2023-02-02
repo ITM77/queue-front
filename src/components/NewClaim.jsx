@@ -33,7 +33,7 @@ function NewClaim() {
   }
 
   const getClaimTypes = (value) => {
-    setClaim({...claim,  claimTypeId: value })
+    setClaim({...claim,  formType: value })
     claim.claimTypeId = value
     dispatch(getClaimTypesApi(value))
   }
@@ -94,7 +94,7 @@ function NewClaim() {
               <Select className='w-full'
                 options={claimTypes}
                 onChange={(value) => {
-                  setClaim({...claim,  formType: value })
+                  setClaim({...claim,  claimTypeId: value })
                 }}
               />
             </div>
