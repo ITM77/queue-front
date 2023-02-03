@@ -3,7 +3,7 @@ import { Modal, Form, Input, Button, Select } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import { newClaimApi } from '../http/claims';
 import { isSpinAC } from '../store/reducers/appReducer';
-import { getClaimTypesApi } from '../http/docTypes';
+import { getClaimTypesApi } from '../http/claimTypes';
 
 function NewClaim() {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ function NewClaim() {
   }
 
   const getClaimTypes = (value) => {
-    setClaim({...claim,  claimTypeId: value })
+    setClaim({...claim,  formType: value })
     claim.claimTypeId = value
     dispatch(getClaimTypesApi(value))
   }
@@ -94,7 +94,7 @@ function NewClaim() {
               <Select className='w-full'
                 options={claimTypes}
                 onChange={(value) => {
-                  setClaim({...claim,  formType: value })
+                  setClaim({...claim,  claimTypeId: value })
                 }}
               />
             </div>

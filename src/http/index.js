@@ -5,7 +5,6 @@ const $host = axios.create({
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    // 'content-type': 'multipart/form-data'
   },
 });
 
@@ -20,12 +19,16 @@ $host.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response?.status === 401 && error.config) {
       try {
-        const response = await axios.post(`http://31.184.253.218:8082/auth/accessToken`, {
-          refresh: localStorage.getItem('rt'),
-        });
-        localStorage.setItem('at', response.data.access);
-        localStorage.setItem('rt', response.data.refresh);
-        return $host.request(originalRequest);
+        const refresh = localStorage.getItem('rt')
+        if (refresh) {
+          const response = await axios.post(`http://31.184.253.218:8082/auth/accessToken`, {
+            refreshToken: refresh,
+          });
+          if (response.data) {
+            localStorage.setItem('at', response.data.data.accessToken);
+            return $host.request(originalRequest);
+          }
+        }
       } catch (e) {
         localStorage.removeItem('at');
         localStorage.removeItem('rt');

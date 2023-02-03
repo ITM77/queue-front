@@ -3,15 +3,22 @@ import { createSlice } from '@reduxjs/toolkit';
 const appReducer = createSlice({
   name: 'appReducer',
   initialState: {
-    isSpin: false,
+    lang: 'ru',
+    isSpin: true,
     isAuth: false,
     claims: [],
     user: {},
     claimInfo: {},
-    uploadedFile: [],
+    uploads: [],
     claimTypes: [],
+    documentTypes: [],
+    selectedClaimTypes: [],
+    uploadDocumentTypes: []
   },
   reducers: {
+    selectedClaimTypesAC(state, action) {
+      state.selectedClaimTypes = action.payload
+    },
     claimTypesAC(state, action) {
       state.claimTypes = []
       action.payload.forEach((item) => {
@@ -37,30 +44,54 @@ const appReducer = createSlice({
     claimInfoAC(state, action) {
       state.claimInfo = action.payload
     },
-    uploadedFileAC(state, action) {
-      state.uploadedFile = []
-      action.payload.uploads.forEach((item) => {
-        const obj = [{
-          uid: item.id,
-          name: item.name,
+    documentTypesAC(state, action) {
+      state.documentTypes = []
+      action.payload.forEach((item) => {
+        state.documentTypes.push({
+          value: item.id,
           label: item.label,
+          name: item.name,
+        })
+      })
+    },
+    uploadDocumentTypesAC(state, action) {
+      state.uploadDocumentTypes = []
+      action.payload.forEach((item) => {
+        const obj = [{
+          uid: item?.id,
+          name: item?.name,
+          label: item?.label,
           status: 'done',
-          url: item.path,
+          url: item?.path,
         }]
-        state.uploadedFile.push(obj)
+        state.uploadDocumentTypes.push(obj)
       })
-      action.payload.documentTypes.forEach((item) => {
+    },
+    uploadsAC(state, action) {
+      state.uploads = []
+      action.payload.forEach((item) => {
         const obj = [{
-          uid: item.id,
-          label: item.label,
-          name: item.name,
+          uid: item?.id,
+          name: item?.name,
+          label: item?.label,
+          status: 'done',
+          url: item?.path,
         }]
-        state.uploadedFile.push(obj)
+        state.uploads.push(obj)
       })
-      console.log(state.uploadedFile);
     }
   },
 });
 
-export const { isAuthAC, isSpinAC, claimsAC, userAC, claimInfoAC, uploadedFileAC, claimTypesAC } = appReducer.actions;
+export const {
+  isAuthAC,
+  isSpinAC,
+  claimsAC,
+  userAC,
+  claimInfoAC,
+  uploadsAC,
+  claimTypesAC,
+  documentTypesAC,
+  uploadDocumentTypesAC,
+  selectedClaimTypesAC } = appReducer.actions;
 export default appReducer.reducer;
