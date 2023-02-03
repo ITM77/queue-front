@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  web:
+    image: ghcr.io/paytjs/crm-web:123321-123321
+    restart: unless-stopped
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./:/var/www/crm-web/
+    ports:
+      - "8083:80"
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
