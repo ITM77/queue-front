@@ -13,7 +13,7 @@ const EditClaim = forwardRef((props, ref) => {
 
   const [editedClaim, setEditedClaim] = useState({
     name: claimInfo.name,
-    id: claimInfo.id,
+    number: claimInfo.number,
     type: claimInfo.claimTypeId
   })
 
@@ -54,7 +54,7 @@ const EditClaim = forwardRef((props, ref) => {
   }
 
   useEffect(() => {
-    setEditedClaim({ ...editedClaim, name: claimInfo.name, id: claimInfo.id, type: claimInfo.claimTypeId} )
+    setEditedClaim({ ...editedClaim, name: claimInfo.name, number: claimInfo.number, type: claimInfo.claimTypeId} )
   }, [claimInfo])
 
   return (
@@ -72,11 +72,11 @@ const EditClaim = forwardRef((props, ref) => {
     >
       <div>
         <div className='mt-4'>
-          <p>ID:</p>
+          <p>Номер заявки:</p>
           <Input
               disabled
-            value={editedClaim.id}
-            placeholder='ID'
+            value={editedClaim.number}
+            placeholder='Номер заявки'
           />
         </div>
         <div className='mt-2'>
@@ -93,7 +93,7 @@ const EditClaim = forwardRef((props, ref) => {
           <Input
             disabled
             value={editedClaim.type}
-            placeholder='ID'
+            placeholder='Тип заявки'
           />
         </div>
       </div>
@@ -102,10 +102,6 @@ const EditClaim = forwardRef((props, ref) => {
           Редактировать
         </Button>
       </div>
-      { uploadDocumentTypes.length > 0 ?
-          <h1 className='my-4 font-bold text-lg'>Не загруженные файлы</h1>
-          : null
-      }
       { uploadDocumentTypes.map((item) => (
           <div className='mt-5 border p-3' key={item[0]?.uid}>
             <p className='mb-3 font-bold'>Загрузить файл ({item[0]?.label})</p>
@@ -122,7 +118,6 @@ const EditClaim = forwardRef((props, ref) => {
             </div>
           </div>
       )) }
-      <h1 className='my-4 font-bold text-lg'>Загруженные файлы</h1>
       { uploads.map((item) => (
         <div className='mt-5 border p-3' key={item[0]?.uid}>
           <p className='mb-3 font-bold'>Загрузить файл ({item[0]?.label})</p>

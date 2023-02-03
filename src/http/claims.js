@@ -88,7 +88,7 @@ const uploadFileApi = (params) => async (dispatch) => {
     dispatch(isSpinAC(true))
     const { data } = await $host.post('documents', params, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        // 'Content-Type': 'multipart/form-data'
       }
     })
     dispatch(uploadsAC(data.data))

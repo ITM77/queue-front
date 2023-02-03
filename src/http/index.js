@@ -26,14 +26,13 @@ $host.interceptors.response.use(
           });
           if (response.data) {
             localStorage.setItem('at', response.data.data.accessToken);
+            return $host.request(originalRequest);
           }
-        } else {
-          return $host.request(originalRequest);
         }
       } catch (e) {
-        // localStorage.removeItem('at');
-        // localStorage.removeItem('rt');
-        // window.location.reload();
+        localStorage.removeItem('at');
+        localStorage.removeItem('rt');
+        window.location.reload();
       }
     }
     throw error;

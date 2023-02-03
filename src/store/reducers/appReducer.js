@@ -4,7 +4,7 @@ const appReducer = createSlice({
   name: 'appReducer',
   initialState: {
     lang: 'ru',
-    isSpin: false,
+    isSpin: true,
     isAuth: false,
     claims: [],
     user: {},

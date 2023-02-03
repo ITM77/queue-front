@@ -14,9 +14,9 @@ function DocumentTypes() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [deleteDoc, setDeleteDoc] = useState('')
+  const [deletedDoc, setDeletedDoc] = useState('')
 
-  const [edittedDoc, setEdittedDoc] = useState({
+  const [editedDoc, setEditedDoc] = useState({
     id: '',
     label: ''
   })
@@ -28,7 +28,7 @@ function DocumentTypes() {
   })
 
   const showEditModal = (item) => {
-    setEdittedDoc({ ...edittedDoc, label: item.label, id: item.id } )
+    setEditedDoc({ ...editedDoc, label: item.label, id: item.value } )
     setIsEditModalOpen(true);
   };
   const editHandleOk = () => {
@@ -40,7 +40,7 @@ function DocumentTypes() {
 
   const showDeleteModal = (e, item) => {
     e.stopPropagation();
-    setDeleteDoc(item)
+    setDeletedDoc(item)
     setIsDeleteModalOpen(true);
   };
   const deleteHandleOk = () => {
@@ -61,7 +61,7 @@ function DocumentTypes() {
   };
 
   const deleteDocumentType = () => {
-    dispatch(deleteDocumentTypesApi(deleteDoc.id))
+    dispatch(deleteDocumentTypesApi(deletedDoc.value))
     setIsDeleteModalOpen(false);
   }
 
@@ -71,7 +71,7 @@ function DocumentTypes() {
   }
 
   const editDocumentType = () => {
-    dispatch(editDocumentTypesApi(edittedDoc.id,{ label: edittedDoc.label }))
+    dispatch(editDocumentTypesApi(editedDoc.id, { label: editedDoc.label }))
     setIsEditModalOpen(false)
   }
 
@@ -106,6 +106,7 @@ function DocumentTypes() {
       </div>
       <Divider />
       <Table
+        rowKey='name'
         columns={columns}
         dataSource={documentTypes}
         onRow={(record) => ({
@@ -137,9 +138,9 @@ function DocumentTypes() {
         <div className='mt-5'>
           <p>Наименование документа:</p>
           <Input
-            value={edittedDoc.label}
+            value={editedDoc.label}
             onChange={(e) => {
-              setEdittedDoc({ ...edittedDoc, label: e.target.value
+              setEditedDoc({ ...editedDoc, label: e.target.value
             });
             }}
             placeholder='Наименование документа'

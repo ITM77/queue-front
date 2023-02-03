@@ -145,6 +145,7 @@ function ClaimTypes() {
 
       <div className='mt-5'>
         <Table
+          rowKey="name"
           columns={columns}
           dataSource={claimTypes}
           onRow={(record) => ({
