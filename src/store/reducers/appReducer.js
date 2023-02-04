@@ -4,7 +4,7 @@ const appReducer = createSlice({
   name: 'appReducer',
   initialState: {
     lang: 'ru',
-    isSpin: true,
+    isSpin: false,
     isAuth: false,
     claims: [],
     user: {},
@@ -69,16 +69,23 @@ const appReducer = createSlice({
     },
     uploadsAC(state, action) {
       state.uploads = []
-      action.payload.forEach((item) => {
-        const obj = [{
-          uid: item?.id,
-          name: item?.name,
-          label: item?.label,
-          status: 'done',
-          url: item?.path,
-        }]
-        state.uploads.push(obj)
-      })
+      let tempArr = []
+      for (let i = 0; i < action.payload.documentTypes.length; i++) {
+        for (let k = 0; k < action.payload.uploads.length; k++) {
+          if (action.payload.documentTypes[i].name === action.payload.uploads[k].documentTypeName) {
+            const obj = {
+              uid: action.payload.uploads[k]?.id,
+              name: action.payload.uploads[k]?.name,
+              label: action.payload.uploads[k]?.documentTypeName,
+              status: 'done',
+              url: action.payload.uploads[k]?.path,
+            }
+            tempArr.push(obj)
+          }
+        }
+        state.uploads.push(tempArr)
+        tempArr = []
+      }
     }
   },
 });

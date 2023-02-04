@@ -1,31 +1,22 @@
-import React, { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
-import { Button, Input, Modal, Upload } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Input, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadFileApi, editClaimApi } from '../http/claims';
 
-const EditClaim = forwardRef((props, ref) => {
+function EditClaim () {
   const dispatch = useDispatch();
-  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const uploads = useSelector(state => state.appReducer.uploads);
   const uploadDocumentTypes = useSelector(state => state.appReducer.uploadDocumentTypes);
   const claimInfo = useSelector(state => state.appReducer.claimInfo);
 
+  console.log(uploads);
+
   const [editedClaim, setEditedClaim] = useState({
-    name: claimInfo.name,
-    number: claimInfo.number,
-    type: claimInfo.claimTypeId
+    name: '',
+    number: '',
+    type: ''
   })
-
-  useImperativeHandle(ref, () => ({
-      applicationModalShow() {
-        setIsApplicationModalOpen(true)
-      },
-    }), []);
-
-  const applicationModalCancel = () => {
-    setIsApplicationModalOpen(false)
-  }
 
   const dummyRequest = ({ onSuccess }) => {
     setTimeout(() => {
@@ -34,14 +25,11 @@ const EditClaim = forwardRef((props, ref) => {
   };
 
   const uploadFile = (file, item) => {
-    console.log(file)
-    console.log(item)
     const formData = new FormData();
     formData.append(item[0].name, file);
     formData.append('claimId', claimInfo.id);
     formData.append('claimTypeId', claimInfo.claimTypeId);
     dispatch(uploadFileApi(formData))
-    console.log(formData)
   }
 
   const handleChange = (file, item) => {
@@ -50,36 +38,24 @@ const EditClaim = forwardRef((props, ref) => {
 
   const editClaim = () => {
     dispatch(editClaimApi(claimInfo.id, {name: editedClaim.name}))
-    setIsApplicationModalOpen(false)
   }
 
   useEffect(() => {
-    setEditedClaim({ ...editedClaim, name: claimInfo.name, number: claimInfo.number, type: claimInfo.claimTypeId} )
+    setEditedClaim({ ...editedClaim, name: claimInfo.name, number: claimInfo.number, type: claimInfo.claimTypeName} )
   }, [claimInfo])
 
   return (
-    <Modal
-      footer={null}
-      style={{
-        top: 20,
-      }}
-      title="Информация о заявке"
-      cancelText='Отмена'
-      width={550}
-      open={isApplicationModalOpen}
-      onCancel={applicationModalCancel}
-      okText='Сохранить'
-    >
-      <div>
-        <div className='mt-4'>
+    <div>
+      <div className='grid grid-cols-3 gap-3 items-center'>
+        <div>
           <p>Номер заявки:</p>
           <Input
-              disabled
+            disabled
             value={editedClaim.number}
             placeholder='Номер заявки'
           />
         </div>
-        <div className='mt-2'>
+        <div>
           <p>Наименование компании:</p>
           <Input
             value={editedClaim.name}
@@ -88,7 +64,7 @@ const EditClaim = forwardRef((props, ref) => {
             }}
             placeholder='Наименование компании'/>
         </div>
-        <div className='mt-2'>
+        <div>
           <p>Тип заявки:</p>
           <Input
             disabled
@@ -102,23 +78,7 @@ const EditClaim = forwardRef((props, ref) => {
           Редактировать
         </Button>
       </div>
-      { uploadDocumentTypes.map((item) => (
-          <div className='mt-5 border p-3' key={item[0]?.uid}>
-            <p className='mb-3 font-bold'>Загрузить файл ({item[0]?.label})</p>
-            <div>
-              <Upload
-                  customRequest={dummyRequest}
-                  action={(file) => handleChange(file, item)}
-                  listType="picture"
-                  maxCount={1}
-                  fileList={item}
-              >
-                <Button icon={<UploadOutlined />}>Загрузить</Button>
-              </Upload>
-            </div>
-          </div>
-      )) }
-      { uploads.map((item) => (
+      { uploadDocumentTypes.map((item, index) => (
         <div className='mt-5 border p-3' key={item[0]?.uid}>
           <p className='mb-3 font-bold'>Загрузить файл ({item[0]?.label})</p>
           <div>
@@ -127,16 +87,15 @@ const EditClaim = forwardRef((props, ref) => {
               action={(file) => handleChange(file, item)}
               listType="picture"
               maxCount={1}
-              fileList={item}
+              fileList={uploads[index]}
             >
               <Button icon={<UploadOutlined />}>Загрузить</Button>
             </Upload>
           </div>
         </div>
       )) }
-
-    </Modal>
+    </div>
   );
-})
+}
 
 export default EditClaim;

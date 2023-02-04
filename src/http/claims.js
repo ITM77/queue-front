@@ -59,7 +59,7 @@ const getClaimDocumentsApi = (params) => async (dispatch) => {
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.get(`documents?claimId=${params}`)
-    dispatch(uploadsAC(data.data.uploads))
+    dispatch(uploadsAC(data.data))
     dispatch(uploadDocumentTypesAC(data.data.documentTypes))
   } catch (e) {
     notification('error')
@@ -88,7 +88,7 @@ const uploadFileApi = (params) => async (dispatch) => {
     dispatch(isSpinAC(true))
     const { data } = await $host.post('documents', params, {
       headers: {
-        // 'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data'
       }
     })
     dispatch(uploadsAC(data.data))

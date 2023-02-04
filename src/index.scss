@@ -14,3 +14,20 @@ h1, h2, h3, h4, h5, h6, p, i, b, strong, a, li, div {
 .ant-spin-lg {
   z-index: 999999 !important;
 }
+.ant-table-row {
+  cursor: pointer;
+}
+.ant-upload-list::before {
+  content: normal !important;
+}
+.ant-upload-list-picture {
+  display: flex;
+  justify-content: space-between;
+}
+.ant-upload-list-item-actions {
+  display: none;
+}
+.ant-upload-list-item-thumbnail {
+  width: 100% !important;
+  height: 100% !important;
+}

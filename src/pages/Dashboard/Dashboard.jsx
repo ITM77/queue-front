@@ -201,7 +201,7 @@ function Dashboard() {
                   <Route key={rout.key} path={rout.key} element={rout.component} />
                 ) : (
                   rout.children.map(roCh => (
-                    <Route key={`${rout.key}${roCh.key}`} path={`${rout.key}${roCh.key}`} element={roCh.component} />
+                    <Route key={`${rout.key}${roCh.key}`} path={`${rout.key}${roCh.key}/*`} element={roCh.component} />
                   ))
                 )
               )}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Divider, Table, Modal, Button } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,10 +8,10 @@ import NewClaim from '../../../components/NewClaim'
 import EditClaim from '../../../components/EditClaim'
 
 function Claims() {
-  const editRef = useRef()
   const dispatch = useDispatch();
   const [deletedClaim, setDeletedClaim] = useState('')
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [showClaim, setShowClaim] = useState(false);
 
   const claims = useSelector(state => state.appReducer.claims);
 
@@ -23,14 +23,13 @@ function Claims() {
   };
 
   const showDeleteModal = (e, item) => {
-    console.log(item)
     e.stopPropagation();
     setDeletedClaim(item.id)
     setIsDeleteModalOpen(true);
   };
 
   const getApplication = (item) => {
-    editRef.current.applicationModalShow()
+    setShowClaim(true)
     dispatch(getClaimByIdApi(item.id))
   }
 
@@ -41,8 +40,8 @@ function Claims() {
 
   const tableColumns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
+      title: 'Номер заявки',
+      dataIndex: 'number',
     },
     {
       title: 'Наименование компании',
@@ -68,19 +67,23 @@ function Claims() {
     <div>
       <div className='flex justify-between'>
         <h1 className='text-lg'>Действующие</h1>
-        <NewClaim />
+        { showClaim
+          ? <Button onClick={ () => setShowClaim(false)}>Назад</Button>
+          : <NewClaim />
+        }
       </div>
       <Divider/>
-      <Table
-        onRow={(record) => ({
-          onClick: () => {getApplication(record)}
-        })}
-        rowKey="id"
-        columns={tableColumns}
-        dataSource={claims}
-      />
-      <EditClaim ref={editRef} name='nameEdit' />
-
+      {showClaim
+        ? <EditClaim />
+        : <Table
+          onRow={(record) => ({
+            onClick: () => {getApplication(record)}
+          })}
+          rowKey="id"
+          columns={tableColumns}
+          dataSource={claims}
+        />
+      }
       <Modal footer={null} title="Вы Уверены ?" open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
         <p className='mt-5'>Удалить заявку ?</p>
         <div className='flex justify-end mt-5'>
