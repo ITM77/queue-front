@@ -3,6 +3,7 @@ import { Divider, Table, Modal, Button } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { getClaimsByStateApi, getClaimByIdApi, deleteClaimApi } from '../../../http/claims';
 
 import NewClaim from '../../../components/NewClaim'
@@ -76,7 +77,6 @@ function Claims() {
         { showClaim
           ? <div>
               <Button onClick={ () => setShowClaim(false)}>{t('cancel')}</Button>
-              <Button type='primary' className='ml-3'>{t('confirm')}</Button>
             </div>
           : <NewClaim />
         }
@@ -93,7 +93,15 @@ function Claims() {
           dataSource={claims}
         />
       }
-      <Modal footer={null} title={t('sure')} open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
+      <Modal footer={null} open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
+        <div className='flex items-center'>
+          <QuestionCircleOutlined
+            style={{
+              color: 'red',
+              fontSize: '24px'
+            }}
+          /> <p className='ml-3 text-base font-bold'>{t('sure')}</p>
+        </div>
         <p className='mt-5'>{t('confirmDelete')}</p>
         <div className='flex justify-end mt-5'>
           <Button type='primary' onClick={deleteClaim}>{t('delete')}</Button>

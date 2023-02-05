@@ -3,7 +3,7 @@ import { Button, Input, Upload, Divider } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { uploadFileApi, editClaimApi } from '../http/claims';
+import { uploadFileApi, editClaimApi, approveClaimApi } from '../http/claims';
 
 function EditClaim () {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ function EditClaim () {
     formData.append(item[0].name, file);
     formData.append('claimId', claimInfo.id);
     formData.append('claimTypeId', claimInfo.claimTypeId);
-    dispatch(uploadFileApi(formData))
+    dispatch(uploadFileApi(formData, claimInfo.id))
   }
 
   const handleChange = (file, item) => {
@@ -38,6 +38,10 @@ function EditClaim () {
 
   const editClaim = () => {
     dispatch(editClaimApi(claimInfo.id, {name: editedClaim.name}))
+  }
+
+  const approveClaim = () => {
+    dispatch(approveClaimApi(claimInfo.id))
   }
 
   useEffect(() => {
@@ -77,6 +81,7 @@ function EditClaim () {
         <Button type="primary" onClick={editClaim}>
           {t('edit')}
         </Button>
+        <Button type='primary' onClick={approveClaim} className='ml-3'>{t('confirm')}</Button>
       </div>
       <Divider/>
       { uploadDocumentTypes.map((item, index) => (

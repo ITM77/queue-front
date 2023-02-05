@@ -3,10 +3,11 @@ import { isAuthAC, isSpinAC } from '../store/reducers/appReducer';
 import openNotification from '../utils/openNotification';
 import { getUserApi } from './user';
 
-const loginApi = (params) => async (dispatch) => {
+const loginApi = (params) => async (dispatch, getState) => {
+  const currentState = getState().appReducer
   try {
     dispatch(isSpinAC(true))
-    const { data } = await $host.post('auth/login', params)
+    const { data } = await $host.post(`auth/login?locale=${currentState.lang}`, params)
 
     if (data.data) {
       localStorage.setItem('at', data.data.accessToken);

@@ -2,102 +2,126 @@ import $host from './index'
 import { isSpinAC, claimsAC, claimInfoAC, uploadsAC, uploadDocumentTypesAC } from '../store/reducers/appReducer';
 import notification  from '../utils/openNotification';
 
-const getClaimsByStateApi = (params) => async (dispatch) => {
+const getClaimsByStateApi = (params) => async (dispatch, getState) => {
+  const currentState = getState().appReducer
   try {
     dispatch(isSpinAC(true))
-    const { data } = await $host.get(`claims?state=${params}`)
+    const { data } = await $host.get(`claims?state=${params}?locale=${currentState.lang}`)
     dispatch(claimsAC(data.data))
   } catch (e) {
-    notification('error')
+    notification('error', e?.response?.data?.message)
   }
   finally {
     dispatch(isSpinAC(false))
   }
 }
 
-const newClaimApi = (params) => async (dispatch) => {
+const newClaimApi = (params) => async (dispatch, getState) => {
+  const currentState = getState().appReducer
   try {
     dispatch(isSpinAC(true))
-    await $host.post('claims', params)
+    await $host.post(`claims?locale=${currentState.lang}`, params)
     dispatch(getClaimsByStateApi(1))
   } catch (error) {
-    notification('error', error.response.data.message)
+    notification('error', error?.response?.data?.message)
   }
   finally {
     dispatch(isSpinAC(false))
   }
 }
 
-const editClaimApi = (id, params) => async (dispatch) => {
+const editClaimApi = (id, params) => async (dispatch, getState) => {
+  const currentState = getState().appReducer
   try {
     dispatch(isSpinAC(true))
-    await $host.post(`claims/${id}`, params)
+    await $host.post(`claims/${id}?locale=${currentState.lang}`, params)
     dispatch(getClaimsByStateApi(1))
   } catch (error) {
-    notification('error', error.response.data.message)
+    notification('error', error?.response?.data?.message)
   }
   finally {
     dispatch(isSpinAC(false))
   }
 }
 
-const deleteClaimApi = (params) => async (dispatch) => {
+const approveClaimApi = (id, params) => async (dispatch, getState) => {
+  const currentState = getState().appReducer
   try {
     dispatch(isSpinAC(true))
-    await $host.delete(`claims/${params}`)
+    const { data } = await $host.post(`claims/${id}/approve?locale=${currentState.lang}`, params)
+    notification('success', data.message)
+    window.location.reload()
+  } catch (error) {
+    notification('error', error?.response?.data?.message)
+  }
+  finally {
+    dispatch(isSpinAC(false))
+  }
+}
+
+const deleteClaimApi = (params) => async (dispatch, getState) => {
+  const currentState = getState().appReducer
+  try {
+    dispatch(isSpinAC(true))
+    await $host.delete(`claims/${params}?locale=${currentState.lang}`)
     notification('success', 'Заявка удалена!')
     dispatch(getClaimsByStateApi(1))
   } catch (e) {
-    notification('error')
+    notification('error', e?.response?.data?.message)
   }
   finally {
     dispatch(isSpinAC(false))
   }
 }
 
-const getClaimDocumentsApi = (params) => async (dispatch) => {
+const getClaimDocumentsApi = (params) => async (dispatch, getState) => {
+  const currentState = getState().appReducer
   try {
     dispatch(isSpinAC(true))
-    const { data } = await $host.get(`documents?claimId=${params}`)
+    const { data } = await $host.get(`documents?claimId=${params}&locale=${currentState.lang}`)
     dispatch(uploadsAC(data.data))
     dispatch(uploadDocumentTypesAC(data.data.documentTypes))
   } catch (e) {
-    notification('error')
+    console.log(e);
+    notification('error', e?.response?.data?.message)
   }
   finally {
     dispatch(isSpinAC(false))
   }
 }
 
-const getClaimByIdApi = (params) => async (dispatch) => {
+const getClaimByIdApi = (params) => async (dispatch, getState) => {
+  const currentState = getState().appReducer
   try {
     dispatch(isSpinAC(true))
-    const { data } = await $host.get(`/claims/${params}`)
+    const { data } = await $host.get(`/claims/${params}?locale=${currentState.lang}`)
     dispatch(claimInfoAC(data.data))
     dispatch(getClaimDocumentsApi(data.data.id))
   } catch (e) {
-    notification('error')
+    notification('error', e?.response?.data?.message)
   }
   finally {
     dispatch(isSpinAC(false))
   }
 }
 
-const uploadFileApi = (params) => async (dispatch) => {
+const uploadFileApi = (params, id) => async (dispatch, getState) => {
+  const currentState = getState().appReducer
   try {
     dispatch(isSpinAC(true))
-    const { data } = await $host.post('documents', params, {
+    await $host.post(`documents?locale=${currentState.lang}`, params, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     })
-    dispatch(uploadsAC(data.data))
+    dispatch(getClaimDocumentsApi(id))
   } catch (e) {
-    // notification('error')
+    console.log(e);
+    notification('error', e?.response?.data?.message)
   }
   finally {
     dispatch(isSpinAC(false))
   }
 }
 
-export { newClaimApi, getClaimByIdApi, uploadFileApi, getClaimDocumentsApi, getClaimsByStateApi, editClaimApi, deleteClaimApi }
+export { newClaimApi, approveClaimApi, getClaimByIdApi, uploadFileApi, getClaimDocumentsApi, getClaimsByStateApi, editClaimApi, deleteClaimApi }

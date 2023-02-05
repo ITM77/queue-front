@@ -1,9 +1,11 @@
 import React from 'react';
 import { Button, Divider, Form, Input } from 'antd';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { createUserApi } from '../../../http/user'
 
 function Registration() {
+  const { t } = useTranslation();
   const dispatch = useDispatch()
   const [form] = Form.useForm();
   const user = {
@@ -19,7 +21,7 @@ function Registration() {
   }
   return (
     <div>
-      <h1 className='text-lg'>Создание пользователя</h1>
+      <h1 className='text-lg'>{t('claimNumber')}</h1>
       <Divider />
       <Form
         form={form}
@@ -29,7 +31,7 @@ function Registration() {
         <div>
           <div className='grid grid-cols-2 gap-7'>
             <div>
-              <p>Имя:</p>
+              <p>{t('name')}</p>
               <Form.Item
                 name="firstname"
                 rules={[{ required: true, message: 'Обязательное поле!' }]}
@@ -37,12 +39,12 @@ function Registration() {
               >
                 <Input type="text" onChange={(e) => {
                   user.firstname = e.target.value
-                }} placeholder='Имя'/>
+                }} placeholder={t('name')}/>
               </Form.Item>
             </div>
 
             <div>
-              <p>Фамилия:</p>
+              <p>{t('lastname')}</p>
               <Form.Item
                 name="lastname"
                 rules={[{ required: true, message: 'Обязательное поле!' }]}
@@ -50,14 +52,14 @@ function Registration() {
               >
                 <Input type="text" onChange={(e) => {
                   user.lastname = e.target.value
-                }} placeholder='Имя'/>
+                }} placeholder={t('lastname')}/>
               </Form.Item>
             </div>
           </div>
 
           <div className='grid grid-cols-2 gap-7'>
             <div>
-              <p>Имя пользователя:</p>
+              <p>{t('username')}</p>
               <Form.Item
                 name="username"
                 rules={[{ required: true, message: 'Обязательное поле!' }]}
@@ -65,12 +67,12 @@ function Registration() {
               >
                 <Input type="text" onChange={(e) => {
                   user.username = e.target.value
-                }} placeholder='Имя пользователя'/>
+                }} placeholder={t('username')}/>
               </Form.Item>
             </div>
 
             <div>
-              <p>Пароль:</p>
+              <p>{t('password')}</p>
               <Form.Item
                 name="password"
                 rules={[{ required: true, message: 'Обязательное поле!' }]}
@@ -78,14 +80,14 @@ function Registration() {
               >
                 <Input type="text" onChange={(e) => {
                   user.password = e.target.value
-                }} placeholder='Пароль'/>
+                }} placeholder={t('password')}/>
               </Form.Item>
             </div>
           </div>
           <Form.Item className="mt-5">
             <div className="flex justify-end">
               <Button type="primary" htmlType="submit">
-                Создать
+                {t('create')}
               </Button>
             </div>
           </Form.Item>

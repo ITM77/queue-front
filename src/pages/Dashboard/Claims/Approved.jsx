@@ -1,25 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Divider, Table, Modal, Input, Select } from 'antd'
+import { Divider, Table, Modal, Input, Select, Tag } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { getClaimsByStateApi } from '../../../http/claims';
 
-
-const tableColumns = [
-  {
-    title: 'ID',
-    dataIndex: 'id',
-  },
-  {
-    title: 'Наименование компании',
-    dataIndex: 'name'
-  },
-  {
-    title: 'Дата создания',
-    dataIndex: 'createdAt',
-  },
-];
-
 function Approved() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const claims = useSelector(state => state.appReducer.claims);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
@@ -34,6 +20,26 @@ function Approved() {
   useEffect(() => {
     dispatch(getClaimsByStateApi(2))
   }, [])
+
+  const tableColumns = [
+    {
+      title: t('claimNumber'),
+      dataIndex: 'number',
+    },
+    {
+      title: t('company'),
+      dataIndex: 'name'
+    },
+    {
+      title: t('status'),
+      dataIndex: 'status',
+      render: () => (
+        <Tag color='green'>
+          {t('approved')}
+        </Tag>
+      ),
+    },
+  ];
 
   return (
     <div>
