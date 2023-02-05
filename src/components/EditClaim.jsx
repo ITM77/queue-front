@@ -1,31 +1,22 @@
-import React, { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
-import { Button, Input, Modal, Upload } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Input, Upload, Divider } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { uploadFileApi, editClaimApi } from '../http/claims';
+import { useTranslation } from 'react-i18next';
+import { uploadFileApi, editClaimApi, approveClaimApi } from '../http/claims';
 
-const EditClaim = forwardRef((props, ref) => {
+function EditClaim () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
   const uploads = useSelector(state => state.appReducer.uploads);
   const uploadDocumentTypes = useSelector(state => state.appReducer.uploadDocumentTypes);
   const claimInfo = useSelector(state => state.appReducer.claimInfo);
 
   const [editedClaim, setEditedClaim] = useState({
-    name: claimInfo.name,
-    number: claimInfo.number,
-    type: claimInfo.claimTypeId
+    name: '',
+    number: '',
+    type: ''
   })
-
-  useImperativeHandle(ref, () => ({
-      applicationModalShow() {
-        setIsApplicationModalOpen(true)
-      },
-    }), []);
-
-  const applicationModalCancel = () => {
-    setIsApplicationModalOpen(false)
-  }
 
   const dummyRequest = ({ onSuccess }) => {
     setTimeout(() => {
@@ -34,14 +25,11 @@ const EditClaim = forwardRef((props, ref) => {
   };
 
   const uploadFile = (file, item) => {
-    console.log(file)
-    console.log(item)
     const formData = new FormData();
     formData.append(item[0].name, file);
     formData.append('claimId', claimInfo.id);
     formData.append('claimTypeId', claimInfo.claimTypeId);
-    dispatch(uploadFileApi(formData))
-    console.log(formData)
+    dispatch(uploadFileApi(formData, claimInfo.id))
   }
 
   const handleChange = (file, item) => {
@@ -50,93 +38,71 @@ const EditClaim = forwardRef((props, ref) => {
 
   const editClaim = () => {
     dispatch(editClaimApi(claimInfo.id, {name: editedClaim.name}))
-    setIsApplicationModalOpen(false)
+  }
+
+  const approveClaim = () => {
+    dispatch(approveClaimApi(claimInfo.id))
   }
 
   useEffect(() => {
-    setEditedClaim({ ...editedClaim, name: claimInfo.name, number: claimInfo.number, type: claimInfo.claimTypeId} )
+    setEditedClaim({ ...editedClaim, name: claimInfo.name, number: claimInfo.number, type: claimInfo.claimTypeName} )
   }, [claimInfo])
 
   return (
-    <Modal
-      footer={null}
-      style={{
-        top: 20,
-      }}
-      title="Информация о заявке"
-      cancelText='Отмена'
-      width={550}
-      open={isApplicationModalOpen}
-      onCancel={applicationModalCancel}
-      okText='Сохранить'
-    >
-      <div>
-        <div className='mt-4'>
-          <p>Номер заявки:</p>
+    <div>
+      <div className='grid grid-cols-3 gap-3 items-center'>
+        <div>
+          <p>{t('claimNumber')}</p>
           <Input
-              disabled
+            disabled
             value={editedClaim.number}
-            placeholder='Номер заявки'
+            placeholder={t('claimNumber')}
           />
         </div>
-        <div className='mt-2'>
-          <p>Наименование компании:</p>
+        <div>
+          <p>{t('company')}</p>
           <Input
             value={editedClaim.name}
             onChange={(e) => {
               setEditedClaim({ ...editedClaim, name: e.target.value })
             }}
-            placeholder='Наименование компании'/>
+            placeholder={t('company')}/>
         </div>
-        <div className='mt-2'>
-          <p>Тип заявки:</p>
+        <div>
+          <p>{t('claimType')}</p>
           <Input
             disabled
             value={editedClaim.type}
-            placeholder='Тип заявки'
+            placeholder={t('claimType')}
           />
         </div>
       </div>
       <div className="flex justify-end mt-5">
         <Button type="primary" onClick={editClaim}>
-          Редактировать
+          {t('edit')}
         </Button>
+        <Button type='primary' onClick={approveClaim} className='ml-3'>{t('confirm')}</Button>
       </div>
-      { uploadDocumentTypes.map((item) => (
-          <div className='mt-5 border p-3' key={item[0]?.uid}>
-            <p className='mb-3 font-bold'>Загрузить файл ({item[0]?.label})</p>
-            <div>
-              <Upload
-                  customRequest={dummyRequest}
-                  action={(file) => handleChange(file, item)}
-                  listType="picture"
-                  maxCount={1}
-                  fileList={item}
-              >
-                <Button icon={<UploadOutlined />}>Загрузить</Button>
-              </Upload>
-            </div>
-          </div>
-      )) }
-      { uploads.map((item) => (
-        <div className='mt-5 border p-3' key={item[0]?.uid}>
-          <p className='mb-3 font-bold'>Загрузить файл ({item[0]?.label})</p>
+      <Divider/>
+      { uploadDocumentTypes.map((item, index) => (
+        <div key={item[0]?.uid}>
+          <p className='mb-3 text-base'>{item[0]?.label}</p>
           <div>
             <Upload
               customRequest={dummyRequest}
               action={(file) => handleChange(file, item)}
               listType="picture"
               maxCount={1}
-              fileList={item}
+              fileList={uploads[index]}
             >
-              <Button icon={<UploadOutlined />}>Загрузить</Button>
+              <Button icon={<UploadOutlined />}>{t('upload')}</Button>
             </Upload>
           </div>
+          <Divider/>
         </div>
       )) }
-
-    </Modal>
+    </div>
   );
-})
+}
 
 export default EditClaim;

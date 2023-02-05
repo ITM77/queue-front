@@ -1,17 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Divider, Table, Modal, Button } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { getClaimsByStateApi, getClaimByIdApi, deleteClaimApi } from '../../../http/claims';
 
 import NewClaim from '../../../components/NewClaim'
 import EditClaim from '../../../components/EditClaim'
 
 function Claims() {
-  const editRef = useRef()
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [deletedClaim, setDeletedClaim] = useState('')
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [showClaim, setShowClaim] = useState(false);
 
   const claims = useSelector(state => state.appReducer.claims);
 
@@ -23,14 +26,13 @@ function Claims() {
   };
 
   const showDeleteModal = (e, item) => {
-    console.log(item)
     e.stopPropagation();
     setDeletedClaim(item.id)
     setIsDeleteModalOpen(true);
   };
 
   const getApplication = (item) => {
-    editRef.current.applicationModalShow()
+    setShowClaim(true)
     dispatch(getClaimByIdApi(item.id))
   }
 
@@ -41,22 +43,26 @@ function Claims() {
 
   const tableColumns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
+      title: t('claimNumber'),
+      dataIndex: 'number',
     },
     {
-      title: 'Наименование компании',
+      title: t('company'),
       dataIndex: 'name'
     },
     {
-      title: 'Дата создания',
+      title: t('createdAt'),
       dataIndex: 'createdAt',
+    },
+    {
+      title: t('expiresAt'),
+      dataIndex: 'expiresAt'
     },
     {
       title: '',
       dataIndex: '',
       key: 'x',
-      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}>Delete</Button>,
+      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}>{t('delete')}</Button>,
     },
   ];
 
@@ -67,24 +73,38 @@ function Claims() {
   return (
     <div>
       <div className='flex justify-between'>
-        <h1 className='text-lg'>Действующие</h1>
-        <NewClaim />
+        <h1 className='text-lg'>{t('current')}</h1>
+        { showClaim
+          ? <div>
+              <Button onClick={ () => setShowClaim(false)}>{t('cancel')}</Button>
+            </div>
+          : <NewClaim />
+        }
       </div>
       <Divider/>
-      <Table
-        onRow={(record) => ({
-          onClick: () => {getApplication(record)}
-        })}
-        rowKey="id"
-        columns={tableColumns}
-        dataSource={claims}
-      />
-      <EditClaim ref={editRef} name='nameEdit' />
-
-      <Modal footer={null} title="Вы Уверены ?" open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
-        <p className='mt-5'>Удалить заявку ?</p>
+      {showClaim
+        ? <EditClaim />
+        : <Table
+          onRow={(record) => ({
+            onClick: () => {getApplication(record)}
+          })}
+          rowKey="id"
+          columns={tableColumns}
+          dataSource={claims}
+        />
+      }
+      <Modal footer={null} open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
+        <div className='flex items-center'>
+          <QuestionCircleOutlined
+            style={{
+              color: 'red',
+              fontSize: '24px'
+            }}
+          /> <p className='ml-3 text-base font-bold'>{t('sure')}</p>
+        </div>
+        <p className='mt-5'>{t('confirmDelete')}</p>
         <div className='flex justify-end mt-5'>
-          <Button type='dashed' onClick={deleteClaim}>Удалить</Button>
+          <Button type='primary' onClick={deleteClaim}>{t('delete')}</Button>
         </div>
       </Modal>
     </div>

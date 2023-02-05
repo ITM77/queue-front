@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Input, Table, Modal } from 'antd';
+import { Button, Divider, Input, Table, Modal, Form } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import {
   createDocumentTypesApi,
   deleteDocumentTypesApi,
@@ -9,6 +11,8 @@ import {
 } from '../../../http/docTypes';
 
 function DocumentTypes() {
+  const { t } = useTranslation();
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
   const documentTypes = useSelector(state => state.appReducer.documentTypes);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -81,12 +85,7 @@ function DocumentTypes() {
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Label',
+      title: t('documentType'),
       dataIndex: 'label',
       key: 'label',
     },
@@ -94,15 +93,15 @@ function DocumentTypes() {
       title: '',
       dataIndex: '',
       key: 'x',
-      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}>Delete</Button>,
+      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}>{t('delete')}</Button>,
     },
   ]
 
   return (
     <div>
       <div className='flex justify-between'>
-        <h1 className='text-lg'>Тип документа</h1>
-        <Button onClick={showModal}>Создать</Button>
+        <h1 className='text-lg'>{t('documentType')}</h1>
+        <Button type='primary' onClick={showModal}>{t('create')}</Button>
       </div>
       <Divider />
       <Table
@@ -114,47 +113,66 @@ function DocumentTypes() {
         })}
       />
 
-      <Modal footer={null} title="Создать тип документа" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal footer={null} title={t('createDocumentType')} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <div>
-          <div>
-            <p>Название:</p>
-            <Input type="text" onChange={(e) => {
-              setDocument({...document,  label: e.target.value })
-            }} placeholder='Название'/>
-          </div>
-          <div className='mt-3'>
-            <p>Название поля:</p>
-            <Input type="text" onChange={(e) => {
-              setDocument({...document,  name: e.target.value })
-            }} placeholder='Название поля'/>
-          </div>
-          <div className='flex justify-end mt-5'>
-            <Button type="primary" onClick={createDocumentType}>Создать</Button>
-          </div>
+          <Form
+            form={form}
+            onFinish={createDocumentType}
+            autoComplete="off"
+          >
+            <div>
+              <p>{t('documentType')}</p>
+              <Form.Item
+                name="name"
+                rules={[{ required: true, message: 'Обязательное поле!' }]}
+                className="mb-2"
+              >
+                <Input type="text" onChange={(e) => {
+                  setDocument({...document,  label: e.target.value })
+                }} placeholder={t('documentType')}/>
+              </Form.Item>
+            </div>
+            <Form.Item>
+              <div className='flex justify-end mt-5'>
+                <Button type="primary" htmlType="submit">
+                  {t('create')}
+                </Button>
+              </div>
+            </Form.Item>
+          </Form>
         </div>
       </Modal>
 
-      <Modal footer={null} title="Редактирование типа документа" open={isEditModalOpen} onOk={editHandleOk} onCancel={editHandleCancel}>
+      <Modal footer={null} title={t('editDocumentType')} open={isEditModalOpen} onOk={editHandleOk} onCancel={editHandleCancel}>
         <div className='mt-5'>
-          <p>Наименование документа:</p>
+          <p>{t('documentType')}</p>
           <Input
             value={editedDoc.label}
             onChange={(e) => {
               setEditedDoc({ ...editedDoc, label: e.target.value
             });
             }}
-            placeholder='Наименование документа'
+            placeholder={t('documentType')}
           />
         </div>
         <div className='flex justify-end mt-5'>
-          <Button type='primary' onClick={editDocumentType}>Редактировать</Button>
+          <Button type='primary' onClick={editDocumentType}>{t('edit')}</Button>
         </div>
       </Modal>
 
-      <Modal footer={null} title="Вы Уверены ?" open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
-        <p className='mt-5'>Удалить тип документа ?</p>
+      <Modal footer={null}
+        open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
+        <div className='flex items-center'>
+          <QuestionCircleOutlined
+            style={{
+              color: 'red',
+              fontSize: '24px'
+            }}
+          /> <p className='ml-3 text-base font-bold'>{t('sure')}</p>
+        </div>
+        <p className='mt-5'>{t('confirmDelete')}</p>
         <div className='flex justify-end mt-5'>
-          <Button type='dashed' onClick={deleteDocumentType}>Удалить</Button>
+          <Button type='primary' onClick={deleteDocumentType}>{t('delete')}</Button>
         </div>
       </Modal>
 
