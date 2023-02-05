@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Input, Table, Modal } from 'antd';
+import { Button, Divider, Input, Table, Modal, Form } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import {
   createDocumentTypesApi,
   deleteDocumentTypesApi,
@@ -9,6 +11,8 @@ import {
 } from '../../../http/docTypes';
 
 function DocumentTypes() {
+  const { t } = useTranslation();
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
   const documentTypes = useSelector(state => state.appReducer.documentTypes);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -81,12 +85,7 @@ function DocumentTypes() {
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Label',
+      title: 'Название',
       dataIndex: 'label',
       key: 'label',
     },
@@ -102,7 +101,7 @@ function DocumentTypes() {
     <div>
       <div className='flex justify-between'>
         <h1 className='text-lg'>Тип документа</h1>
-        <Button onClick={showModal}>Создать</Button>
+        <Button type='primary' onClick={showModal}>Создать</Button>
       </div>
       <Divider />
       <Table
@@ -116,21 +115,31 @@ function DocumentTypes() {
 
       <Modal footer={null} title="Создать тип документа" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <div>
-          <div>
-            <p>Название:</p>
-            <Input type="text" onChange={(e) => {
-              setDocument({...document,  label: e.target.value })
-            }} placeholder='Название'/>
-          </div>
-          <div className='mt-3'>
-            <p>Название поля:</p>
-            <Input type="text" onChange={(e) => {
-              setDocument({...document,  name: e.target.value })
-            }} placeholder='Название поля'/>
-          </div>
-          <div className='flex justify-end mt-5'>
-            <Button type="primary" onClick={createDocumentType}>Создать</Button>
-          </div>
+          <Form
+            form={form}
+            onFinish={createDocumentType}
+            autoComplete="off"
+          >
+            <div>
+              <p>Название:</p>
+              <Form.Item
+                name="name"
+                rules={[{ required: true, message: 'Обязательное поле!' }]}
+                className="mb-2"
+              >
+                <Input type="text" onChange={(e) => {
+                  setDocument({...document,  label: e.target.value })
+                }} placeholder='Название'/>
+              </Form.Item>
+            </div>
+            <Form.Item>
+              <div className='flex justify-end mt-5'>
+                <Button type="primary" htmlType="submit">
+                  Создать
+                </Button>
+              </div>
+            </Form.Item>
+          </Form>
         </div>
       </Modal>
 
@@ -151,10 +160,19 @@ function DocumentTypes() {
         </div>
       </Modal>
 
-      <Modal footer={null} title="Вы Уверены ?" open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
+      <Modal footer={null}
+        open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
+        <div className='flex items-center'>
+          <QuestionCircleOutlined
+            style={{
+              color: 'red',
+              fontSize: '24px'
+            }}
+          /> <p className='ml-3 text-base font-bold'>Вы уверены ?</p>
+        </div>
         <p className='mt-5'>Удалить тип документа ?</p>
         <div className='flex justify-end mt-5'>
-          <Button type='dashed' onClick={deleteDocumentType}>Удалить</Button>
+          <Button type='primary' onClick={deleteDocumentType}>Удалить</Button>
         </div>
       </Modal>
 

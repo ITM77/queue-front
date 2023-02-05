@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Input, Upload } from 'antd';
+import { Button, Input, Upload, Divider } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { uploadFileApi, editClaimApi } from '../http/claims';
 
 function EditClaim () {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const uploads = useSelector(state => state.appReducer.uploads);
   const uploadDocumentTypes = useSelector(state => state.appReducer.uploadDocumentTypes);
   const claimInfo = useSelector(state => state.appReducer.claimInfo);
-
-  console.log(uploads);
 
   const [editedClaim, setEditedClaim] = useState({
     name: '',
@@ -48,39 +48,40 @@ function EditClaim () {
     <div>
       <div className='grid grid-cols-3 gap-3 items-center'>
         <div>
-          <p>Номер заявки:</p>
+          <p>{t('claimNumber')}</p>
           <Input
             disabled
             value={editedClaim.number}
-            placeholder='Номер заявки'
+            placeholder={t('claimNumber')}
           />
         </div>
         <div>
-          <p>Наименование компании:</p>
+          <p>{t('company')}</p>
           <Input
             value={editedClaim.name}
             onChange={(e) => {
               setEditedClaim({ ...editedClaim, name: e.target.value })
             }}
-            placeholder='Наименование компании'/>
+            placeholder={t('company')}/>
         </div>
         <div>
-          <p>Тип заявки:</p>
+          <p>{t('claimType')}</p>
           <Input
             disabled
             value={editedClaim.type}
-            placeholder='Тип заявки'
+            placeholder={t('claimType')}
           />
         </div>
       </div>
       <div className="flex justify-end mt-5">
         <Button type="primary" onClick={editClaim}>
-          Редактировать
+          {t('edit')}
         </Button>
       </div>
+      <Divider/>
       { uploadDocumentTypes.map((item, index) => (
-        <div className='mt-5 border p-3' key={item[0]?.uid}>
-          <p className='mb-3 font-bold'>Загрузить файл ({item[0]?.label})</p>
+        <div key={item[0]?.uid}>
+          <p className='mb-3 text-base'>{item[0]?.label}</p>
           <div>
             <Upload
               customRequest={dummyRequest}
@@ -89,9 +90,10 @@ function EditClaim () {
               maxCount={1}
               fileList={uploads[index]}
             >
-              <Button icon={<UploadOutlined />}>Загрузить</Button>
+              <Button icon={<UploadOutlined />}>{t('upload')}</Button>
             </Upload>
           </div>
+          <Divider/>
         </div>
       )) }
     </div>

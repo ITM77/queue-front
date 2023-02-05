@@ -21,8 +21,9 @@ h1, h2, h3, h4, h5, h6, p, i, b, strong, a, li, div {
   content: normal !important;
 }
 .ant-upload-list-picture {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-gap: 20px;
 }
 .ant-upload-list-item-actions {
   display: none;

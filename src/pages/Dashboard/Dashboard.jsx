@@ -14,7 +14,6 @@ import { isAuthAC } from '../../store/reducers/appReducer';
 import Registration from './Registration/Registration'
 import Claims from './Claims/Claims'
 import Rejected from './Claims/Rejected'
-import Approved from  './Claims/Approved'
 import ClaimTypes from './ClaimTypes/ClaimTypes';
 import DocumentTypes from './DocumentTypes/DocumentTypes';
 
@@ -118,11 +117,6 @@ function Dashboard() {
           label: 'Отклоненные',
           component: <Rejected/>
         },
-        {
-          key: '/approved',
-          label: 'Одобреные',
-          component: <Approved/>
-        },
       ]
     },
   ]);
@@ -133,7 +127,7 @@ function Dashboard() {
         {
           key: '4',
           danger: true,
-          label: 'Выйти',
+          label: t('exit'),
           onClick: () => {
             localStorage.removeItem('at');
             localStorage.removeItem('rt');

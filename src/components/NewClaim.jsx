@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Modal, Form, Input, Button, Select } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { newClaimApi } from '../http/claims';
-import { isSpinAC } from '../store/reducers/appReducer';
 import { getClaimTypesApi } from '../http/claimTypes';
 
 function NewClaim() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [isNewApplicationModalOpen, setIsNewApplicationModalOpen] = useState(false);
@@ -22,7 +23,6 @@ function NewClaim() {
   };
 
   const newApplicationModalOk = async () => {
-    dispatch(isSpinAC(true))
     dispatch(newClaimApi(claim))
     setIsNewApplicationModalOpen(false)
     form.resetFields();
@@ -40,27 +40,27 @@ function NewClaim() {
 
   return (
       <div>
-        <Button onClick={newApplicationModalOpen}>Новая заявка</Button>
-        <Modal footer={null} width={550} title="Новая заявка" okText='Создать' cancelText='Отмена' open={isNewApplicationModalOpen} onCancel={newApplicationModalCancel}>
+        <Button type='primary' onClick={newApplicationModalOpen}>{t('newClaim')}</Button>
+        <Modal footer={null} width={550} title={t('newClaim')} okText={t('create')} cancelText={t('cancel')} open={isNewApplicationModalOpen} onCancel={newApplicationModalCancel}>
           <Form
               form={form}
               onFinish={newApplicationModalOk}
               autoComplete="off"
           >
             <div>
-              <p>ID:</p>
+              <p>{t('claimNumber')}</p>
               <Form.Item
-                name="id"
+                name="number"
                 rules={[{ required: true, message: 'Обязательное поле!' }]}
                 className="mb-2"
               >
                 <Input type="number" onChange={(e) => {
                   setClaim({...claim,  number: e.target.value })
-                }} placeholder='ID'/>
+                }} placeholder={t('claimNumber')}/>
               </Form.Item>
             </div>
             <div>
-              <p>Наименование компании:</p>
+              <p>{t('company')}</p>
               <Form.Item
                   name="name"
                   rules={[{ required: true, message: 'Обязательное поле!' }]}
@@ -68,11 +68,11 @@ function NewClaim() {
               >
                 <Input onChange={(e) => {
                   setClaim({...claim,  name: e.target.value })
-                }} placeholder='Наименование компании'/>
+                }} placeholder={t('company')}/>
               </Form.Item>
             </div>
             <div>
-              <p>Тип лица:</p>
+              <p>{t('formType')}</p>
               <Select className='w-full'
                 options={[
                   {
@@ -90,7 +90,7 @@ function NewClaim() {
               />
             </div>
             <div className='mt-3'>
-              <p>Тип заявки:</p>
+              {t('claimType')}
               <Select className='w-full'
                 options={claimTypes}
                 onChange={(value) => {
@@ -101,7 +101,7 @@ function NewClaim() {
             <Form.Item className="mt-5">
               <div className="flex justify-end">
                 <Button type="primary" htmlType="submit">
-                  Создать
+                  {t('create')}
                 </Button>
               </div>
             </Form.Item>

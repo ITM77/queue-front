@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Divider, Input, Select, Button, Modal, Table } from 'antd';
+import { Divider, Input, Select, Button, Modal, Table, Form } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import { selectedClaimTypesAC } from '../../../store/reducers/appReducer'
 import {
   createClaimTypesApi,
@@ -10,6 +12,8 @@ import {
 import { getAllDocTypesApi } from '../../../http/docTypes';
 
 function ClaimTypes() {
+  const { t } = useTranslation();
+  const [form] = Form.useForm();
   const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -94,12 +98,7 @@ function ClaimTypes() {
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Label',
+      title: t('claimType'),
       dataIndex: 'label',
       key: 'label',
     },
@@ -107,7 +106,7 @@ function ClaimTypes() {
       title: '',
       dataIndex: '',
       key: 'x',
-      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}>Delete</Button>,
+      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}>{t('delete')}</Button>,
     },
   ]
 
@@ -115,9 +114,9 @@ function ClaimTypes() {
     <div>
       <div className='flex justify-between'>
         <h1 className='text-lg'>
-          Тип заявки
+          {t('claimType')}
         </h1>
-        <Button onClick={showModal}>Создать</Button>
+        <Button type='primary' onClick={showModal}>{t('create')}</Button>
       </div>
       <Divider />
 
@@ -154,10 +153,20 @@ function ClaimTypes() {
         />
       </div>
 
-      <Modal footer={null} title="Создать тип заявки" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal footer={null} title={t('createClaimType')} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <div>
+          <Form
+            form={form}
+            onFinish={createClaimType}
+            autoComplete="off"
+          >
           <div>
-            <p>Лицо:</p>
+            <p>{t('formType')}</p>
+            <Form.Item
+              name="formType"
+              rules={[{ required: true, message: 'Обязательное поле!' }]}
+              className="mb-2"
+            >
             <Select className='w-full'
               options={[
                 {
@@ -173,34 +182,40 @@ function ClaimTypes() {
                 claimType.formType = value
               }}
             />
+            </Form.Item>
           </div>
           <div className='mt-3'>
-            <p>Название:</p>
-            <Input type="text" onChange={(e) => {
-              claimType.label = e.target.value
-            }} placeholder='Название'/>
+            <p>{t('claimType')}</p>
+            <Form.Item
+              name="name"
+              rules={[{ required: true, message: 'Обязательное поле!' }]}
+              className="mb-2"
+            >
+              <Input type="text" onChange={(e) => {
+                claimType.label = e.target.value
+              }} placeholder={t('claimType')}/>
+            </Form.Item>
           </div>
-          <div className='mt-3'>
-            <p>Название поля:</p>
-            <Input type="text" onChange={(e) => {
-              claimType.name = e.target.value
-            }} placeholder='Название поля'/>
-          </div>
-          <div className='flex justify-end mt-5'>
-            <Button type="primary" onClick={createClaimType}>Создать</Button>
-          </div>
+          <Form.Item>
+            <div className='flex justify-end'>
+              <Button type="primary" htmlType="submit">
+                {t('create')}
+              </Button>
+            </div>
+          </Form.Item>
+          </Form>
         </div>
       </Modal>
 
-      <Modal footer={null} title="Редактирование типа заявки" open={isEditModalOpen} onOk={editHandleOk} onCancel={editHandleCancel}>
+      <Modal footer={null} title={t('editClaimType')} open={isEditModalOpen} onOk={editHandleOk} onCancel={editHandleCancel}>
         <div className='mt-5'>
-          <p>Наименование типа заявки:</p>
+          <p>{t('claimType')}</p>
           <Input
             value={editedClaim.label}
             onChange={(e) => {
               setEditedClaim({ ...editedClaim, label: e.target.value});
             }}
-            placeholder='Наименование заявки'
+            placeholder={t('claimType')}
           />
         </div>
         <div className='mt-5'>
@@ -216,14 +231,22 @@ function ClaimTypes() {
           />
         </div>
         <div className='flex justify-end mt-5'>
-          <Button type='primary' onClick={editClaimType}>Редактировать</Button>
+          <Button type='primary' onClick={editClaimType}>{t('edit')}</Button>
         </div>
       </Modal>
 
-      <Modal footer={null} title="Вы Уверены ?" open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
-        <p className='mt-5'>Удалить тип заявки ?</p>
+      <Modal footer={null} open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
+        <div className='flex items-center'>
+          <QuestionCircleOutlined
+            style={{
+              color: 'red',
+              fontSize: '24px'
+            }}
+          /> <p className='ml-3 text-base font-bold'>{t('sure')}</p>
+        </div>
+        <p className='mt-5'>{t('confirmDelete')}</p>
         <div className='flex justify-end mt-5'>
-          <Button type='dashed' onClick={deleteClaimType}>Удалить</Button>
+          <Button type='primary' onClick={deleteClaimType}>{t('delete')}</Button>
         </div>
       </Modal>
     </div>

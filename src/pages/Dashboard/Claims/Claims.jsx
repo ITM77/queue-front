@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Divider, Table, Modal, Button } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { getClaimsByStateApi, getClaimByIdApi, deleteClaimApi } from '../../../http/claims';
 
 import NewClaim from '../../../components/NewClaim'
 import EditClaim from '../../../components/EditClaim'
 
 function Claims() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [deletedClaim, setDeletedClaim] = useState('')
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -40,22 +42,26 @@ function Claims() {
 
   const tableColumns = [
     {
-      title: 'Номер заявки',
+      title: t('claimNumber'),
       dataIndex: 'number',
     },
     {
-      title: 'Наименование компании',
+      title: t('company'),
       dataIndex: 'name'
     },
     {
-      title: 'Дата создания',
+      title: t('createdAt'),
       dataIndex: 'createdAt',
+    },
+    {
+      title: t('expiresAt'),
+      dataIndex: 'expiresAt'
     },
     {
       title: '',
       dataIndex: '',
       key: 'x',
-      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}>Delete</Button>,
+      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}>{t('delete')}</Button>,
     },
   ];
 
@@ -66,9 +72,12 @@ function Claims() {
   return (
     <div>
       <div className='flex justify-between'>
-        <h1 className='text-lg'>Действующие</h1>
+        <h1 className='text-lg'>{t('current')}</h1>
         { showClaim
-          ? <Button onClick={ () => setShowClaim(false)}>Назад</Button>
+          ? <div>
+              <Button onClick={ () => setShowClaim(false)}>{t('cancel')}</Button>
+              <Button type='primary' className='ml-3'>{t('confirm')}</Button>
+            </div>
           : <NewClaim />
         }
       </div>
@@ -84,10 +93,10 @@ function Claims() {
           dataSource={claims}
         />
       }
-      <Modal footer={null} title="Вы Уверены ?" open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
-        <p className='mt-5'>Удалить заявку ?</p>
+      <Modal footer={null} title={t('sure')} open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
+        <p className='mt-5'>{t('confirmDelete')}</p>
         <div className='flex justify-end mt-5'>
-          <Button type='dashed' onClick={deleteClaim}>Удалить</Button>
+          <Button type='primary' onClick={deleteClaim}>{t('delete')}</Button>
         </div>
       </Modal>
     </div>

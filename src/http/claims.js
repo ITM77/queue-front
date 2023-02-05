@@ -93,7 +93,7 @@ const uploadFileApi = (params) => async (dispatch) => {
     })
     dispatch(uploadsAC(data.data))
   } catch (e) {
-    notification('error')
+    // notification('error')
   }
   finally {
     dispatch(isSpinAC(false))
