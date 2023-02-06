@@ -86,16 +86,19 @@ function EditClaim () {
       <Divider/>
       { uploadDocumentTypes.map((item, index) => (
         <div key={item[0]?.uid}>
-          <p className='mb-3 text-base'>{item[0]?.label}</p>
           <div>
             <Upload
+              className='w-16 h-16'
               customRequest={dummyRequest}
               action={(file) => handleChange(file, item)}
               listType="picture"
               maxCount={1}
               fileList={uploads[index]}
             >
-              <Button icon={<UploadOutlined />}>{t('upload')}</Button>
+              <div className='flex items-center mb-3'>
+                <p className='text-base mr-5'>{item[0]?.label}</p>
+                <Button icon={<UploadOutlined />}>{t('upload')}</Button>
+              </div>
             </Upload>
           </div>
           <Divider/>

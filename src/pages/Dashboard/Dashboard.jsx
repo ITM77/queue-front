@@ -16,7 +16,7 @@ import Claims from './Claims/Claims'
 import Rejected from './Claims/Rejected'
 import ClaimTypes from './ClaimTypes/ClaimTypes';
 import DocumentTypes from './DocumentTypes/DocumentTypes';
-import Approved from './Claims/Approved';
+import License from './License/License';
 
 const { Header, Sider, Content } = Layout;
 const DashboardStyled = styled.div`
@@ -121,9 +121,9 @@ function Dashboard() {
       ]
     },
     {
-      key: '/license',
+      key: '/license/*',
       label: 'Лицензии',
-      component: <Approved/>,
+      component: <License/>,
       icon:  <FileProtectOutlined />,
     },
   ]);

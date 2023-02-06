@@ -72,9 +72,10 @@ const appReducer = createSlice({
       let tempArr = []
       for (let i = 0; i < action.payload.documentTypes.length; i++) {
         for (let k = 0; k < action.payload.uploads.length; k++) {
-          if (action.payload.documentTypes[i].name === action.payload.uploads[k].documentTypeName) {
+          if (action.payload.documentTypes[i].name === action.payload.uploads[k]?.documentTypeName) {
             const obj = {
               uid: action.payload.uploads[k]?.id,
+              title: action.payload.documentTypes[i].label,
               name: action.payload.uploads[k]?.name,
               label: action.payload.uploads[k]?.documentTypeName,
               status: 'done',
@@ -84,6 +85,7 @@ const appReducer = createSlice({
           }
         }
         state.uploads.push(tempArr)
+        console.log(state.uploads);
         tempArr = []
       }
     }

@@ -32,4 +32,5 @@ export default {
   "status": 'Статус',
   "approved": 'Подтвержден',
   "rejected": 'Статус',
+  "license": 'Лицензии',
 }
