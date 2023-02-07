@@ -5,6 +5,7 @@ export default {
   "lastname": "Фамилия",
   "username": "Имя пользователя",
   "password": "Пароль",
+  "title": "Название",
   "claimNumber": "Номер заявки",
   "company": "Наименование компании",
   "claimType": "Тип заявки",
@@ -31,6 +32,11 @@ export default {
   "createUser": "Создание пользователя",
   "status": 'Статус',
   "approved": 'Подтвержден',
-  "rejected": 'Статус',
+  "rejected": 'Отклоненые',
   "license": 'Лицензии',
+  "back": 'Назад',
+  "backToList": 'Вернуться к списку',
+  "claimTypes": 'Тип заявки',
+  "claims": 'Заявки',
+
 }

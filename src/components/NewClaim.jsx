@@ -54,7 +54,7 @@ function NewClaim() {
                 rules={[{ required: true, message: 'Обязательное поле!' }]}
                 className="mb-2"
               >
-                <Input type="number" onChange={(e) => {
+                <Input type="text" onChange={(e) => {
                   setClaim({...claim,  number: e.target.value })
                 }} placeholder={t('claimNumber')}/>
               </Form.Item>

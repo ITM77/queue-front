@@ -13,9 +13,13 @@ const appReducer = createSlice({
     claimTypes: [],
     documentTypes: [],
     selectedClaimTypes: [],
-    uploadDocumentTypes: []
+    uploadDocumentTypes: [],
+    claimType: {}
   },
   reducers: {
+    claimTypeAC(state, action) {
+      state.claimType = action.payload
+    },
     selectedClaimTypesAC(state, action) {
       state.selectedClaimTypes = action.payload
     },
@@ -102,5 +106,6 @@ export const {
   claimTypesAC,
   documentTypesAC,
   uploadDocumentTypesAC,
-  selectedClaimTypesAC } = appReducer.actions;
+  selectedClaimTypesAC,
+  claimTypeAC } = appReducer.actions;
 export default appReducer.reducer;

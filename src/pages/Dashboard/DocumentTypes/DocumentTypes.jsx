@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Divider, Input, Table, Modal, Form } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { QuestionCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import {
   createDocumentTypesApi,
@@ -72,6 +72,7 @@ function DocumentTypes() {
   const createDocumentType = () => {
     dispatch(createDocumentTypesApi(document))
     setIsModalOpen(false);
+    form.resetFields();
   }
 
   const editDocumentType = () => {
@@ -85,7 +86,7 @@ function DocumentTypes() {
 
   const columns = [
     {
-      title: t('documentType'),
+      title: t('title'),
       dataIndex: 'label',
       key: 'label',
     },
@@ -93,7 +94,7 @@ function DocumentTypes() {
       title: '',
       dataIndex: '',
       key: 'x',
-      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}>{t('delete')}</Button>,
+      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}><DeleteOutlined style={{fontSize: '18px'}}/></Button>,
     },
   ]
 
@@ -113,7 +114,7 @@ function DocumentTypes() {
         })}
       />
 
-      <Modal footer={null} title={t('createDocumentType')} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal centered width={700} footer={null} title={t('createDocumentType')} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <div>
           <Form
             form={form}
@@ -121,7 +122,6 @@ function DocumentTypes() {
             autoComplete="off"
           >
             <div>
-              <p>{t('documentType')}</p>
               <Form.Item
                 name="name"
                 rules={[{ required: true, message: 'Обязательное поле!' }]}
@@ -132,20 +132,17 @@ function DocumentTypes() {
                 }} placeholder={t('documentType')}/>
               </Form.Item>
             </div>
-            <Form.Item>
-              <div className='flex justify-end mt-5'>
-                <Button type="primary" htmlType="submit">
-                  {t('create')}
-                </Button>
-              </div>
-            </Form.Item>
+            <div className='flex justify-end mt-5'>
+              <Button type="primary" htmlType="submit">
+                {t('create')}
+              </Button>
+            </div>
           </Form>
         </div>
       </Modal>
 
-      <Modal footer={null} title={t('editDocumentType')} open={isEditModalOpen} onOk={editHandleOk} onCancel={editHandleCancel}>
+      <Modal width={700} footer={null} title={t('editDocumentType')} open={isEditModalOpen} onOk={editHandleOk} onCancel={editHandleCancel}>
         <div className='mt-5'>
-          <p>{t('documentType')}</p>
           <Input
             value={editedDoc.label}
             onChange={(e) => {
@@ -160,8 +157,7 @@ function DocumentTypes() {
         </div>
       </Modal>
 
-      <Modal footer={null}
-        open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
+      <Modal footer={null} open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
         <div className='flex items-center'>
           <QuestionCircleOutlined
             style={{

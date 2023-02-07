@@ -95,8 +95,8 @@ function EditClaim () {
               maxCount={1}
               fileList={uploads[index]}
             >
-              <div className='flex items-center mb-3'>
-                <p className='text-base mr-5'>{item[0]?.label}</p>
+              <div className='items-center mb-3'>
+                <p className='text-base mb-3'>{item[0]?.label}</p>
                 <Button icon={<UploadOutlined />}>{t('upload')}</Button>
               </div>
             </Upload>
