@@ -54,7 +54,7 @@ function NewClaim() {
                 rules={[{ required: true, message: 'Обязательное поле!' }]}
                 className="mb-2"
               >
-                <Input type="number" onChange={(e) => {
+                <Input type="text" onChange={(e) => {
                   setClaim({...claim,  number: e.target.value })
                 }} placeholder={t('claimNumber')}/>
               </Form.Item>
@@ -73,6 +73,10 @@ function NewClaim() {
             </div>
             <div>
               <p>{t('formType')}</p>
+              <Form.Item
+                name="formType"
+                className="mb-2"
+              >
               <Select className='w-full'
                 options={[
                   {
@@ -88,15 +92,21 @@ function NewClaim() {
                   getClaimTypes(value)
                 }}
               />
+              </Form.Item>
             </div>
             <div className='mt-3'>
               {t('claimType')}
+              <Form.Item
+                name="claimType"
+                className="mb-2"
+              >
               <Select className='w-full'
                 options={claimTypes}
                 onChange={(value) => {
                   setClaim({...claim,  claimTypeId: value })
                 }}
               />
+              </Form.Item>
             </div>
             <Form.Item className="mt-5">
               <div className="flex justify-end">
@@ -109,6 +119,6 @@ function NewClaim() {
         </Modal>
       </div>
   );
-};
+}
 
 export default NewClaim;

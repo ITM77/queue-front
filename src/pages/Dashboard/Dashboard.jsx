@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   UserOutlined,
@@ -16,7 +16,7 @@ import Claims from './Claims/Claims'
 import Rejected from './Claims/Rejected'
 import ClaimTypes from './ClaimTypes/ClaimTypes';
 import DocumentTypes from './DocumentTypes/DocumentTypes';
-import Approved from './Claims/Approved';
+import License from './License/License';
 
 const { Header, Sider, Content } = Layout;
 const DashboardStyled = styled.div`
@@ -84,49 +84,49 @@ function Dashboard() {
   const location = useLocation();
   const user = useSelector(state => state.appReducer.user);
 
-  const [nav] = useState([
+  const nav = [
     {
       key: '/documentTypes',
-      label: 'Тип документов',
+      label: t('documentTypes'),
       component: <DocumentTypes/>,
       icon:  <FileProtectOutlined />,
     },
     {
-      key: '/claimTypes',
-      label: 'Тип Заявки',
+      key: '/claimTypes/*',
+      label: t('claimTypes'),
       component: <ClaimTypes/>,
       icon:  <FileProtectOutlined />,
     },
     {
       key: '/registration',
-      label: 'Создать пользователя',
+      label: t('createUser'),
       component: <Registration/>,
       icon:  <FileProtectOutlined />,
     },
     {
       key: '/claims',
       icon:  <FileProtectOutlined />,
-      label: 'Заявки',
+      label: t('claims'),
       children: [
         {
           key: '/current',
-          label: 'Действующие',
+          label: t('current'),
           component: <Claims/>
         },
         {
           key: '/rejected',
-          label: 'Отклоненные',
+          label: t('rejected'),
           component: <Rejected/>
         },
       ]
     },
     {
-      key: '/license',
-      label: 'Лицензии',
-      component: <Approved/>,
+      key: '/license/*',
+      label: t('license'),
+      component: <License/>,
       icon:  <FileProtectOutlined />,
     },
-  ]);
+  ];
 
   const menu = (
     <Menu

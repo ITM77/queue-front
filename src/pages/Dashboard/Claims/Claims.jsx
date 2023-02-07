@@ -76,7 +76,7 @@ function Claims() {
         <h1 className='text-lg'>{t('current')}</h1>
         { showClaim
           ? <div>
-              <Button onClick={ () => setShowClaim(false)}>{t('cancel')}</Button>
+              <Button onClick={ () => setShowClaim(false)}>{t('backToList')}</Button>
             </div>
           : <NewClaim />
         }
