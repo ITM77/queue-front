@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Table } from 'antd';
+import { Button, Divider, Input, Table } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { editClaimTypesApi, getClaimTypeByIdApi } from '../../../http/claimTypes';
 import { getAllDocTypesApi } from '../../../http/docTypes';
 import { claimTypeAC } from '../../../store/reducers/appReducer'
 
 function EditClaimTypes() {
+  const navigate = useNavigate();
   const dispatch = useDispatch()
   const { t } = useTranslation();
   const params = useParams();
@@ -27,7 +28,7 @@ function EditClaimTypes() {
 
   const columns = [
     {
-      title: t('documentTypes'),
+      title: t('documentList'),
       dataIndex: 'label',
     },
   ];
@@ -36,7 +37,6 @@ function EditClaimTypes() {
     selectedRowKeys,
     onChange: (selected) => {
       setSelectedRowKeys(selected)
-      console.log(selected);
     },
   };
 
@@ -46,6 +46,13 @@ function EditClaimTypes() {
 
   return (
     <div>
+      <div className='flex justify-between'>
+        <h1 className='text-lg'>
+          {t('editClaimType')}
+        </h1>
+        <Button onClick={ () => navigate('/claimTypes')}>{t('backToList')}</Button>
+      </div>
+      <Divider />
       <div className='mt-5'>
         <Input
           value={claimType.label}
@@ -65,6 +72,9 @@ function EditClaimTypes() {
           }}
           columns={columns}
           dataSource={documentTypes}
+          onRow={(record) => ({
+            onClick: () => {setSelectedRowKeys([...selectedRowKeys, record.value])}
+          })}
         />
       </div>
       <div className='flex justify-end mt-5'>

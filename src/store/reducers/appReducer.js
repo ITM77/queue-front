@@ -26,6 +26,19 @@ const appReducer = createSlice({
     selectedClaimTypesAC(state, action) {
       state.selectedClaimTypes = action.payload
     },
+    editClaimTypeAC(state, action) {
+      state.claimTypes = action.payload
+    },
+    deleteClaimTypeAC(state, action) {
+      state.claimTypes = action.payload
+    },
+    createClaimTypeAC(state, action) {
+      state.claimTypes.unshift({
+        value: action.payload.id,
+        label: action.payload.label,
+        name: action.payload.name,
+      })
+    },
     claimTypesAC(state, action) {
       state.claimTypes = []
       action.payload.forEach((item) => {
@@ -126,5 +139,8 @@ export const {
   resetClaimsAC,
   deleteDocumentTypeAC,
   createDocumentTypeAC,
-  editDocumentTypesAC } = appReducer.actions;
+  editDocumentTypesAC,
+  createClaimTypeAC,
+  editClaimTypeAC,
+  deleteClaimTypeAC } = appReducer.actions;
 export default appReducer.reducer;

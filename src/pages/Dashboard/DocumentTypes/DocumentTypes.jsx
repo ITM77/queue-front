@@ -44,7 +44,6 @@ function DocumentTypes() {
   };
 
   const showDeleteModal = (e, deletedItem) => {
-    setDeletedDoc(deletedItem)
     documentTypes.forEach((item, index) => {
       if (item.value === deletedItem.value) {
         editedDocumentTypes.splice(index, 1)
@@ -52,6 +51,7 @@ function DocumentTypes() {
     })
 
     e.stopPropagation();
+    setDeletedDoc(deletedItem)
     setIsDeleteModalOpen(true);
   };
   const deleteHandleOk = () => {
@@ -109,7 +109,7 @@ function DocumentTypes() {
         <h1 className='text-lg'>{t('documentList')}</h1>
         <Button type='primary' onClick={showModal}>{t('create')}</Button>
       </div>
-      <ul className='mt-5'>
+      <ul className='mt-5 customList'>
         { documentTypes.map((item) =>
           <li key={item.value} role='presentation' className='p-4 cursor-pointer flex justify-between list-disc' onClick={() => showEditModal(item)}>
             <span>{item.label}</span>

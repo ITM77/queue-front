@@ -42,22 +42,6 @@ function Registration() {
                 }} placeholder={t('name')}/>
               </Form.Item>
             </div>
-
-            <div>
-              <p>{t('lastname')}</p>
-              <Form.Item
-                name="lastname"
-                rules={[{ required: true, message: 'Обязательное поле!' }]}
-                className="mb-2"
-              >
-                <Input type="text" onChange={(e) => {
-                  user.lastname = e.target.value
-                }} placeholder={t('lastname')}/>
-              </Form.Item>
-            </div>
-          </div>
-
-          <div className='grid grid-cols-2 gap-7'>
             <div>
               <p>{t('username')}</p>
               <Form.Item
@@ -68,6 +52,21 @@ function Registration() {
                 <Input type="text" onChange={(e) => {
                   user.username = e.target.value
                 }} placeholder={t('username')}/>
+              </Form.Item>
+            </div>
+          </div>
+
+          <div className='grid grid-cols-2 gap-7'>
+            <div>
+              <p>{t('lastname')}</p>
+              <Form.Item
+                name="lastname"
+                rules={[{ required: true, message: 'Обязательное поле!' }]}
+                className="mb-2"
+              >
+                <Input type="text" onChange={(e) => {
+                  user.lastname = e.target.value
+                }} placeholder={t('lastname')}/>
               </Form.Item>
             </div>
 

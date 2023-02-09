@@ -36,10 +36,10 @@ export default {
   "license": 'Лицензии',
   "back": 'Назад',
   "backToList": 'Вернуться к списку',
-  "claimTypes": 'Тип заявки',
+  "claimTypes": 'Тип заявок',
   "claims": 'Заявки',
   "selectFormType": 'Выберите тип',
   "selectClaimType": 'Выберите тип заявки',
   "required": "Обязательное поле!",
-  "documentList": "Список документов"
+  "documentList": "Список документов",
 }

@@ -62,7 +62,7 @@ function Current() {
       title: '',
       dataIndex: '',
       key: 'x',
-      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}><DeleteOutlined style={{fontSize: '18px'}}/></Button>,
+      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}><DeleteOutlined className='deleteBasket' style={{fontSize: '15px'}}/></Button>,
     },
   ];
 
