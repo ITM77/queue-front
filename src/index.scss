@@ -36,3 +36,13 @@ h1, h2, h3, h4, h5, h6, p, i, b, strong, a, li, div {
   background: #39b9f5cc !important;
   color: #fff !important;
 }
+.deleteBasket {
+  color: #dd9090;
+}
+.deleteBasket:hover {
+  color: #e41919;
+}
+li:hover {
+  background-color: #f3faff;
+  border-radius: 4px;
+}

@@ -17,6 +17,9 @@ const appReducer = createSlice({
     claimType: {}
   },
   reducers: {
+    resetClaimsAC(state) {
+      state.claims = []
+    },
     claimTypeAC(state, action) {
       state.claimType = action.payload
     },
@@ -47,6 +50,19 @@ const appReducer = createSlice({
     },
     claimInfoAC(state, action) {
       state.claimInfo = action.payload
+    },
+    editDocumentTypesAC(state, action) {
+      state.documentTypes = action.payload
+    },
+    deleteDocumentTypeAC(state, action) {
+      state.documentTypes = action.payload
+    },
+    createDocumentTypeAC(state, action) {
+      state.documentTypes.unshift({
+        value: action.payload.id,
+        label: action.payload.label,
+        name: action.payload.name,
+      })
     },
     documentTypesAC(state, action) {
       state.documentTypes = []
@@ -89,7 +105,6 @@ const appReducer = createSlice({
           }
         }
         state.uploads.push(tempArr)
-        console.log(state.uploads);
         tempArr = []
       }
     }
@@ -107,5 +122,9 @@ export const {
   documentTypesAC,
   uploadDocumentTypesAC,
   selectedClaimTypesAC,
-  claimTypeAC } = appReducer.actions;
+  claimTypeAC,
+  resetClaimsAC,
+  deleteDocumentTypeAC,
+  createDocumentTypeAC,
+  editDocumentTypesAC } = appReducer.actions;
 export default appReducer.reducer;

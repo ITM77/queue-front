@@ -38,5 +38,8 @@ export default {
   "backToList": 'Вернуться к списку',
   "claimTypes": 'Тип заявки',
   "claims": 'Заявки',
-
+  "selectFormType": 'Выберите тип',
+  "selectClaimType": 'Выберите тип заявки',
+  "required": "Обязательное поле!",
+  "documentList": "Список документов"
 }

@@ -1,6 +1,6 @@
 import $host from './index'
 import notification  from '../utils/openNotification';
-import { isSpinAC, documentTypesAC } from '../store/reducers/appReducer';
+import { isSpinAC, documentTypesAC, createDocumentTypeAC } from '../store/reducers/appReducer';
 
 const getAllDocTypesApi = () => async (dispatch, getState) => {
   const currentState = getState().appReducer
@@ -20,8 +20,8 @@ const createDocumentTypesApi = (params) => async (dispatch, getState) => {
   const currentState = getState().appReducer
   try {
     dispatch(isSpinAC(true))
-    await $host.post(`documentTypes?locale=${currentState.lang}`, params)
-    dispatch(getAllDocTypesApi())
+    const { data } = await $host.post(`documentTypes?locale=${currentState.lang}`, params)
+    dispatch(createDocumentTypeAC(data.data))
     notification('success', 'Тип документа успешно создан!')
   } catch (e) {
     notification('error', e.response.data.message)
@@ -36,7 +36,6 @@ const deleteDocumentTypesApi = (params) => async (dispatch, getState) => {
   try {
     dispatch(isSpinAC(true))
     await $host.delete(`documentTypes/${params}?locale=${currentState.lang}`)
-    dispatch(getAllDocTypesApi())
     notification('success', 'Тип документа удален!')
   } catch (e) {
     notification('error')
@@ -51,7 +50,6 @@ const editDocumentTypesApi = (id, params) => async (dispatch, getState) => {
   try {
     dispatch(isSpinAC(true))
     await $host.post(`documentTypes/${id}?locale=${currentState.lang}`, params)
-    dispatch(getAllDocTypesApi())
     notification('success', 'Тип документа редактирован!')
   } catch (e) {
     notification('error')

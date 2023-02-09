@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Input, Table, Modal, Form } from 'antd';
+import { Button, Input, Modal, Form } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { QuestionCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import { deleteDocumentTypeAC, editDocumentTypesAC } from '../../../store/reducers/appReducer'
 import {
   createDocumentTypesApi,
   deleteDocumentTypesApi,
@@ -18,21 +19,21 @@ function DocumentTypes() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [deletedDoc, setDeletedDoc] = useState('')
+  const [editedDocumentTypes, setEditedDocumentTypes] = useState([])
+  const [deletedDocument, setDeletedDoc] = useState([])
 
-  const [editedDoc, setEditedDoc] = useState({
+  const [editedDocumentType, setEditedDocumentType] = useState({
     id: '',
     label: ''
   })
 
-  const [document, setDocument] = useState({
-    name: '',
+  const [createdDocument, setCreatedDocument] = useState({
     label: '',
-    claimTypeId: ''
+    value: Math.random()
   })
 
   const showEditModal = (item) => {
-    setEditedDoc({ ...editedDoc, label: item.label, id: item.value } )
+    setEditedDocumentType({ ...editedDocumentType, label: item.label, id: item.value } )
     setIsEditModalOpen(true);
   };
   const editHandleOk = () => {
@@ -42,9 +43,15 @@ function DocumentTypes() {
     setIsEditModalOpen(false);
   };
 
-  const showDeleteModal = (e, item) => {
+  const showDeleteModal = (e, deletedItem) => {
+    setDeletedDoc(deletedItem)
+    documentTypes.forEach((item, index) => {
+      if (item.value === deletedItem.value) {
+        editedDocumentTypes.splice(index, 1)
+      }
+    })
+
     e.stopPropagation();
-    setDeletedDoc(item)
     setIsDeleteModalOpen(true);
   };
   const deleteHandleOk = () => {
@@ -65,18 +72,26 @@ function DocumentTypes() {
   };
 
   const deleteDocumentType = () => {
-    dispatch(deleteDocumentTypesApi(deletedDoc.value))
+    dispatch(deleteDocumentTypeAC(editedDocumentTypes))
+    dispatch(deleteDocumentTypesApi(deletedDocument.value))
     setIsDeleteModalOpen(false);
   }
 
   const createDocumentType = () => {
-    dispatch(createDocumentTypesApi(document))
+    dispatch(createDocumentTypesApi(createdDocument))
     setIsModalOpen(false);
     form.resetFields();
   }
 
   const editDocumentType = () => {
-    dispatch(editDocumentTypesApi(editedDoc.id, { label: editedDoc.label }))
+    documentTypes.forEach((item, index) => {
+      if (item.value === editedDocumentType.id) {
+        editedDocumentTypes.splice(index, 1,
+          {value: item.value, label: editedDocumentType.label, name: item.name})
+      }
+    })
+    dispatch(editDocumentTypesAC(editedDocumentTypes))
+    dispatch(editDocumentTypesApi(editedDocumentType.id, { label: editedDocumentType.label }))
     setIsEditModalOpen(false)
   }
 
@@ -84,36 +99,25 @@ function DocumentTypes() {
     dispatch(getAllDocTypesApi())
   }, [])
 
-  const columns = [
-    {
-      title: t('title'),
-      dataIndex: 'label',
-      key: 'label',
-    },
-    {
-      title: '',
-      dataIndex: '',
-      key: 'x',
-      render: (item) => <Button className='text-red-500' type='ghost' onClick={(e) => showDeleteModal(e, item)}><DeleteOutlined style={{fontSize: '18px'}}/></Button>,
-    },
-  ]
+  useEffect(() => {
+    setEditedDocumentTypes([...documentTypes])
+  }, [documentTypes])
 
   return (
     <div>
       <div className='flex justify-between'>
-        <h1 className='text-lg'>{t('documentType')}</h1>
+        <h1 className='text-lg'>{t('documentList')}</h1>
         <Button type='primary' onClick={showModal}>{t('create')}</Button>
       </div>
-      <Divider />
-      <Table
-        rowKey='name'
-        columns={columns}
-        dataSource={documentTypes}
-        onRow={(record) => ({
-          onClick: () => {showEditModal(record)}
-        })}
-      />
-
+      <ul className='mt-5'>
+        { documentTypes.map((item) =>
+          <li key={item.value} role='presentation' className='p-4 cursor-pointer flex justify-between list-disc' onClick={() => showEditModal(item)}>
+            <span>{item.label}</span>
+            <DeleteOutlined className='deleteBasket' style={{fontSize: '15px'}} onClick={(e) => showDeleteModal(e, item)}/>
+          </li>
+          )
+        }
+      </ul>
       <Modal centered width={700} footer={null} title={t('createDocumentType')} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <div>
           <Form
@@ -128,7 +132,7 @@ function DocumentTypes() {
                 className="mb-2"
               >
                 <Input type="text" onChange={(e) => {
-                  setDocument({...document,  label: e.target.value })
+                  setCreatedDocument({...createdDocument,  label: e.target.value })
                 }} placeholder={t('documentType')}/>
               </Form.Item>
             </div>
@@ -144,9 +148,9 @@ function DocumentTypes() {
       <Modal width={700} footer={null} title={t('editDocumentType')} open={isEditModalOpen} onOk={editHandleOk} onCancel={editHandleCancel}>
         <div className='mt-5'>
           <Input
-            value={editedDoc.label}
+            value={editedDocumentType.label}
             onChange={(e) => {
-              setEditedDoc({ ...editedDoc, label: e.target.value
+              setEditedDocumentType({ ...editedDocumentType, label: e.target.value
             });
             }}
             placeholder={t('documentType')}

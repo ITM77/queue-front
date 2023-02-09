@@ -20,7 +20,7 @@ function ClaimTypes() {
       <Routes>
         <Route
           element={<ClaimTypesList />}
-          path="*"
+          path="/"
         />
         <Route
           element={<EditClaimTypes />}

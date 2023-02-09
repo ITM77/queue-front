@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Divider, Table, Modal, Input, Select } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import { getClaimsByStateApi } from '../../../http/claims';
+import { resetClaimsAC } from '../../../store/reducers/appReducer';
 
 const tableColumns = [
   {
@@ -31,6 +32,7 @@ function Rejected() {
   }
 
   useEffect(() => {
+    dispatch(resetClaimsAC())
     dispatch(getClaimsByStateApi(3))
   }, [])
 

@@ -14,7 +14,7 @@ function List() {
   const claims = useSelector(state => state.appReducer.claims);
 
   const getApplication = (item) => {
-    navigate(`license/${item.id}`)
+    navigate(`${item.id}`)
   }
 
   const tableColumns = [

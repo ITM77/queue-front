@@ -16,7 +16,7 @@ import Claims from './Claims/Claims'
 import Rejected from './Claims/Rejected'
 import ClaimTypes from './ClaimTypes/ClaimTypes';
 import DocumentTypes from './DocumentTypes/DocumentTypes';
-import License from './License/License';
+import Main from './License/Main';
 
 const { Header, Sider, Content } = Layout;
 const DashboardStyled = styled.div`
@@ -92,7 +92,7 @@ function Dashboard() {
       icon:  <FileProtectOutlined />,
     },
     {
-      key: '/claimTypes/*',
+      key: '/claimTypes',
       label: t('claimTypes'),
       component: <ClaimTypes/>,
       icon:  <FileProtectOutlined />,
@@ -121,9 +121,9 @@ function Dashboard() {
       ]
     },
     {
-      key: '/license/*',
+      key: '/license',
       label: t('license'),
-      component: <License/>,
+      component: <Main/>,
       icon:  <FileProtectOutlined />,
     },
   ];
@@ -199,7 +199,7 @@ function Dashboard() {
             <Routes>
               {nav.map(rout =>
                 rout?.component ? (
-                  <Route key={rout.key} path={rout.key} element={rout.component} />
+                  <Route key={rout.key} path={`${ rout.key }/*`} element={rout.component} />
                 ) : (
                   rout.children.map(roCh => (
                     <Route key={`${rout.key}${roCh.key}`} path={`${rout.key}${roCh.key}/*`} element={roCh.component} />

@@ -3,9 +3,11 @@ import { Button, Input, Upload, Divider } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { uploadFileApi, editClaimApi, approveClaimApi } from '../http/claims';
+import { useParams } from 'react-router-dom';
+import { uploadFileApi, editClaimApi, approveClaimApi, getClaimByIdApi } from '../http/claims';
 
 function EditClaim () {
+  const params = useParams();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const uploads = useSelector(state => state.appReducer.uploads);
@@ -45,6 +47,10 @@ function EditClaim () {
   }
 
   useEffect(() => {
+    dispatch(getClaimByIdApi(params.id))
+  }, [])
+
+  useEffect(() => {
     setEditedClaim({ ...editedClaim, name: claimInfo.name, number: claimInfo.number, type: claimInfo.claimTypeName} )
   }, [claimInfo])
 
@@ -78,7 +84,7 @@ function EditClaim () {
         </div>
       </div>
       <div className="flex justify-end mt-5">
-        <Button type="primary" onClick={editClaim}>
+        <Button style={{backgroundColor: '#6391af', color: '#fff'}}  onClick={editClaim}>
           {t('edit')}
         </Button>
         <Button type='primary' onClick={approveClaim} className='ml-3'>{t('confirm')}</Button>
