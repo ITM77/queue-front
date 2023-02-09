@@ -5,16 +5,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { editClaimTypesApi, getClaimTypeByIdApi } from '../../../http/claimTypes';
 import { getAllDocTypesApi } from '../../../http/docTypes';
-import { claimTypeAC } from '../../../store/reducers/appReducer'
+import { claimTypeAC } from '../../../store/reducers/claimTypes'
 
 function EditClaimTypes() {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const { t } = useTranslation();
   const params = useParams();
-  const selectedClaimTypes = useSelector(state => state.appReducer.selectedClaimTypes);
-  const documentTypes = useSelector(state => state.appReducer.documentTypes);
-  const claimType = useSelector(state => state.appReducer.claimType);
+  const selectedClaimTypes = useSelector(state => state.claimTypes.selectedClaimTypes);
+  const documentTypes = useSelector(state => state.documents.documentTypes);
+  const claimType = useSelector(state => state.claimTypes.claimType);
   const [selectedRowKeys, setSelectedRowKeys]  = useState([]);
 
   const editClaimType = () => {

@@ -7,14 +7,14 @@ import { useNavigate } from 'react-router-dom';
 import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { deleteClaimApi, getClaimsByStateApi } from '../../../http/claims';
 import NewClaim from '../../../components/NewClaim';
-import { resetClaimsAC } from '../../../store/reducers/appReducer';
+import { resetClaimsAC } from '../../../store/reducers/claims';
 
 function Current() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const claims = useSelector(state => state.appReducer.claims);
+  const claims = useSelector(state => state.claims.claims);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletedClaim, setDeletedClaim] = useState('')
 

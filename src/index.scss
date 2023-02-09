@@ -49,3 +49,16 @@ h1, h2, h3, h4, h5, h6, p, i, b, strong, a, li, div {
 .customList li {
   border-bottom: 1px solid #eee;
 }
+.hideFileInput {
+  opacity: 0;
+  height: 0;
+  width: 0;
+  line-height: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+.fileInputButton {
+  padding: 40px;
+  border: 1px dashed #eee;
+}

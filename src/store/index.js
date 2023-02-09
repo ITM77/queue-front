@@ -1,10 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit'
-import appReducer from './reducers/appReducer'
+import {configureStore} from "@reduxjs/toolkit";
+import {rootReducer} from "./reducers";
 
-const store = configureStore({
-  reducer: {
-    appReducer,
-  },
-})
 
-export default store
+const setupStore = () => configureStore({
+    reducer: rootReducer,
+    devTools: true
+  })
+
+export default setupStore

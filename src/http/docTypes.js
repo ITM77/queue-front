@@ -1,9 +1,10 @@
 import $host from './index'
 import notification  from '../utils/openNotification';
-import { isSpinAC, documentTypesAC, createDocumentTypeAC } from '../store/reducers/appReducer';
+import { isSpinAC } from '../store/reducers/app';
+import { documentTypesAC, createDocumentTypeAC } from '../store/reducers/documents';
 
 const getAllDocTypesApi = () => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.get(`documentTypes?all=true?locale=${currentState.lang}`)
@@ -17,7 +18,7 @@ const getAllDocTypesApi = () => async (dispatch, getState) => {
 }
 
 const createDocumentTypesApi = (params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.post(`documentTypes?locale=${currentState.lang}`, params)
@@ -32,7 +33,7 @@ const createDocumentTypesApi = (params) => async (dispatch, getState) => {
 }
 
 const deleteDocumentTypesApi = (params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     await $host.delete(`documentTypes/${params}?locale=${currentState.lang}`)
@@ -46,7 +47,7 @@ const deleteDocumentTypesApi = (params) => async (dispatch, getState) => {
 }
 
 const editDocumentTypesApi = (id, params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     await $host.post(`documentTypes/${id}?locale=${currentState.lang}`, params)

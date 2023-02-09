@@ -42,4 +42,6 @@ export default {
   "selectClaimType": 'Выберите тип заявки',
   "required": "Обязательное поле!",
   "documentList": "Список документов",
+  "documentName": "Название документа",
+  "claimTypeName": "Название заявки",
 }

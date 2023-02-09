@@ -10,7 +10,7 @@ function NewClaim() {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [isNewApplicationModalOpen, setIsNewApplicationModalOpen] = useState(false);
-  const claimTypes = useSelector(state => state.appReducer.claimTypes);
+  const claimTypes = useSelector(state => state.claimTypes.claimTypes);
   const [claim, setClaim] = useState({
     name: '',
     formType: '',

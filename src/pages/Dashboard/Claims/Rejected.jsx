@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Divider, Table, Modal, Input, Select } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import { getClaimsByStateApi } from '../../../http/claims';
-import { resetClaimsAC } from '../../../store/reducers/appReducer';
+import { resetClaimsAC } from '../../../store/reducers/claims';
 
 const tableColumns = [
   {
@@ -21,7 +21,7 @@ const tableColumns = [
 
 function Rejected() {
   const dispatch = useDispatch();
-  const claims = useSelector(state => state.appReducer.claims);
+  const claims = useSelector(state => state.claims.claims);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
 
   const applicationModalOk = () => {

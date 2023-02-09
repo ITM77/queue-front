@@ -3,7 +3,7 @@ import { Button, Input, Modal, Form } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { QuestionCircleOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import { deleteDocumentTypeAC, editDocumentTypesAC } from '../../../store/reducers/appReducer'
+import { deleteDocumentTypeAC, editDocumentTypesAC } from '../../../store/reducers/documents'
 import {
   createDocumentTypesApi,
   deleteDocumentTypesApi,
@@ -15,8 +15,7 @@ function DocumentTypes() {
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const documentTypes = useSelector(state => state.appReducer.documentTypes);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const documentTypes = useSelector(state => state.documents.documentTypes);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedDocumentTypes, setEditedDocumentTypes] = useState([])
@@ -61,16 +60,6 @@ function DocumentTypes() {
     setIsDeleteModalOpen(false);
   };
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
   const deleteDocumentType = () => {
     dispatch(deleteDocumentTypeAC(editedDocumentTypes))
     dispatch(deleteDocumentTypesApi(deletedDocument.value))
@@ -79,7 +68,6 @@ function DocumentTypes() {
 
   const createDocumentType = () => {
     dispatch(createDocumentTypesApi(createdDocument))
-    setIsModalOpen(false);
     form.resetFields();
   }
 
@@ -107,8 +95,36 @@ function DocumentTypes() {
     <div>
       <div className='flex justify-between'>
         <h1 className='text-lg'>{t('documentList')}</h1>
-        <Button type='primary' onClick={showModal}>{t('create')}</Button>
       </div>
+
+      <div className='mt-5'>
+        <Form
+          form={form}
+          onFinish={createDocumentType}
+          autoComplete="off"
+          className='w-full'
+        >
+          <div className='flex'>
+            <div className='w-full'>
+              <Form.Item
+                name="name"
+                rules={[{ required: true, message: 'Обязательное поле!' }]}
+                className="mb-2"
+              >
+                <Input className='w-full' type="text" onChange={(e) => {
+                  setCreatedDocument({...createdDocument,  label: e.target.value })
+                }} placeholder={t('documentName')}/>
+              </Form.Item>
+            </div>
+            <div className='flex justify-end ml-3'>
+              <Button type="primary" htmlType="submit">
+                {t('create')}
+              </Button>
+            </div>
+          </div>
+        </Form>
+      </div>
+
       <ul className='mt-5 customList'>
         { documentTypes.map((item) =>
           <li key={item.value} role='presentation' className='p-4 cursor-pointer flex justify-between list-disc' onClick={() => showEditModal(item)}>
@@ -118,32 +134,6 @@ function DocumentTypes() {
           )
         }
       </ul>
-      <Modal centered width={700} footer={null} title={t('createDocumentType')} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <div>
-          <Form
-            form={form}
-            onFinish={createDocumentType}
-            autoComplete="off"
-          >
-            <div>
-              <Form.Item
-                name="name"
-                rules={[{ required: true, message: 'Обязательное поле!' }]}
-                className="mb-2"
-              >
-                <Input type="text" onChange={(e) => {
-                  setCreatedDocument({...createdDocument,  label: e.target.value })
-                }} placeholder={t('documentType')}/>
-              </Form.Item>
-            </div>
-            <div className='flex justify-end mt-5'>
-              <Button type="primary" htmlType="submit">
-                {t('create')}
-              </Button>
-            </div>
-          </Form>
-        </div>
-      </Modal>
 
       <Modal width={700} footer={null} title={t('editDocumentType')} open={isEditModalOpen} onOk={editHandleOk} onCancel={editHandleCancel}>
         <div className='mt-5'>

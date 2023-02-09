@@ -1,10 +1,10 @@
 import $host from './index'
-import { isAuthAC, isSpinAC } from '../store/reducers/appReducer';
+import { isAuthAC, isSpinAC } from '../store/reducers/app';
 import openNotification from '../utils/openNotification';
 import { getUserApi } from './user';
 
 const loginApi = (params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.post(`auth/login?locale=${currentState.lang}`, params)

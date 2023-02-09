@@ -9,7 +9,7 @@ import { Layout, Dropdown, Menu, Avatar } from 'antd';
 import styled from 'styled-components';
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { isAuthAC } from '../../store/reducers/appReducer';
+import { isAuthAC } from '../../store/reducers/app';
 
 import Registration from './Registration/Registration'
 import Claims from './Claims/Claims'
@@ -82,7 +82,7 @@ function Dashboard() {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const location = useLocation();
-  const user = useSelector(state => state.appReducer.user);
+  const user = useSelector(state => state.app.user);
 
   const nav = [
     {

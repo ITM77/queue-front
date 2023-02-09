@@ -1,9 +1,9 @@
 import $host from './index'
-import { userAC, isSpinAC } from '../store/reducers/appReducer';
+import { userAC, isSpinAC } from '../store/reducers/app';
 import notification from '../utils/openNotification';
 
 const getUserApi = () => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.get(`users/me?locale=${currentState.lang}`)
@@ -17,7 +17,7 @@ const getUserApi = () => async (dispatch, getState) => {
 }
 
 const createUserApi = (params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.post(`users?locale=${currentState.lang}`, params)

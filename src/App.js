@@ -3,13 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import Auth from './pages/Auth/Auth';
 import Dashboard from './pages/Dashboard/Dashboard';
-import { isAuthAC } from './store/reducers/appReducer';
+import { isAuthAC } from './store/reducers/app';
 import { getUserApi } from './http/user'
 
 function App() {
   const dispatch = useDispatch();
-  const { isSpin } = useSelector(state => state.appReducer);
-  const isAuth = useSelector(state => state.appReducer.isAuth);
+  const isSpin  = useSelector(state => state.app.isSpin);
+  const isAuth = useSelector(state => state.app.isAuth);
 
   useEffect(() => {
     const token = localStorage.getItem('at');

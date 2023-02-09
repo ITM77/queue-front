@@ -11,8 +11,8 @@ function License() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const params = useParams();
-  const claimInfo = useSelector(state => state.appReducer.claimInfo);
-  const uploads = useSelector(state => state.appReducer.uploads);
+  const claimInfo = useSelector(state => state.claims.claimInfo);
+  const uploads = useSelector(state => state.claims.uploads);
 
   const checkFileFormat = (file) => {
     if (file.includes('png') || file.includes('jpg') || file.includes('svg')) {

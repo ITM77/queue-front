@@ -5,14 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { createClaimTypesApi, deleteClaimTypesApi, getClaimTypesApi } from '../../../http/claimTypes';
-import { deleteClaimTypeAC } from '../../../store/reducers/appReducer'
+import { deleteClaimTypeAC } from '../../../store/reducers/claimTypes'
 
 function ClaimTypesList() {
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const claimTypes = useSelector(state => state.appReducer.claimTypes);
+  const claimTypes = useSelector(state => state.claimTypes.claimTypes);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteClaim, setDeleteClaim] = useState('')
   const [editedClaimTypes, setEditedClaimTypes] = useState([])
@@ -77,15 +77,13 @@ function ClaimTypesList() {
         <h1 className='text-lg'>
           {t('claimTypes')}
         </h1>
-      </div>
-      <div className='flex mt-5'>
         <Select className='w-full mb-5'
           onChange={(value) => {
             getClaimTypes(value)
           }}
           defaultValue="1"
           style={{
-            width: '250px',
+            width: '200px',
           }}
           options={[
             {
@@ -98,27 +96,28 @@ function ClaimTypesList() {
             },
           ]}
         />
+      </div>
+      <div className='flex mt-3'>
         <Form
+          className='w-full'
           form={form}
           onFinish={createClaimType}
           autoComplete="off"
         >
           <div className='flex'>
-            <div className='ml-3'>
+            <div className='w-full'>
               <Form.Item
                 name="name"
                 rules={[{ required: true, message: 'Обязательное поле!' }]}
                 className="mb-2"
               >
                 <Input
+                  className='w-full'
                   type="text"
-                   style={{
-                     width: '450px',
-                   }}
                    onChange={(e) => {
                       setClaimType({...claimType, label: e.target.value})
                     }}
-                   placeholder={t('claimType')}
+                   placeholder={t('claimTypeName')}
                 />
               </Form.Item>
             </div>
