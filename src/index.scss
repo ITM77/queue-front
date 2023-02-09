@@ -36,3 +36,29 @@ h1, h2, h3, h4, h5, h6, p, i, b, strong, a, li, div {
   background: #39b9f5cc !important;
   color: #fff !important;
 }
+.deleteBasket {
+  color: #dd9090;
+}
+.deleteBasket:hover {
+  color: #e41919;
+}
+.customList li:hover {
+  background-color: #f3faff;
+  border-radius: 4px;
+}
+.customList li {
+  border-bottom: 1px solid #eee;
+}
+.hideFileInput {
+  opacity: 0;
+  height: 0;
+  width: 0;
+  line-height: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+.fileInputButton {
+  padding: 40px;
+  border: 1px dashed #eee;
+}

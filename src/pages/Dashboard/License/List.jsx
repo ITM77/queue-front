@@ -11,10 +11,10 @@ function List() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  const claims = useSelector(state => state.appReducer.claims);
+  const claims = useSelector(state => state.claims.claims);
 
   const getApplication = (item) => {
-    navigate(`license/${item.id}`)
+    navigate(`${item.id}`)
   }
 
   const tableColumns = [

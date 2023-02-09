@@ -1,19 +1,19 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
+import License from './License';
+import List from './List'
 
-import EditClaim from '../../../components/EditClaim'
-import Current from './Current'
+function Main() {
 
-function Claims() {
   return (
     <div>
       <Routes>
         <Route
-          element={<Current />}
+          element={<List />}
           path="*"
         />
         <Route
-          element={<EditClaim />}
+          element={<License />}
           path="/:id"
         />
       </Routes>
@@ -21,4 +21,4 @@ function Claims() {
   );
 }
 
-export default Claims;
+export default Main;

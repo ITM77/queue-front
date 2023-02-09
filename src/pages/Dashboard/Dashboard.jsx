@@ -9,14 +9,14 @@ import { Layout, Dropdown, Menu, Avatar } from 'antd';
 import styled from 'styled-components';
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { isAuthAC } from '../../store/reducers/appReducer';
+import { isAuthAC } from '../../store/reducers/app';
 
 import Registration from './Registration/Registration'
 import Claims from './Claims/Claims'
 import Rejected from './Claims/Rejected'
 import ClaimTypes from './ClaimTypes/ClaimTypes';
 import DocumentTypes from './DocumentTypes/DocumentTypes';
-import License from './License/License';
+import Main from './License/Main';
 
 const { Header, Sider, Content } = Layout;
 const DashboardStyled = styled.div`
@@ -82,7 +82,7 @@ function Dashboard() {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const location = useLocation();
-  const user = useSelector(state => state.appReducer.user);
+  const user = useSelector(state => state.app.user);
 
   const nav = [
     {
@@ -92,7 +92,7 @@ function Dashboard() {
       icon:  <FileProtectOutlined />,
     },
     {
-      key: '/claimTypes/*',
+      key: '/claimTypes',
       label: t('claimTypes'),
       component: <ClaimTypes/>,
       icon:  <FileProtectOutlined />,
@@ -121,9 +121,9 @@ function Dashboard() {
       ]
     },
     {
-      key: '/license/*',
+      key: '/license',
       label: t('license'),
-      component: <License/>,
+      component: <Main/>,
       icon:  <FileProtectOutlined />,
     },
   ];
@@ -199,7 +199,7 @@ function Dashboard() {
             <Routes>
               {nav.map(rout =>
                 rout?.component ? (
-                  <Route key={rout.key} path={rout.key} element={rout.component} />
+                  <Route key={rout.key} path={`${ rout.key }/*`} element={rout.component} />
                 ) : (
                   rout.children.map(roCh => (
                     <Route key={`${rout.key}${roCh.key}`} path={`${rout.key}${roCh.key}/*`} element={roCh.component} />

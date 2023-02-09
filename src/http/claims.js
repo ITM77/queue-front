@@ -1,9 +1,10 @@
 import $host from './index'
-import { isSpinAC, claimsAC, claimInfoAC, uploadsAC, uploadDocumentTypesAC } from '../store/reducers/appReducer';
+import { isSpinAC } from '../store/reducers/app';
+import { claimsAC, claimInfoAC, uploadsAC, uploadDocumentTypesAC } from '../store/reducers/claims';
 import notification  from '../utils/openNotification';
 
 const getClaimsByStateApi = (params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.get(`claims?state=${params}?locale=${currentState.lang}`)
@@ -17,7 +18,7 @@ const getClaimsByStateApi = (params) => async (dispatch, getState) => {
 }
 
 const newClaimApi = (params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     await $host.post(`claims?locale=${currentState.lang}`, params)
@@ -31,7 +32,7 @@ const newClaimApi = (params) => async (dispatch, getState) => {
 }
 
 const editClaimApi = (id, params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     await $host.post(`claims/${id}?locale=${currentState.lang}`, params)
@@ -45,7 +46,7 @@ const editClaimApi = (id, params) => async (dispatch, getState) => {
 }
 
 const approveClaimApi = (id, params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.post(`claims/${id}/approve?locale=${currentState.lang}`, params)
@@ -60,7 +61,7 @@ const approveClaimApi = (id, params) => async (dispatch, getState) => {
 }
 
 const deleteClaimApi = (params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     await $host.delete(`claims/${params}?locale=${currentState.lang}`)
@@ -75,7 +76,7 @@ const deleteClaimApi = (params) => async (dispatch, getState) => {
 }
 
 const getClaimDocumentsApi = (params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.get(`documents?claimId=${params}&locale=${currentState.lang}`)
@@ -91,7 +92,7 @@ const getClaimDocumentsApi = (params) => async (dispatch, getState) => {
 }
 
 const getClaimByIdApi = (params) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.get(`/claims/${params}?locale=${currentState.lang}`)
@@ -106,7 +107,7 @@ const getClaimByIdApi = (params) => async (dispatch, getState) => {
 }
 
 const uploadFileApi = (params, id) => async (dispatch, getState) => {
-  const currentState = getState().appReducer
+  const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     await $host.post(`documents?locale=${currentState.lang}`, params, {
