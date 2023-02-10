@@ -5,6 +5,7 @@ import { Button, Divider, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { getClaimByIdApi } from '../../../http/claims';
 import fileIcon from '../../../assets/images/file.jpg'
+import { clearDocumentsAC } from '../../../store/reducers/claims'
 
 function License() {
   const navigate = useNavigate()
@@ -23,6 +24,7 @@ function License() {
 
   useEffect(() => {
     dispatch(getClaimByIdApi(params.id))
+    dispatch(clearDocumentsAC())
   }, [])
 
 

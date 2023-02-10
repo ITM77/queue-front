@@ -59,6 +59,12 @@ h1, h2, h3, h4, h5, h6, p, i, b, strong, a, li, div {
   margin: 0;
 }
 .fileInputButton {
-  padding: 40px;
-  border: 1px dashed #eee;
+  width: 82px;
+  height: 82px;
+  font-size: 12px;
+  border-radius: 12px;
+  border: 2px dashed #eee;
+}
+.fileInputButton:hover {
+  border: 2px dashed #5bc8fa;
 }
