@@ -1,6 +1,6 @@
 import $host from './index'
 import { isSpinAC } from '../store/reducers/app';
-import { claimsAC, claimInfoAC, uploadsAC, uploadDocumentTypesAC } from '../store/reducers/claims';
+import { claimsAC, claimInfoAC, uploadsAC, uploadDocumentTypesAC, editUploadsAC } from '../store/reducers/claims';
 import notification  from '../utils/openNotification';
 
 const getClaimsByStateApi = (params) => async (dispatch, getState) => {
@@ -106,16 +106,16 @@ const getClaimByIdApi = (params) => async (dispatch, getState) => {
   }
 }
 
-const uploadFileApi = (params, id) => async (dispatch, getState) => {
+const uploadFileApi = (params, index) => async (dispatch, getState) => {
   const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
-    await $host.post(`documents?locale=${currentState.lang}`, params, {
+    const { data } = await $host.post(`documents?locale=${currentState.lang}`, params, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     })
-    dispatch(getClaimDocumentsApi(id))
+    dispatch(editUploadsAC({index, url: data.data.path}))
   } catch (e) {
     console.log(e);
     notification('error', e?.response?.data?.message)
