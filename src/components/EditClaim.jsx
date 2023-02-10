@@ -128,7 +128,6 @@ function EditClaim () {
           <Divider/>
         </div>
       )) }
-
     </div>
   );
 }
