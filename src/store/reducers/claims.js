@@ -9,6 +9,10 @@ const claims = createSlice({
     uploadDocumentTypes: [],
   },
   reducers: {
+    clearDocumentsAC(state) {
+      state.uploads = []
+      state.uploadDocumentTypes = []
+    },
     resetClaimsAC(state) {
       state.claims = []
     },
@@ -17,6 +21,9 @@ const claims = createSlice({
     },
     claimInfoAC(state, action) {
       state.claimInfo = action.payload
+    },
+    editUploadsAC(state, action) {
+      state.uploads[action.payload.index].push({ url:action.payload.url })
     },
     uploadsAC(state, action) {
       state.uploads = []
@@ -55,6 +62,6 @@ const claims = createSlice({
   }
 });
 
-export const { resetClaimsAC, claimsAC, claimInfoAC, uploadsAC, uploadDocumentTypesAC } = claims.actions;
+export const { resetClaimsAC, claimsAC, claimInfoAC, uploadsAC, uploadDocumentTypesAC, clearDocumentsAC, editUploadsAC } = claims.actions;
 
 export default claims.reducer;
