@@ -129,7 +129,6 @@ function EditClaim () {
         </div>
       )) }
 
-
     </div>
   );
 }
