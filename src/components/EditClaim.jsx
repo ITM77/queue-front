@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { uploadFileApi, editClaimApi, approveClaimApi, getClaimByIdApi } from '../http/claims';
+// import { editUploadsAC } from '../store/reducers/claims'
 import fileIcon from '../assets/images/file.jpg';
 import uploadIcon from '../assets/images/uploadIcon.png';
 
@@ -16,14 +17,7 @@ function EditClaim () {
   const uploadDocumentTypes = useSelector(state => state.claims.uploadDocumentTypes);
   const claimInfo = useSelector(state => state.claims.claimInfo);
   const [selectedDocumentName, setSelectedDocumentName] = useState('')
-  const [image, setImage] = useState();
-  console.log(image);
-  // const [imageUrl, setImageUrl] = useState();
-
-  const fileReader = new FileReader();
-  fileReader.onloadend = () => {
-    // setImageUrl(fileReader.result)
-  }
+  const [selectedDocumentIndex, setSelectedDocumentIndex] = useState();
 
   const [editedClaim, setEditedClaim] = useState({
     name: '',
@@ -40,38 +34,11 @@ function EditClaim () {
     formData.append(selectedDocumentName, event.target.files[0]);
     formData.append('claimId', claimInfo.id);
     formData.append('claimTypeId', claimInfo.claimTypeId);
-    dispatch(uploadFileApi(formData, claimInfo.id))
-
-    const file = event.target.files[0]
-    setImage(file)
-    fileReader.readAsDataURL(file)
+    dispatch(uploadFileApi(formData, selectedDocumentIndex))
   }
 
-  // const openOnNewtab = () => {
-  //   const contentType = 'image/png';
-  //
-  //   const byteCharacters = atob(imageUrl.substr(`data:${contentType};base64,`.length));
-  //   const byteArrays = [];
-  //
-  //   for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
-  //     const slice = byteCharacters.slice(offset, offset + 1024);
-  //
-  //     const byteNumbers = new Array(slice.length);
-  //     for (let i = 0; i < slice.length; i++) {
-  //       byteNumbers[i] = slice.charCodeAt(i);
-  //     }
-  //
-  //     const byteArray = new Uint8Array(byteNumbers);
-  //
-  //     byteArrays.push(byteArray);
-  //   }
-  //   const blob = new Blob(byteArrays, {type: contentType});
-  //   const blobUrl = URL.createObjectURL(blob);
-  //
-  //   window.open(blobUrl, '_blank');
-  // }
-
-  const handlePick = async (item) => {
+  const handlePick = async (item, index) => {
+    setSelectedDocumentIndex(index)
     await setSelectedDocumentName(item[0].name)
     filePicker.current.click()
   }
@@ -133,15 +100,13 @@ function EditClaim () {
       </div>
       <Divider/>
 
-      {/* <button type='button' onClick={openOnNewtab}>open</button> */}
-
       { uploadDocumentTypes.map((item, index) => (
         <div>
           <h1 className='mb-3 text-base'>{item[0].label}</h1>
           <div className='flex mb-7'>
             <div className='mr-7'>
               <input ref={filePicker} className='hideFileInput' type='file' onChange={customHandleChange} />
-              <button className='fileInputButton' type='button' onClick={() => handlePick(item)}>
+              <button className='fileInputButton' type='button' onClick={() => handlePick(item, index)}>
                 <div>
                   <span className='font-bold'>Загрузить</span>
                   <div className='flex justify-center mt-1'>
