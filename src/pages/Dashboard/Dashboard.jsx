@@ -87,42 +87,42 @@ function Dashboard() {
   const nav = [
     {
       key: '/documentTypes',
-      label: t('documentTypes'),
+      label: t('Document Types'),
       component: <DocumentTypes/>,
       icon:  <FileProtectOutlined />,
     },
     {
       key: '/claimTypes',
-      label: t('claimTypes'),
+      label: t('Claim Types'),
       component: <ClaimTypes/>,
       icon:  <FileProtectOutlined />,
     },
     {
       key: '/registration',
-      label: t('createUser'),
+      label: t('Create User'),
       component: <Registration/>,
       icon:  <FileProtectOutlined />,
     },
     {
       key: '/claims',
       icon:  <FileProtectOutlined />,
-      label: t('claims'),
+      label: t('Claims'),
       children: [
         {
           key: '/current',
-          label: t('current'),
+          label: t('Current'),
           component: <Claims/>
         },
         {
           key: '/rejected',
-          label: t('rejected'),
+          label: t('Rejected'),
           component: <Rejected/>
         },
       ]
     },
     {
       key: '/license',
-      label: t('license'),
+      label: t('License'),
       component: <Main/>,
       icon:  <FileProtectOutlined />,
     },
@@ -134,7 +134,7 @@ function Dashboard() {
         {
           key: '4',
           danger: true,
-          label: t('exit'),
+          label: t('Exit'),
           onClick: () => {
             localStorage.removeItem('at');
             localStorage.removeItem('rt');
@@ -144,7 +144,7 @@ function Dashboard() {
         {
           key: '5',
           danger: false,
-          label: t('language'),
+          label: t('Language'),
           onClick: () => {
             i18n.changeLanguage(i18n.language === 'ru' ? 'tj' : 'ru')
           },
@@ -189,7 +189,7 @@ function Dashboard() {
         <Layout>
           <Header>
             <div className='flex items-center'>
-              <p className='mr-4'>{t('Welcome')} {user.firstName} {user.lastName} !</p>
+              <p className='mr-4'>{t('Welcome')}, {user.firstName} {user.lastName}</p>
               <Dropdown overlay={menu} trigger={['click']}>
                 <Avatar icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
               </Dropdown>

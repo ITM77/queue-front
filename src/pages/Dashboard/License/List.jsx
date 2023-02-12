@@ -19,19 +19,19 @@ function List() {
 
   const tableColumns = [
     {
-      title: t('claimNumber'),
+      title: t('Claim Number'),
       dataIndex: 'number',
     },
     {
-      title: t('company'),
+      title: t('Company Name'),
       dataIndex: 'name'
     },
     {
-      title: t('createdAt'),
+      title: t('Created At'),
       dataIndex: 'createdAt',
     },
     {
-      title: t('expiresAt'),
+      title: t('Expires At'),
       dataIndex: 'expiresAt'
     },
   ];
@@ -43,7 +43,7 @@ function List() {
   return (
     <div>
       <div className='flex justify-between'>
-        <h1 className='text-lg'>{t('license')}</h1>
+        <h1 className='text-lg'>{t('License')}</h1>
       </div>
       <Divider/>
       <Table

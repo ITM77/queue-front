@@ -43,19 +43,19 @@ function Current() {
 
   const tableColumns = [
     {
-      title: t('claimNumber'),
+      title: t('Claim Number'),
       dataIndex: 'number',
     },
     {
-      title: t('company'),
+      title: t('Company Name'),
       dataIndex: 'name'
     },
     {
-      title: t('createdAt'),
+      title: t('Created At'),
       dataIndex: 'createdAt',
     },
     {
-      title: t('expiresAt'),
+      title: t('Expires At'),
       dataIndex: 'expiresAt'
     },
     {
@@ -74,7 +74,7 @@ function Current() {
   return (
     <div>
       <div className='flex justify-between'>
-        <h1 className='text-lg'>{t('current')}</h1>
+        <h1 className='text-lg'>{t('Current')}</h1>
         <NewClaim />
       </div>
       <Divider/>
@@ -93,11 +93,11 @@ function Current() {
               color: 'red',
               fontSize: '24px'
             }}
-          /> <p className='ml-3 text-base font-bold'>{t('sure')}</p>
+          /> <p className='ml-3 text-base font-bold'>{t('Sure')}</p>
         </div>
-        <p className='mt-5'>{t('confirmDelete')}</p>
+        <p className='mt-5'>{t('Confirm Delete')}</p>
         <div className='flex justify-end mt-5'>
-          <Button type='primary' onClick={deleteClaim}>{t('delete')}</Button>
+          <Button type='primary' onClick={deleteClaim}>{t('Delete')}</Button>
         </div>
       </Modal>
     </div>
