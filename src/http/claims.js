@@ -22,6 +22,7 @@ const newClaimApi = (params) => async (dispatch, getState) => {
   try {
     dispatch(isSpinAC(true))
     await $host.post(`claims?locale=${currentState.lang}`, params)
+    notification('success', currentState.lang === 'tj' ? 'Заявка создана' : 'Дархост сохта шуд')
     dispatch(getClaimsByStateApi(1))
   } catch (error) {
     notification('error', error?.response?.data?.message)
@@ -36,6 +37,7 @@ const editClaimApi = (id, params) => async (dispatch, getState) => {
   try {
     dispatch(isSpinAC(true))
     await $host.post(`claims/${id}?locale=${currentState.lang}`, params)
+    notification('success', currentState.lang === 'tj' ? 'Заявка отредактирована' : 'Дархост иваз шуд')
     dispatch(getClaimsByStateApi(1))
   } catch (error) {
     notification('error', error?.response?.data?.message)
@@ -65,7 +67,7 @@ const deleteClaimApi = (params) => async (dispatch, getState) => {
   try {
     dispatch(isSpinAC(true))
     await $host.delete(`claims/${params}?locale=${currentState.lang}`)
-    notification('success', 'Заявка удалена!')
+    notification('success', currentState.lang === 'tj' ? 'Заявка удалёна' : 'Дархост удалит шуд')
     dispatch(getClaimsByStateApi(1))
   } catch (e) {
     notification('error', e?.response?.data?.message)
