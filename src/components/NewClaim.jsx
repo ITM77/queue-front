@@ -78,11 +78,11 @@ function NewClaim() {
                 options={[
                   {
                     value: '1',
-                    label: 'Физическое лицо',
+                    label: t('Individual'),
                   },
                   {
                     value: '2',
-                    label: 'Юридическое лицо',
+                    label: t('Legal'),
                   },
                 ]}
                 onChange={(value) => {
