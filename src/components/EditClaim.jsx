@@ -65,50 +65,49 @@ function EditClaim () {
   return (
     <div>
       <div>
-        <p>{t('claimType')}</p>
         <Input
           disabled
           value={editedClaim.type}
-          placeholder={t('claimType')}
+          placeholder={t('Claim Type')}
         />
       </div>
       <div className='grid grid-cols-2 gap-3 items-center mt-5'>
         <div>
-          <p>{t('claimNumber')}</p>
           <Input
             disabled
             value={editedClaim.number}
-            placeholder={t('claimNumber')}
+            placeholder={t('Claim Number')}
           />
         </div>
         <div>
-          <p>{t('company')}</p>
           <Input
             value={editedClaim.name}
             onChange={(e) => {
               setEditedClaim({ ...editedClaim, name: e.target.value })
             }}
-            placeholder={t('company')}/>
+            placeholder={t('Company Name')}/>
         </div>
       </div>
 
-      <div className="flex justify-end mt-5">
+      <div className="flex mt-7">
         <Button style={{backgroundColor: '#6391af', color: '#fff'}}  onClick={editClaim}>
-          {t('edit')}
+          {t('Edit')}
         </Button>
-        <Button type='primary' onClick={approveClaim} className='ml-3'>{t('confirm')}</Button>
+        <Button type='primary' onClick={approveClaim} className='ml-3'>{t('Confirm')}</Button>
       </div>
       <Divider/>
 
       { uploadDocumentTypes.map((item, index) => (
         <div>
-          <h1 className='mb-3 text-base'>{item[0].label}</h1>
-          <div className='flex mb-7'>
-            <div className='mr-7'>
+          <h1 className='mb-3'>{item[0].label}</h1>
+          <div className='flex mb-3'>
+            <div className='mr-4'>
               <input ref={filePicker} className='hideFileInput' type='file' onChange={customHandleChange} />
-              <button className='fileInputButton' type='button' onClick={() => handlePick(item, index)}>
+              <button className='fileInputButton' type='button' style={{
+                padding: "20px"
+              }} onClick={() => handlePick(item, index)}>
                 <div>
-                  <span className='font-bold'>Загрузить</span>
+                  <span>{ t('Upload') }</span>
                   <div className='flex justify-center mt-1'>
                     <img className='w-6 h-6' src={uploadIcon} alt='' />
                   </div>
@@ -117,9 +116,14 @@ function EditClaim () {
             </div>
             <div className='flex'>
               {uploads[index].map((file) =>
-                <div className='mr-7 border rounded-xl p-2' key={file.uid}>
+                <div className='mr-4 border rounded-xl p-2' key={file.uid} style={{
+                  width: '12%'
+                }}>
                   <a href={file.url} target="_blank" rel="noreferrer">
-                    <img className='cursor-pointer w-16 h-16' src={checkFileFormat(file.url)} alt='' />
+                    <img className='cursor-pointer w-16 h-16' style={{
+                      width: '100%',
+                      height: '100%'
+                    }} src={checkFileFormat(file.url)} alt='' />
                   </a>
                 </div>
               )}

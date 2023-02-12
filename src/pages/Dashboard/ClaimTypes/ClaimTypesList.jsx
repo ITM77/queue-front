@@ -74,10 +74,7 @@ function ClaimTypesList() {
   return (
     <div>
       <div className='flex justify-between'>
-        <h1 className='text-lg'>
-          {t('claimTypes')}
-        </h1>
-        <Select className='w-full mb-5'
+        <Select className='w-full'
           onChange={(value) => {
             getClaimTypes(value)
           }}
@@ -88,11 +85,11 @@ function ClaimTypesList() {
           options={[
             {
               value: '1',
-              label: 'Физическое лицо',
+              label: t('Individual'),
             },
             {
               value: '2',
-              label: 'Юридическое лицо',
+              label: t('Legal'),
             },
           ]}
         />
@@ -108,7 +105,7 @@ function ClaimTypesList() {
             <div className='w-full'>
               <Form.Item
                 name="name"
-                rules={[{ required: true, message: 'Обязательное поле!' }]}
+                rules={[{ required: true, message: t('Required') }]}
                 className="mb-2"
               >
                 <Input
@@ -117,13 +114,13 @@ function ClaimTypesList() {
                    onChange={(e) => {
                       setClaimType({...claimType, label: e.target.value})
                     }}
-                   placeholder={t('claimTypeName')}
+                   placeholder={t('Claim Type Name')}
                 />
               </Form.Item>
             </div>
             <div className='ml-3'>
               <Button type="primary" htmlType="submit">
-                {t('create')}
+                {t('Create')}
               </Button>
             </div>
           </div>
@@ -132,9 +129,11 @@ function ClaimTypesList() {
 
       <ul className='mt-5 customList'>
         { claimTypes.map((item) =>
-          <li key={item.value} role='presentation' className='p-4 cursor-pointer flex justify-between list-disc' onClick={() => editClaim(item)}>
+          <li key={item.value} role='presentation' className='p-4 cursor-pointer flex justify-between list-disc' style={{
+            alignItems: 'center'
+          }} onClick={() => editClaim(item)}>
             <span>{item.label}</span>
-            <DeleteOutlined className='deleteBasket' style={{fontSize: '15px'}} onClick={(e) => showDeleteModal(e, item)}/>
+            <DeleteOutlined className='deleteBasket' style={{fontSize: '15px', width: '25px', height: '15px'}} onClick={(e) => showDeleteModal(e, item)}/>
           </li>
         )
         }
@@ -147,11 +146,11 @@ function ClaimTypesList() {
               color: 'red',
               fontSize: '24px'
             }}
-          /> <p className='ml-3 text-base font-bold'>{t('sure')}</p>
+          /> <p className='ml-3 text-base font-bold'>{t('Sure')}</p>
         </div>
-        <p className='mt-5'>{t('confirmDelete')}</p>
+        <p className='mt-5'>{t('Confirm Delete')}</p>
         <div className='flex justify-end mt-5'>
-          <Button type='primary' onClick={deleteClaimType}>{t('delete')}</Button>
+          <Button type='primary' onClick={deleteClaimType}>{t('Delete')}</Button>
         </div>
       </Modal>
     </div>

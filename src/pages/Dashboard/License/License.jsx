@@ -31,33 +31,33 @@ function License() {
   return (
     <div>
       <div className='flex justify-between'>
-        <h1 className='text-lg'>{t('license')}</h1>
-        <Button onClick={ () => navigate('/license')}>{t('backToList')}</Button>
+        <h1 className='text-lg'>{t('License')}</h1>
+        <Button onClick={ () => navigate('/license')}>{t('Back To List')}</Button>
       </div>
       <Divider />
       <div className='grid grid-cols-2 gap-3 items-center'>
         <div>
-          <p>{t('claimNumber')}</p>
+          <p>{t('Claim Number')}</p>
           <Input
             disabled
             value={claimInfo.number}
-            placeholder={t('claimNumber')}
+            placeholder={t('Claim Number')}
           />
         </div>
         <div>
-          <p>{t('company')}</p>
+          <p>{t('Company Name')}</p>
           <Input
             disabled
             value={claimInfo.name}
-            placeholder={t('company')}/>
+            placeholder={t('Company Name')}/>
         </div>
       </div>
       <div className='mt-3'>
-        <p>{t('claimType')}</p>
+        <p>{t('Claim Type')}</p>
         <Input
           disabled
           value={claimInfo.claimTypeName}
-          placeholder={t('claimType')}
+          placeholder={t('Claim Type')}
         />
       </div>
       <Divider/>

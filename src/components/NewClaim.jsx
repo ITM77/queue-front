@@ -40,8 +40,8 @@ function NewClaim() {
 
   return (
       <div>
-        <Button className='green-6' type='primary' onClick={newApplicationModalOpen}>{t('newClaim')}</Button>
-        <Modal footer={null} width={550} title={t('newClaim')} okText={t('create')} cancelText={t('cancel')} open={isNewApplicationModalOpen} onCancel={newApplicationModalCancel}>
+        <Button className='green-6' type='primary' onClick={newApplicationModalOpen}>{t('New Claim')}</Button>
+        <Modal footer={null} width={550} title={t('New Claim')} okText={t('Create')} cancelText={t('Cancel')} open={isNewApplicationModalOpen} onCancel={newApplicationModalCancel}>
           <Form
               form={form}
               onFinish={newApplicationModalOk}
@@ -50,31 +50,31 @@ function NewClaim() {
             <div>
               <Form.Item
                 name="number"
-                rules={[{ required: true, message: t('required') }]}
+                rules={[{ required: true, message: t('Required') }]}
                 className="mb-2"
               >
                 <Input type="text" onChange={(e) => {
                   setClaim({...claim,  number: e.target.value })
-                }} placeholder={t('claimNumber')}/>
+                }} placeholder={t('Claim Number')}/>
               </Form.Item>
             </div>
             <div className='mt-5'>
               <Form.Item
                   name="name"
-                  rules={[{ required: true, message: t('required') }]}
+                  rules={[{ required: true, message: t('Required') }]}
                   className="mb-2"
               >
                 <Input onChange={(e) => {
                   setClaim({...claim,  name: e.target.value })
-                }} placeholder={t('company')}/>
+                }} placeholder={t('Company Name')}/>
               </Form.Item>
             </div>
             <div className='mt-5'>
               <Form.Item
                 name="formType"
-                rules={[{ required: true, message: t('required') }]}
+                rules={[{ required: true, message: t('Required') }]}
               >
-              <Select className='w-full' placeholder={t('selectFormType')}
+              <Select className='w-full' placeholder={t('Select Form Type')}
                 options={[
                   {
                     value: '1',
@@ -94,10 +94,10 @@ function NewClaim() {
             <div className='mt-3'>
               <Form.Item
                 name="claimType"
-                rules={[{ required: true, message: t('required') }]}
+                rules={[{ required: true, message: t('Required') }]}
               >
               <Select className='w-full'
-                placeholder={t('selectClaimType')}
+                placeholder={t('Select Claim Type')}
                 options={claimTypes}
                 onChange={(value) => {
                   setClaim({...claim,  claimTypeId: value })
@@ -107,7 +107,7 @@ function NewClaim() {
             </div>
             <div className='flex justify-end mt-5'>
               <Button type="primary" htmlType="submit">
-                {t('create')}
+                {t('Create')}
               </Button>
             </div>
           </Form>

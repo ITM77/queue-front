@@ -28,7 +28,7 @@ function EditClaimTypes() {
 
   const columns = [
     {
-      title: t('documentList'),
+      title: t('Document List'),
       dataIndex: 'label',
     },
   ];
@@ -48,9 +48,9 @@ function EditClaimTypes() {
     <div>
       <div className='flex justify-between'>
         <h1 className='text-lg'>
-          {t('editClaimType')}
+          {t('Edit Claim Type')}
         </h1>
-        <Button onClick={ () => navigate('/claimTypes')}>{t('backToList')}</Button>
+        <Button onClick={ () => navigate('/claimTypes')}>{t('Back To List')}</Button>
       </div>
       <Divider />
       <div className='mt-5'>
@@ -59,7 +59,7 @@ function EditClaimTypes() {
           onChange={(e) => {
             dispatch(claimTypeAC({ ...claimType, label: e.target.value}));
           }}
-          placeholder={t('claimType')}
+          placeholder={t('Claim Type')}
         />
       </div>
       <div className='mt-5'>
@@ -78,7 +78,7 @@ function EditClaimTypes() {
         />
       </div>
       <div className='flex justify-end mt-5'>
-        <Button type='primary' onClick={editClaimType}>{t('edit')}</Button>
+        <Button type='primary' onClick={editClaimType}>{t('Save')}</Button>
       </div>
     </div>
   );
