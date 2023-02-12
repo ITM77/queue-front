@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import $host from './index'
 import notification  from '../utils/openNotification';
 import { isSpinAC } from '../store/reducers/app';
@@ -19,13 +18,12 @@ const getAllDocTypesApi = () => async (dispatch, getState) => {
 }
 
 const createDocumentTypesApi = (params) => async (dispatch, getState) => {
-  const { t } = useTranslation();
   const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     const { data } = await $host.post(`documentTypes?locale=${currentState.lang}`, params)
     dispatch(createDocumentTypeAC(data.data))
-    notification('success', t('Document Type Created'))
+    notification('success', currentState.lang === 'tj' ? 'Тип документа создан' : 'Намуди хуҷҷат сохта шуд')
   } catch (e) {
     notification('error', e.response.data.message)
   }
@@ -35,12 +33,11 @@ const createDocumentTypesApi = (params) => async (dispatch, getState) => {
 }
 
 const deleteDocumentTypesApi = (params) => async (dispatch, getState) => {
-  const { t } = useTranslation();
   const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     await $host.delete(`documentTypes/${params}?locale=${currentState.lang}`)
-    notification('success', t('Document Type Deleted'))
+    notification('success', currentState.lang === 'tj' ? 'Тип документа удалён' : 'Намуди хуҷҷат удалит шуд')
   } catch (e) {
     notification('error')
   }
@@ -50,12 +47,11 @@ const deleteDocumentTypesApi = (params) => async (dispatch, getState) => {
 }
 
 const editDocumentTypesApi = (id, params) => async (dispatch, getState) => {
-  const { t } = useTranslation();
   const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
     await $host.post(`documentTypes/${id}?locale=${currentState.lang}`, params)
-    notification('success', t('Document Type Edited'))
+    notification('success', currentState.lang === 'tj' ? 'Тип документа отредактирован' : 'Намуди хуҷҷат иваз шуд')
   } catch (e) {
     notification('error')
   }

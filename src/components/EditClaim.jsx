@@ -90,7 +90,7 @@ function EditClaim () {
       </div>
 
       <div className="flex mt-7">
-        <Button style={{backgroundColor: '#6391af', color: '#fff'}}  onClick={editClaim}>
+        <Button style={{backgroundColor: '#9ba0a3', color: '#fff'}}  onClick={editClaim}>
           {t('Edit')}
         </Button>
         <Button type='primary' onClick={approveClaim} className='ml-3'>{t('Confirm')}</Button>
@@ -116,14 +116,9 @@ function EditClaim () {
             </div>
             <div className='flex'>
               {uploads[index].map((file) =>
-                <div className='mr-4 border rounded-xl p-2' key={file.uid} style={{
-                  width: '12%'
-                }}>
+                <div className='mr-4 border rounded-xl p-2' key={file.uid}>
                   <a href={file.url} target="_blank" rel="noreferrer">
-                    <img className='cursor-pointer w-16 h-16' style={{
-                      width: '100%',
-                      height: '100%'
-                    }} src={checkFileFormat(file.url)} alt='' />
+                    <img className='cursor-pointer w-16 h-16' src={checkFileFormat(file.url)} alt='' />
                   </a>
                 </div>
               )}
