@@ -64,6 +64,7 @@ function EditClaimTypes() {
       </div>
       <div className='mt-5'>
         <Table
+          showHeader={false}
           pagination={false}
           rowKey='value'
           rowSelection={{

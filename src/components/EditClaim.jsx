@@ -90,7 +90,7 @@ function EditClaim () {
       </div>
 
       <div className="flex mt-7">
-        <Button style={{backgroundColor: '#9ba0a3', color: '#fff'}}  onClick={editClaim}>
+        <Button style={{backgroundColor: '#9ba0a3', color: '#fff', border: 'none'}}  onClick={editClaim}>
           {t('Edit')}
         </Button>
         <Button type='primary' onClick={approveClaim} className='ml-3'>{t('Confirm')}</Button>
@@ -104,7 +104,7 @@ function EditClaim () {
             <div className='mr-4'>
               <input ref={filePicker} className='hideFileInput' type='file' onChange={customHandleChange} />
               <button className='fileInputButton' type='button' style={{
-                padding: "20px"
+                padding: "15px"
               }} onClick={() => handlePick(item, index)}>
                 <div>
                   <span>{ t('Upload') }</span>

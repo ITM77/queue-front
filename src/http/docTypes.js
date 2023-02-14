@@ -7,7 +7,7 @@ const getAllDocTypesApi = () => async (dispatch, getState) => {
   const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
-    const { data } = await $host.get(`documentTypes?all=true?locale=${currentState.lang}`)
+    const { data } = await $host.get(`documentTypes?all=true&locale=${currentState.lang}`)
     dispatch(documentTypesAC(data.data))
   } catch (e) {
     notification('error', e.response.data.message)

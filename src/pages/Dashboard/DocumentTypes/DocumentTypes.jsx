@@ -126,8 +126,10 @@ function DocumentTypes() {
           <li key={item.value} role='presentation' className='p-4 cursor-pointer flex justify-between list-disc' style={{
             alignItems: 'center'
           }} onClick={() => showEditModal(item)}>
-            <span>{item.label}</span>
-            <DeleteOutlined className='deleteBasket' style={{fontSize: '15px', width: '25px', height: '15px'}} onClick={(e) => showDeleteModal(e, item)}/>
+            <p>{item.label}</p>
+            <div className='ml-4'>
+              <DeleteOutlined className='deleteBasket' style={{fontSize: '15px', width: '25px', height: '15px'}} onClick={(e) => showDeleteModal(e, item)}/>
+            </div>
           </li>
           )
         }

@@ -80,7 +80,7 @@ function ClaimTypesList() {
           }}
           defaultValue="1"
           style={{
-            width: '200px',
+            width: '250px',
           }}
           options={[
             {
@@ -133,7 +133,9 @@ function ClaimTypesList() {
             alignItems: 'center'
           }} onClick={() => editClaim(item)}>
             <span>{item.label}</span>
-            <DeleteOutlined className='deleteBasket' style={{fontSize: '15px', width: '25px', height: '15px'}} onClick={(e) => showDeleteModal(e, item)}/>
+            <div className='ml-4'>
+              <DeleteOutlined className='deleteBasket' style={{fontSize: '15px', width: '25px', height: '15px'}} onClick={(e) => showDeleteModal(e, item)}/>
+            </div>
           </li>
         )
         }
