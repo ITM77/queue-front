@@ -7,7 +7,7 @@ const getClaimsByStateApi = (params) => async (dispatch, getState) => {
   const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
-    const { data } = await $host.get(`claims?state=${params}?locale=${currentState.lang}`)
+    const { data } = await $host.get(`claims?state=${params}&locale=${currentState.lang}&all=true`)
     dispatch(claimsAC(data.data))
   } catch (e) {
     notification('error', e?.response?.data?.message)

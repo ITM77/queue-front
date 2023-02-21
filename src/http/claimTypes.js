@@ -12,7 +12,7 @@ const getClaimTypesApi = (params) => async (dispatch, getState) => {
   const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
-    const { data } = await $host.get(`claimTypes?formType=${params}?locale=${currentState.lang}`)
+    const { data } = await $host.get(`claimTypes?formType=${params}&locale=${currentState.lang}`)
     dispatch(claimTypesAC(data.data))
   } catch (e) {
     notification('error', e.response.data.message)

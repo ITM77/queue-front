@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Input, Divider } from 'antd';
+import { Button, Input, Divider, Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { uploadFileApi, editClaimApi, approveClaimApi, getClaimByIdApi } from '../http/claims';
-// import { editUploadsAC } from '../store/reducers/claims'
 import fileIcon from '../assets/images/file.jpg';
 import uploadIcon from '../assets/images/uploadIcon.png';
+import deleteIcon from '../assets/images/deleteIcon.svg'
 
 function EditClaim () {
   const filePicker = useRef()
@@ -18,6 +19,7 @@ function EditClaim () {
   const claimInfo = useSelector(state => state.claims.claimInfo);
   const [selectedDocumentName, setSelectedDocumentName] = useState('')
   const [selectedDocumentIndex, setSelectedDocumentIndex] = useState();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const [editedClaim, setEditedClaim] = useState({
     name: '',
@@ -48,6 +50,23 @@ function EditClaim () {
       return file
     }
     return fileIcon
+  }
+
+  const showDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  }
+
+  const deleteHandleOk = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const deleteHandleCancel = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const deleteDocument = () => {
+    console.log('deleted');
+    setIsDeleteModalOpen(false);
   }
 
   const approveClaim = () => {
@@ -90,7 +109,7 @@ function EditClaim () {
       </div>
 
       <div className="flex mt-7">
-        <Button style={{backgroundColor: '#9ba0a3', color: '#fff'}}  onClick={editClaim}>
+        <Button style={{backgroundColor: '#9ba0a3', color: '#fff', border: 'none'}}  onClick={editClaim}>
           {t('Edit')}
         </Button>
         <Button type='primary' onClick={approveClaim} className='ml-3'>{t('Confirm')}</Button>
@@ -104,7 +123,7 @@ function EditClaim () {
             <div className='mr-4'>
               <input ref={filePicker} className='hideFileInput' type='file' onChange={customHandleChange} />
               <button className='fileInputButton' type='button' style={{
-                padding: "20px"
+                padding: "15px"
               }} onClick={() => handlePick(item, index)}>
                 <div>
                   <span>{ t('Upload') }</span>
@@ -116,10 +135,15 @@ function EditClaim () {
             </div>
             <div className='flex'>
               {uploads[index].map((file) =>
-                <div className='mr-4 border rounded-xl p-2' key={file.uid}>
-                  <a href={file.url} target="_blank" rel="noreferrer">
-                    <img className='cursor-pointer w-16 h-16' src={checkFileFormat(file.url)} alt='' />
-                  </a>
+                <div className='mr-4 border rounded-xl p-2' key={file.uid} style={{width: '82px', height: '82px'}}>
+                  <div className='absolute'>
+                    <a href={file.url} target="_blank" rel="noreferrer">
+                      <img className='cursor-pointer w-16 h-16' src={checkFileFormat(file.url)} alt='' />
+                    </a>
+                    <button type='button' onClick={showDeleteModal}>
+                      <img className='absolute cursor-pointer' src={deleteIcon} alt='' style={{ top: '-5px', right: '-5px'}}/>
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -127,6 +151,21 @@ function EditClaim () {
           <Divider/>
         </div>
       )) }
+
+      <Modal footer={null} open={isDeleteModalOpen} onOk={deleteHandleOk} onCancel={deleteHandleCancel}>
+        <div className='flex items-center'>
+          <QuestionCircleOutlined
+            style={{
+              color: 'red',
+              fontSize: '24px'
+            }}
+          /> <p className='ml-3 text-base font-bold'>{t('Sure')}</p>
+        </div>
+        <p className='mt-5'>{t('Confirm Delete')}</p>
+        <div className='flex justify-end mt-5'>
+          <Button type='primary' onClick={deleteDocument}>{t('Delete')}</Button>
+        </div>
+      </Modal>
     </div>
   );
 }
