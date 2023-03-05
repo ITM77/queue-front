@@ -7,7 +7,7 @@ const getAllDocTypesApi = () => async (dispatch, getState) => {
   const currentState = getState().app
   try {
     dispatch(isSpinAC(true))
-    const { data } = await $host.get(`documentTypes?all=true?locale=${currentState.lang}`)
+    const { data } = await $host.get(`documentTypes?all=true&locale=${currentState.lang}`)
     dispatch(documentTypesAC(data.data))
   } catch (e) {
     notification('error', e.response.data.message)
@@ -23,7 +23,7 @@ const createDocumentTypesApi = (params) => async (dispatch, getState) => {
     dispatch(isSpinAC(true))
     const { data } = await $host.post(`documentTypes?locale=${currentState.lang}`, params)
     dispatch(createDocumentTypeAC(data.data))
-    notification('success', 'Тип документа успешно создан!')
+    notification('success', currentState.lang === 'tj' ? 'Тип документа создан' : 'Намуди хуҷҷат сохта шуд')
   } catch (e) {
     notification('error', e.response.data.message)
   }
@@ -37,7 +37,7 @@ const deleteDocumentTypesApi = (params) => async (dispatch, getState) => {
   try {
     dispatch(isSpinAC(true))
     await $host.delete(`documentTypes/${params}?locale=${currentState.lang}`)
-    notification('success', 'Тип документа удален!')
+    notification('success', currentState.lang === 'tj' ? 'Тип документа удалён' : 'Намуди хуҷҷат удалит шуд')
   } catch (e) {
     notification('error')
   }
@@ -51,7 +51,7 @@ const editDocumentTypesApi = (id, params) => async (dispatch, getState) => {
   try {
     dispatch(isSpinAC(true))
     await $host.post(`documentTypes/${id}?locale=${currentState.lang}`, params)
-    notification('success', 'Тип документа редактирован!')
+    notification('success', currentState.lang === 'tj' ? 'Тип документа отредактирован' : 'Намуди хуҷҷат иваз шуд')
   } catch (e) {
     notification('error')
   }

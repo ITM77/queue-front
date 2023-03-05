@@ -21,7 +21,6 @@ function Registration() {
   }
   return (
     <div>
-      <h1 className='text-lg'>{t('claimNumber')}</h1>
       <Divider />
       <Form
         form={form}
@@ -31,62 +30,62 @@ function Registration() {
         <div>
           <div className='grid grid-cols-2 gap-7'>
             <div>
-              <p>{t('name')}</p>
+              <p>{t('Name')}</p>
               <Form.Item
                 name="firstname"
-                rules={[{ required: true, message: 'Обязательное поле!' }]}
+                rules={[{ required: true, message: t('Required') }]}
                 className="mb-2"
               >
                 <Input type="text" onChange={(e) => {
                   user.firstname = e.target.value
-                }} placeholder={t('name')}/>
+                }} placeholder={t('Name')}/>
               </Form.Item>
             </div>
             <div>
-              <p>{t('username')}</p>
+              <p>{t('Username')}</p>
               <Form.Item
                 name="username"
-                rules={[{ required: true, message: 'Обязательное поле!' }]}
+                rules={[{ required: true, message: t('Required') }]}
                 className="mb-2"
               >
                 <Input type="text" onChange={(e) => {
                   user.username = e.target.value
-                }} placeholder={t('username')}/>
+                }} placeholder={t('Username')}/>
               </Form.Item>
             </div>
           </div>
 
           <div className='grid grid-cols-2 gap-7'>
             <div>
-              <p>{t('lastname')}</p>
+              <p>{t('Lastname')}</p>
               <Form.Item
                 name="lastname"
-                rules={[{ required: true, message: 'Обязательное поле!' }]}
+                rules={[{ required: true, message: t('Required') }]}
                 className="mb-2"
               >
                 <Input type="text" onChange={(e) => {
                   user.lastname = e.target.value
-                }} placeholder={t('lastname')}/>
+                }} placeholder={t('Lastname')}/>
               </Form.Item>
             </div>
 
             <div>
-              <p>{t('password')}</p>
+              <p>{t('Password')}</p>
               <Form.Item
                 name="password"
-                rules={[{ required: true, message: 'Обязательное поле!' }]}
+                rules={[{ required: true, message: t('Required') }]}
                 className="mb-2"
               >
                 <Input type="text" onChange={(e) => {
                   user.password = e.target.value
-                }} placeholder={t('password')}/>
+                }} placeholder={t('Password')}/>
               </Form.Item>
             </div>
           </div>
           <Form.Item className="mt-5">
             <div className="flex justify-end">
               <Button type="primary" htmlType="submit">
-                {t('create')}
+                {t('Create')}
               </Button>
             </div>
           </Form.Item>

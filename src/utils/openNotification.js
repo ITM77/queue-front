@@ -3,14 +3,14 @@ import { notification } from 'antd'
 const openNotification = (type, desc) => {
   if (type === 'success') {
     notification.success({
-      message: 'Успешно',
-      description: desc || 'Выполненно успешно!',
+      message: '',
+      description: desc || 'Success',
       placement: 'bottomRight',
     })
   } else {
     notification.error({
-      message: 'Ошибка',
-      description: desc || 'Что-то пошло не так!',
+      message: '',
+      description: desc || 'Error',
       placement: 'bottomRight',
     })
   }

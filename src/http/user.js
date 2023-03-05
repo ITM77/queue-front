@@ -22,7 +22,7 @@ const createUserApi = (params) => async (dispatch, getState) => {
     dispatch(isSpinAC(true))
     const { data } = await $host.post(`users?locale=${currentState.lang}`, params)
     if (data.data) {
-      notification('success', 'Пользователь успешно создан!')
+      notification('success', currentState.lang === 'tj' ? 'Пользователь создан' : 'Корбар сохта шуд')
     } else {
       notification('error', data.message)
     }

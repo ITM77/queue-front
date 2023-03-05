@@ -93,10 +93,6 @@ function DocumentTypes() {
 
   return (
     <div>
-      <div className='flex justify-between'>
-        <h1 className='text-lg'>{t('documentList')}</h1>
-      </div>
-
       <div className='mt-5'>
         <Form
           form={form}
@@ -108,17 +104,17 @@ function DocumentTypes() {
             <div className='w-full'>
               <Form.Item
                 name="name"
-                rules={[{ required: true, message: 'Обязательное поле!' }]}
+                rules={[{ required: true, message: t('Required') }]}
                 className="mb-2"
               >
                 <Input className='w-full' type="text" onChange={(e) => {
                   setCreatedDocument({...createdDocument,  label: e.target.value })
-                }} placeholder={t('documentName')}/>
+                }} placeholder={t('Document Name')}/>
               </Form.Item>
             </div>
             <div className='flex justify-end ml-3'>
               <Button type="primary" htmlType="submit">
-                {t('create')}
+                {t('Create')}
               </Button>
             </div>
           </div>
@@ -127,27 +123,33 @@ function DocumentTypes() {
 
       <ul className='mt-5 customList'>
         { documentTypes.map((item) =>
-          <li key={item.value} role='presentation' className='p-4 cursor-pointer flex justify-between list-disc' onClick={() => showEditModal(item)}>
-            <span>{item.label}</span>
-            <DeleteOutlined className='deleteBasket' style={{fontSize: '15px'}} onClick={(e) => showDeleteModal(e, item)}/>
+          <li key={item.value} role='presentation' className='p-4 cursor-pointer flex justify-between list-disc' style={{
+            alignItems: 'center'
+          }} onClick={() => showEditModal(item)}>
+            <p>{item.label}</p>
+            <div className='ml-4'>
+              <DeleteOutlined className='deleteBasket' style={{fontSize: '15px', width: '25px', height: '15px'}} onClick={(e) => showDeleteModal(e, item)}/>
+            </div>
           </li>
           )
         }
       </ul>
 
-      <Modal width={700} footer={null} title={t('editDocumentType')} open={isEditModalOpen} onOk={editHandleOk} onCancel={editHandleCancel}>
-        <div className='mt-5'>
+      <Modal width={700} footer={null} title={t('Editing Document Type')} open={isEditModalOpen} onOk={editHandleOk} onCancel={editHandleCancel}>
+        <div style={{
+          marginTop: '2.5em'
+        }}>
           <Input
             value={editedDocumentType.label}
             onChange={(e) => {
               setEditedDocumentType({ ...editedDocumentType, label: e.target.value
             });
             }}
-            placeholder={t('documentType')}
+            placeholder={t('Document Type')}
           />
         </div>
         <div className='flex justify-end mt-5'>
-          <Button type='primary' onClick={editDocumentType}>{t('edit')}</Button>
+          <Button type='primary' onClick={editDocumentType}>{t('Save')}</Button>
         </div>
       </Modal>
 
@@ -158,11 +160,11 @@ function DocumentTypes() {
               color: 'red',
               fontSize: '24px'
             }}
-          /> <p className='ml-3 text-base font-bold'>{t('sure')}</p>
+          /> <p className='ml-3 text-base font-bold'>{t('Sure')}</p>
         </div>
-        <p className='mt-5'>{t('confirmDelete')}</p>
+        <p className='mt-5'>{t('Confirm Delete')}</p>
         <div className='flex justify-end mt-5'>
-          <Button type='primary' onClick={deleteDocumentType}>{t('delete')}</Button>
+          <Button type='primary' onClick={deleteDocumentType}>{t('Delete')}</Button>
         </div>
       </Modal>
 

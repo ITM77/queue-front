@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Modal, Table } from 'antd';
+import { Button, Divider, Modal, Table, Input, DatePicker } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,8 @@ import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { deleteClaimApi, getClaimsByStateApi } from '../../../http/claims';
 import NewClaim from '../../../components/NewClaim';
 import { resetClaimsAC } from '../../../store/reducers/claims';
+
+const { RangePicker } = DatePicker;
 
 function Current() {
   const { t } = useTranslation();
@@ -43,19 +45,19 @@ function Current() {
 
   const tableColumns = [
     {
-      title: t('claimNumber'),
+      title: t('Claim Number'),
       dataIndex: 'number',
     },
     {
-      title: t('company'),
+      title: t('Company Name'),
       dataIndex: 'name'
     },
     {
-      title: t('createdAt'),
+      title: t('Created At'),
       dataIndex: 'createdAt',
     },
     {
-      title: t('expiresAt'),
+      title: t('Expires At'),
       dataIndex: 'expiresAt'
     },
     {
@@ -74,10 +76,16 @@ function Current() {
   return (
     <div>
       <div className='flex justify-between'>
-        <h1 className='text-lg'>{t('current')}</h1>
+        <h1 className='text-lg'>{t('Current')}</h1>
         <NewClaim />
       </div>
       <Divider/>
+      <div className='my-5 grid grid-cols-5 gap-4'>
+        <Input placeholder='По номеру заявки' />
+        <Input placeholder='По названию' />
+        <RangePicker placeholder={["Дата начала", "Дата окончания"]} className='col-span-2' />
+        <Button style={{width: 120}} type='primary'>Найти</Button>
+      </div>
       <Table
         onRow={(record) => ({
           onClick: () => {getApplication(record)}
@@ -93,11 +101,11 @@ function Current() {
               color: 'red',
               fontSize: '24px'
             }}
-          /> <p className='ml-3 text-base font-bold'>{t('sure')}</p>
+          /> <p className='ml-3 text-base font-bold'>{t('Sure')}</p>
         </div>
-        <p className='mt-5'>{t('confirmDelete')}</p>
+        <p className='mt-5'>{t('Confirm Delete')}</p>
         <div className='flex justify-end mt-5'>
-          <Button type='primary' onClick={deleteClaim}>{t('delete')}</Button>
+          <Button type='primary' onClick={deleteClaim}>{t('Delete')}</Button>
         </div>
       </Modal>
     </div>
