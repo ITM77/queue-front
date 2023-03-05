@@ -20,7 +20,7 @@ export default {
   "Created At": "Санаи ворид кардан",
   "Expires At": "Муҳлат",
   "Delete": "Тоза кардан",
-  "Current": "Аз нав ворид шудаги",
+  "Current": "Аз нав ворид шудагихо",
   "Confirm": "Тасдиқ кардан",
   "Sure": "Бовари доред?",
   "Confirm Delete": "Мехохед нест кунед?",
@@ -50,5 +50,6 @@ export default {
   "User Created": "Корбар сохта шуд",
   "Document Type Created": "Намуди хуҷҷат сохта шуд",
   "Document Type Deleted": "Намуди хуҷҷат удалит шуд",
-  "Document Type Edited": "Намуди хуҷҷат иваз шуд"
+  "Document Type Edited": "Намуди хуҷҷат иваз шуд",
+  "Search": 'Ефтан',
 }

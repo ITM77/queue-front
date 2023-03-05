@@ -50,5 +50,6 @@ export default {
   "User Created": "Пользователь создан",
   "Document Type Created": "Тип документа создан",
   "Document Type Deleted": "Тип документа удалён",
-  "Document Type Edited": "Тип документа отредактирован"
+  "Document Type Edited": "Тип документа отредактирован",
+  "Search": 'Найти',
 }

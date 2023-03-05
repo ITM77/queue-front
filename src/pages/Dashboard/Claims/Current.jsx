@@ -84,7 +84,7 @@ function Current() {
         <Input placeholder='По номеру заявки' />
         <Input placeholder='По названию' />
         <RangePicker placeholder={["Дата начала", "Дата окончания"]} className='col-span-2' />
-        <Button style={{width: 120}} type='primary'>Найти</Button>
+        <Button style={{width: 120}} type='primary'>{t('Search')}</Button>
       </div>
       <Table
         onRow={(record) => ({
