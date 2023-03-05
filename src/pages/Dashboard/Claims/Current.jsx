@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Modal, Table } from 'antd';
+import { Button, Divider, Modal, Table, Input, DatePicker } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,8 @@ import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { deleteClaimApi, getClaimsByStateApi } from '../../../http/claims';
 import NewClaim from '../../../components/NewClaim';
 import { resetClaimsAC } from '../../../store/reducers/claims';
+
+const { RangePicker } = DatePicker;
 
 function Current() {
   const { t } = useTranslation();
@@ -78,6 +80,12 @@ function Current() {
         <NewClaim />
       </div>
       <Divider/>
+      <div className='my-5 grid grid-cols-5 gap-4'>
+        <Input placeholder='По номеру заявки' />
+        <Input placeholder='По названию' />
+        <RangePicker placeholder={["Дата начала", "Дата окончания"]} className='col-span-2' />
+        <Button style={{width: 120}} type='primary'>Найти</Button>
+      </div>
       <Table
         onRow={(record) => ({
           onClick: () => {getApplication(record)}
