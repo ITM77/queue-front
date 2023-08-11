@@ -3,26 +3,35 @@ import { isAuthAC, isSpinAC } from '../store/reducers/app';
 import notification from '../utils/openNotification';
 import { getUserApi } from './user';
 
-const loginApi = (params) => async (dispatch, getState) => {
-  const currentState = getState().app
+const loginApi = (query) => async (dispatch) => {
   try {
     dispatch(isSpinAC(true))
-    const { data } = await $host.post(`auth/login?locale=${currentState.lang}`, params)
-
-    if (data.data) {
-      localStorage.setItem('at', data.data.accessToken);
-      localStorage.setItem('rt', data.data.refreshToken);
+    const { data } = await $host.post('login', query)
+    if (data.meta.success) {
+      localStorage.setItem('at', data.response.token);
       dispatch(isAuthAC(true))
       dispatch(getUserApi())
     } else {
-      notification('error', data.message)
+      notification('error', data.meta.message)
     }
   } catch (e) {
-    notification('success', currentState.lang === 'ru' ? 'Неправильный логин или пароль' : 'Логин ё парол нодуруст')
+    notification('Неправильный логин или пароль')
   }
   finally {
     dispatch(isSpinAC(false))
   }
 }
 
-export { loginApi }
+const logOutApi = () => async (dispatch) => {
+  try {
+    dispatch(isSpinAC(true))
+    await $host.get('logout')
+  } catch (e) {
+    notification('error', e.response.data.message)
+  }
+  finally {
+    dispatch(isSpinAC(false))
+  }
+}
+
+export { loginApi, logOutApi }

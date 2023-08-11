@@ -1,10 +1,10 @@
-import { Spin } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { Spin } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
 import Auth from './pages/Auth/Auth';
 import Dashboard from './pages/Dashboard/Dashboard';
+import { getUserApi } from './http/user';
 import { isAuthAC } from './store/reducers/app';
-import { getUserApi } from './http/user'
 
 function App() {
   const dispatch = useDispatch();

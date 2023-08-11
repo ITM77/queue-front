@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 const $host = axios.create({
-  baseURL: 'http://31.184.253.218:8082',
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  },
+  baseURL: process.env.REACT_APP_BASE_URL,
+  // headers: {
+  //   'Content-Type': 'application/json',
+  //   Accept: 'application/json',
+  // },
 });
 
 $host.interceptors.request.use(config => {
@@ -21,7 +21,7 @@ $host.interceptors.response.use(
       try {
         const refresh = localStorage.getItem('rt')
         if (refresh) {
-          const response = await axios.post(`http://31.184.253.218:8082/auth/accessToken`, {
+          const response = await axios.post('url', {
             refreshToken: refresh,
           });
           if (response.data) {
@@ -30,6 +30,7 @@ $host.interceptors.response.use(
           }
         }
       } catch (e) {
+        console.log('sf');
         localStorage.removeItem('at');
         localStorage.removeItem('rt');
         window.location.reload();

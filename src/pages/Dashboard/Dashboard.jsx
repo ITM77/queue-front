@@ -1,24 +1,25 @@
-import React  from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  UserOutlined,
-  FileProtectOutlined,
-} from '@ant-design/icons';
-
-import { Layout, Dropdown, Menu, Avatar } from 'antd';
+import React from 'react';
 import styled from 'styled-components';
+import { Layout, Dropdown, Menu, Avatar } from 'antd';
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { UserOutlined, FileProtectOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { isAuthAC } from '../../store/reducers/app';
 
-import Registration from './Registration/Registration'
-import Claims from './Claims/Claims'
-import Rejected from './Claims/Rejected'
-import ClaimTypes from './ClaimTypes/ClaimTypes';
-import DocumentTypes from './DocumentTypes/DocumentTypes';
-import Main from './License/Main';
+import Test from './Test';
+import MyClients from './MyClients';
+import Cabinet from './Cabinet';
+import AllUsers from './AllUsers';
+import ServiceCenters from './ServiceCenters';
+import Services from './Services';
+import Clients from './Clients';
+import Queue from './Queue';
+
+import { logOutApi } from '../../http/auth';
+import ServiceCategories from './ServiceCategories';
 
 const { Header, Sider, Content } = Layout;
+
 const DashboardStyled = styled.div`
   .trigger {
     font-size: 18px;
@@ -30,10 +31,13 @@ const DashboardStyled = styled.div`
   .trigger:hover {
     color: #e53540 !important;
   }
-  .ant-menu-item, .ant-menu-submenu span, i {
+  .ant-menu-item,
+  .ant-menu-submenu span,
+  i {
     color: #fff !important;
   }
-  .ant-menu-item, .ant-menu-submenu {
+  .ant-menu-item,
+  .ant-menu-submenu {
     border-radius: 0;
   }
 
@@ -79,52 +83,64 @@ const DashboardStyled = styled.div`
 `;
 
 function Dashboard() {
-  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const location = useLocation();
   const user = useSelector(state => state.app.user);
 
   const nav = [
     {
-      key: '/documentTypes',
-      label: t('Document Types'),
-      component: <DocumentTypes/>,
-      icon:  <FileProtectOutlined />,
+      key: '/',
+      label: 'Главная',
+      component: <Test />,
+      icon: <FileProtectOutlined />,
     },
     {
-      key: '/claimTypes',
-      label: t('Claim Types'),
-      component: <ClaimTypes/>,
-      icon:  <FileProtectOutlined />,
+      key: '/queue',
+      label: 'Очередь',
+      component: <Queue />,
+      icon: <FileProtectOutlined />,
     },
     {
-      key: '/registration',
-      label: t('Create User'),
-      component: <Registration/>,
-      icon:  <FileProtectOutlined />,
+      key: '/cabinet',
+      label: 'Кабинет',
+      component: <Cabinet />,
+      icon: <FileProtectOutlined />,
     },
     {
-      key: '/claims',
-      icon:  <FileProtectOutlined />,
-      label: t('Claims'),
-      children: [
-        {
-          key: '/current',
-          label: t('Current'),
-          component: <Claims/>
-        },
-        {
-          key: '/rejected',
-          label: t('Rejected'),
-          component: <Rejected/>
-        },
-      ]
+      key: '/myClients',
+      label: 'Мои клиенты',
+      component: <MyClients />,
+      icon: <FileProtectOutlined />,
     },
     {
-      key: '/license',
-      label: t('License'),
-      component: <Main/>,
-      icon:  <FileProtectOutlined />,
+      key: '/services',
+      label: 'Услуги',
+      component: <Services />,
+      icon: <FileProtectOutlined />,
+    },
+    {
+      key: '/categories',
+      label: 'Категории',
+      component: <ServiceCategories />,
+      icon: <FileProtectOutlined />,
+    },
+    {
+      key: '/users',
+      label: 'Пользователи',
+      component: <AllUsers />,
+      icon: <FileProtectOutlined />,
+    },
+    {
+      key: '/clients',
+      label: 'Клиенты',
+      component: <Clients />,
+      icon: <FileProtectOutlined />,
+    },
+    {
+      key: '/serviceCenters',
+      label: 'Филиалы',
+      component: <ServiceCenters />,
+      icon: <FileProtectOutlined />,
     },
   ];
 
@@ -134,19 +150,11 @@ function Dashboard() {
         {
           key: '4',
           danger: true,
-          label: t('Exit'),
+          label: 'Выйти',
           onClick: () => {
+            dispatch(logOutApi());
             localStorage.removeItem('at');
-            localStorage.removeItem('rt');
             dispatch(isAuthAC(false));
-          },
-        },
-        {
-          key: '5',
-          danger: false,
-          label: t('Language'),
-          onClick: () => {
-            i18n.changeLanguage(i18n.language === 'ru' ? 'tj' : 'ru')
           },
         },
       ]}
@@ -158,7 +166,9 @@ function Dashboard() {
       <Layout>
         <Sider width={250} trigger={null} collapsible>
           <div className='logo'>
-            <h1 style={{color: '#49bff4'}} className='text-3xl font-bold'>CRM</h1>
+            <h1 style={{ color: '#49bff4' }} className='text-3xl font-bold'>
+              TezTar
+            </h1>
           </div>
           <Menu theme='dark' mode='inline' defaultSelectedKeys={['/main']} selectedKeys={[location.pathname]}>
             {nav.map(el => {
@@ -189,7 +199,7 @@ function Dashboard() {
         <Layout>
           <Header>
             <div className='flex items-center'>
-              <p className='mr-4'>{t('Welcome')}, {user.firstName} {user.lastName}</p>
+              <p className='mr-4'>Добро пожаловать {user.full_name} !</p>
               <Dropdown overlay={menu} trigger={['click']}>
                 <Avatar icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
               </Dropdown>
@@ -199,14 +209,14 @@ function Dashboard() {
             <Routes>
               {nav.map(rout =>
                 rout?.component ? (
-                  <Route key={rout.key} path={`${ rout.key }/*`} element={rout.component} />
+                  <Route key={rout.key} path={`${rout.key}/*`} element={rout.component} />
                 ) : (
                   rout.children.map(roCh => (
                     <Route key={`${rout.key}${roCh.key}`} path={`${rout.key}${roCh.key}/*`} element={roCh.component} />
                   ))
                 )
               )}
-              <Route path='*' element={<Navigate to='/claims/current' replace />} />
+              <Route path='*' element={<Navigate to='/' replace />} />
             </Routes>
           </Content>
         </Layout>

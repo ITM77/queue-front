@@ -2,12 +2,11 @@ import $host from './index'
 import { userAC, isSpinAC } from '../store/reducers/app';
 import notification from '../utils/openNotification';
 
-const getUserApi = () => async (dispatch, getState) => {
-  const currentState = getState().app
+const getUserApi = () => async (dispatch) => {
   try {
     dispatch(isSpinAC(true))
-    const { data } = await $host.get(`users/me?locale=${currentState.lang}`)
-    dispatch(userAC(data.data))
+    const { data } = await $host.get('me')
+    dispatch(userAC(data.response))
   } catch (e) {
     notification('error', e.response.data.message)
   }
@@ -16,21 +15,4 @@ const getUserApi = () => async (dispatch, getState) => {
   }
 }
 
-const createUserApi = (params) => async (dispatch, getState) => {
-  const currentState = getState().app
-  try {
-    dispatch(isSpinAC(true))
-    const { data } = await $host.post(`users?locale=${currentState.lang}`, params)
-    if (data.data) {
-      notification('success', currentState.lang === 'tj' ? 'Пользователь создан' : 'Корбар сохта шуд')
-    } else {
-      notification('error', data.message)
-    }
-  } catch (e) {
-    notification('error', e.response.data.message)
-  } finally {
-    dispatch(isSpinAC(false))
-  }
-}
-
-export { getUserApi, createUserApi }
+export { getUserApi }
