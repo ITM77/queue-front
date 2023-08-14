@@ -7,9 +7,7 @@ import setupStore from "./store";
 import App from './App'
 import './i18n'
 import reportWebVitals from './reportWebVitals'
-import './index.scss'
-import './index.less'
-import './index.css'
+import './assets/styles/main.scss'
 
 const store = setupStore()
 
@@ -18,7 +16,7 @@ root.render(
   <ConfigProvider
     theme={{
       token: {
-        colorPrimary: '#475779',
+        colorPrimary: '#1677ff',
       },
     }}
   >

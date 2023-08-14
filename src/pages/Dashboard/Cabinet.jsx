@@ -67,7 +67,7 @@ function Cabinet() {
       </div>
       <h1 className='text-lg mt-6'>История принятых клиентов</h1>
       <Divider />
-      <Table columns={columns} dataSource={completedTickets} />
+      <Table columns={columns} dataSource={completedTickets} bordered />
     </div>
   );
 }

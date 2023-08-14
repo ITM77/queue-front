@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   padding: 0;
   margin: 0;
@@ -5,10 +9,6 @@
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
-}
-
-h1, h2, h3, h4, h5, h6, p, i, b, strong, a, li, div {
-  color: #222;
 }
 
 .ant-spin-lg {
@@ -31,8 +31,4 @@ h1, h2, h3, h4, h5, h6, p, i, b, strong, a, li, div {
 .ant-upload-list-item-thumbnail {
   width: 100% !important;
   height: 100% !important;
-}
-.ant-table-thead th, .ant-table-thead td {
-  background: #597e9f !important;
-  color: #fff !important;
 }

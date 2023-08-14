@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import Auth from './pages/Auth/Auth';
@@ -21,7 +22,7 @@ function App() {
 
   return (
     <Spin size='large' spinning={isSpin}>
-      <div className='App'>{isAuth ? <Dashboard /> : <Auth />}</div>
+      <div className='app'>{isAuth ? <Dashboard /> : <Auth />}</div>
     </Spin>
   );
 }

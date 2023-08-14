@@ -8,7 +8,6 @@ function MyClients() {
   const dispatch = useDispatch();
   const tickets = useSelector(state => state.cabinet.tickets);
   const currentTicket = useSelector(state => state.cabinet.currentTicket);
-  console.log(tickets);
 
   const inviteTicket = () => {
     dispatch(inviteTicketApi());

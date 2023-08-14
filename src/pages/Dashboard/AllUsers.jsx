@@ -71,7 +71,7 @@ function AllUsers() {
         </Button>
       </div>
       <Divider />
-      <Table columns={columns} dataSource={users} />
+      <Table columns={columns} dataSource={users} bordered />
       <Modal
         style={{
           top: 20,
