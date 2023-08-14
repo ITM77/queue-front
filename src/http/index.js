@@ -10,7 +10,10 @@ const $host = axios.create({
 });
 
 $host.interceptors.request.use(config => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem('at')}`;
+  if (localStorage.getItem('at') !== null) {
+    config.headers.Authorization = `Bearer ${localStorage.getItem('at')}`;
+  }
+
   return config;
 });
 
@@ -31,7 +34,6 @@ $host.interceptors.response.use(
           }
         }
       } catch (e) {
-        console.log('sf');
         localStorage.removeItem('at');
         localStorage.removeItem('rt');
         window.location.reload();
