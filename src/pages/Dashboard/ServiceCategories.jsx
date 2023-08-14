@@ -80,7 +80,7 @@ function ServiceCategories() {
         </Button>
       </div>
       <Divider />
-
+      <Table
         footer={null}
         columns={columns}
         dataSource={serviceCategories}
